@@ -26,7 +26,7 @@ clean:
 
 # Tests
 tester:
-	$(CC) $(CFLAGS) $(LIB) test/TestExpression.cpp $(INC) -o bin/tester
+	$(CC) $(CFLAGS) $(LIB) test/TestExpression.cpp $(INC) -o bin/tester build/BinExpression.o
 
 # Spikes
 #ticket:

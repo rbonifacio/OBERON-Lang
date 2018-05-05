@@ -10,14 +10,14 @@ namespace OberonLang {
     Expression* lhs;
     Expression* rhs;
   public:
-    BinExpression(Expression* l, Expression* r) { lhs = l; rhs = r; }; 
-    virtual Value* eval() = 0; 
+    BinExpression(Expression* l, Expression* r) { lhs = l; rhs = r; };
+    virtual Value* eval() = 0;
   };
 
   class AddExpression : public BinExpression {
   public:
-    AddExpression(Expression* l, Expression* r);
-    virtual Value* eval(); 
+    AddExpression(Expression* l, Expression* r) : BinExpression(l, r) {};
+    Value* eval();
   };
     
 }

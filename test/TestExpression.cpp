@@ -8,10 +8,10 @@ using namespace OberonLang;
 TEST (AddExpression, PositiveValues) {
   IntValue* v1 = new IntValue(10);
   IntValue* v2 = new IntValue(5);
-  //AddExpression* add = new AddExpression(v1, v2);
+  AddExpression* add = new AddExpression(v1, v2);
   
   
-  EXPECT_EQ (10, v1->value());
+  EXPECT_EQ (15, ((IntValue*)add->eval())->value());
 }
 
 
