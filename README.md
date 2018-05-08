@@ -9,3 +9,18 @@ and other high-level languages (like C or Java). In this way,
 we hope we will also get use to the LLVM and JIMPLE intermediate
 representations.
 
+___
+
+To compile, first create an empty folder called bin, than just command 'make'.
+
+```bash
+mkdir bin
+make
+```
+
+There is a 'clean' command to compile from scratch.
+
+```bash
+make clean
+```
+
