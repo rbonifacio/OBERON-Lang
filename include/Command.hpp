@@ -15,11 +15,12 @@ namespace OberonLang {
 
   class Assignment : public Command {
   public:
-    Assignment(string v, Expression* e) { var = v; expression = e; }
+    Assignment(std::string v, Expression* e) { var = v; expression = e; }
+    void run();
   private:
-    string var;
+    std::string var;
     Expression* expression; 
-  }
+  };
 }
 
 #endif 
