@@ -15,7 +15,7 @@ namespace OberonLang {
     int64_t v1 = ((valueType*)lhs->eval())->value();\
     int64_t v2 = ((valueType*)rhs->eval())->value();\
     \
-    return new valueType(v1 operator v2);\
+    return new valueType((v1) operator (v2));\
   }\
   
   __implementArithBinExp(Add,  +, IntValue);      // ~ AddExpression
