@@ -15,21 +15,32 @@ namespace OberonLang {
   };  
   
   #define __headerArithBinExp(infix)\
-  class infix##Expression : public BinExpression {\
-  public:\
-    infix##Expression(Expression* l, Expression* r) : BinExpression(l, r) {};\
-    Value* eval();\
-  };\
+    class infix##Expression : public BinExpression {\
+    public:\
+      infix##Expression(Expression* l, Expression* r) : BinExpression(l, r) {};\
+      Value* eval();\
+    };\
   
-  __headerArithBinExp(Add);  // ~ AddExpression
-  __headerArithBinExp(Sub);  // ~ SubExpression
-  __headerArithBinExp(Mult); // ~ MultExpression
-  __headerArithBinExp(Div);  // ~ DivExpression
-  __headerArithBinExp(Srl);  // ~ SrlExpression
-  __headerArithBinExp(Sll);  // ~ SllExpression
+  __headerArithBinExp(Add);   // ~ AddExpression
+  __headerArithBinExp(Sub);   // ~ SubExpression
+  __headerArithBinExp(Times); // ~ TimesExpression
+  __headerArithBinExp(Div);   // ~ DivExpression
+  __headerArithBinExp(Rem);   // ~ RemExpression
+  
+  __headerArithBinExp(AddReal);   // ~ AddRealExpression
+  __headerArithBinExp(SubReal);   // ~ SubRealExpression
+  __headerArithBinExp(TimesReal); // ~ TimesRealExpression
+  __headerArithBinExp(DivReal);   // ~ DivRealExpression
+  
+  __headerArithBinExp(EQ);   // ~ EQExpression
+  __headerArithBinExp(NE);   // ~ NEExpression
+  __headerArithBinExp(LT);   // ~ LTExpression
+  __headerArithBinExp(LE);   // ~ LEExpression
+  __headerArithBinExp(GT);   // ~ GTExpression
+  __headerArithBinExp(GE);   // ~ GEExpression
+  
   __headerArithBinExp(And);  // ~ AndExpression
   __headerArithBinExp(Or);   // ~ OrExpression
-  __headerArithBinExp(Xor);  // ~ XorExpression
     
 }
 #endif 

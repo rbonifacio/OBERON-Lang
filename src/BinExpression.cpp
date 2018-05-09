@@ -4,28 +4,40 @@
 namespace OberonLang {
   
   /* 
-     Macro que implementa expressões binárias aritméticas simples.
-     infix: o nome da expressão, esse nome será usado como infixo
-     operator: a operação equivalente em C++
-     valueType: o tipo dos dados que serão manipulados
+     
    */
    
-  #define __implementArithBinExp(infix, operator, valueType)\
-  Value* infix##Expression::eval() {\
-    int64_t v1 = ((valueType*)lhs->eval())->value();\
-    int64_t v2 = ((valueType*)rhs->eval())->value();\
-    \
-    return new valueType((v1) operator (v2));\
-  }\
+  #define __implementArithBinExp(infix, operator, valueTypeCpp, valueTypeOberon, valueTypeOberonReturn)\
+    Value* infix##Expression::eval() {\
+      valueTypeCpp v1 = ((valueTypeOberon *)lhs->eval())->value();\
+      valueTypeCpp v2 = ((valueTypeOberon *)rhs->eval())->value();\
+      \
+      return new valueTypeOberonReturn(v1 operator v2);\
+    }\
   
-  __implementArithBinExp(Add,  +, IntValue);      // ~ AddExpression
-  __implementArithBinExp(Sub,  -, IntValue);      // ~ SubExpression
-  __implementArithBinExp(Mult, *, IntValue);      // ~ MultExpression
-  __implementArithBinExp(Div,  /, IntValue);      // ~ DivExpression
-  __implementArithBinExp(Srl, >>, IntValue);      // ~ SrlExpression
-  __implementArithBinExp(Sll, <<, IntValue);      // ~ SllExpression
-  __implementArithBinExp(And, &&, BooleanValue);  // ~ AndExpression
-  __implementArithBinExp(Or,  ||, BooleanValue);  // ~ OrExpression
-  __implementArithBinExp(Xor,  ^, BooleanValue);  // ~ XorExpression
+  /* Integer binary expressions */
+  __implementArithBinExp(Add,  +, TYPE_INTEGER, IntValue, IntValue);   // ~ AddExpression
+  __implementArithBinExp(Sub,  -, TYPE_INTEGER, IntValue, IntValue);   // ~ SubExpression
+  __implementArithBinExp(Times,*, TYPE_INTEGER, IntValue, IntValue);   // ~ TimesExpression
+  __implementArithBinExp(Div,  /, TYPE_INTEGER, IntValue, IntValue);   // ~ DivExpression
+  __implementArithBinExp(Rem,  %, TYPE_INTEGER, IntValue, IntValue);   // ~ RemExpression
+  
+  /* Real binary expressions */
+  __implementArithBinExp(AddReal,   +, TYPE_REAL, RealValue, RealValue);  // ~ AddRealExpression
+  __implementArithBinExp(SubReal,   -, TYPE_REAL, RealValue, RealValue);  // ~ SubRealExpression
+  __implementArithBinExp(TimesReal, *, TYPE_REAL, RealValue, RealValue);  // ~ TimesRealExpression
+  __implementArithBinExp(DivReal,   /, TYPE_REAL, RealValue, RealValue);  // ~ DivRealExpression
+  
+  /* Relational Expressions for integers */
+  __implementArithBinExp(EQ,  ==, TYPE_INTEGER, IntValue, BooleanValue);  // ~ EQExpression
+  __implementArithBinExp(NE,  !=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ NEExpression
+  __implementArithBinExp(LT,   <, TYPE_INTEGER, IntValue, BooleanValue);  // ~ LTExpression
+  __implementArithBinExp(LE,  <=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ LEE/xpression
+  __implementArithBinExp(GT,   >, TYPE_INTEGER, IntValue, BooleanValue);  // ~ GTExpression
+  __implementArithBinExp(GE,  >=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ GEExpression
+  
+  /* Logical binary expressions */
+  __implementArithBinExp(And, &&, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ AndExpression
+  __implementArithBinExp(Or,  ||, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ OrExpression
   
 }
