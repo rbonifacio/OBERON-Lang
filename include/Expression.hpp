@@ -1,6 +1,10 @@
 #ifndef EXPRESSION_H
 #define EXPRESSION_H
 
+#include <cstdint>
+
+using namespace std;
+
 namespace OberonLang {
 
   class Value;
@@ -29,9 +33,9 @@ namespace OberonLang {
   };
 
   /* the Oberon int value */
-  class IntValue : public GenericValue<int> {
+  class IntValue : public GenericValue<int64_t> {
   public:
-    IntValue(int value) : GenericValue(value) {} 
+    IntValue(int64_t value) : GenericValue(value) {} 
   };
 
   /* the Oberon boolean value */ 
