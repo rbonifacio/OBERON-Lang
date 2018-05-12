@@ -1,0 +1,21 @@
+
+Module. Module ::= "module" Ident ";" [VarDec] "begin" "end" Ident "." ;
+
+IntType. Type  := INTEGER ;
+BoolType. Type := BOOLEAN;
+
+VarDec. VarDec ::= "VAR" [Var] ":" Type ";" ;    
+
+Assignment.   Stmt ::= Ident ":=" Expression ;
+While.        Stmt ::= "while" "(" Expression ")" "DO" Stmt "END" ; 
+BlockStmt.    Stmt ::= [Stmt] ;
+
+Var. Var ::= Ident ;
+
+separator Stmt ";"                   ; 
+separator nonempty Var ","       ; 
+separator VarDec ""                  ; 
+
+comment "//" ;
+comment "/*" "*/" ;
+
