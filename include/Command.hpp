@@ -5,6 +5,9 @@
 #include "Expression.hpp"
 
 #include <string>
+#include <list>
+
+using namespace std;
 
 namespace OberonLang {
 
@@ -15,11 +18,27 @@ namespace OberonLang {
 
   class Assignment : public Command {
   public:
-    Assignment(std::string v, Expression* e) { var = v; expression = e; }
+    Assignment(string v, Expression* e) { var = v; expression = e; }
     void run();
   private:
-    std::string var;
+    string var;
     Expression* expression; 
+  };
+
+  class ProcedureCall : public Command {
+  public:
+    ProcedureCall(string n, list<Expression*> args) { this->_name = n; this->_args = args; }
+    void run(); 
+  private:
+    string _name;
+    list<Expression*> _args; 
+  }
+  class BlockCommand : public Command {
+  public:
+    BlockCommand(list<Command*> cmds) { this->commands = cmds; }
+    void run(); 
+  private:
+    list<Command*> commands;
   };
 }
 
