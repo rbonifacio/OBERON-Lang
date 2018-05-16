@@ -2,25 +2,27 @@
 #define PROCEDURE_H
 
 #include <string>
-#include <list>
+#include <vector>
 
 #include "Declaration.hpp"
 #include "Command.hpp"
 
 using namespace std;
-
-class DecProcedure {
-public:
-  DecProcedure(string n, list<Declaration> args, list<Declaration> vars, Command* cmd);
-  string name() { return _name; }
-  list<Declaration> formalArgs() { return _formalArgs; }
-  list<Declaration> localVars() { return _localVars; }
-  Command* body() { return _body; }
-private:
-  string _name;
-  list<Declaration> _formalArgs; 
-  list<Declaration> _localVars;
-  Command* _body;  
-};
+namespace OberonLang {
+    
+    class DecProcedure {
+    public:
+      DecProcedure(string n, vector<Declaration> args, vector<Declaration> vars, Command* cmd);
+      string name() { return _name; }
+      vector<Declaration> formalArgs() { return _formalArgs; }
+      vector<Declaration> localVars() { return _localVars; }
+      Command* body() { return _body; }
+    private:
+      string _name;
+      vector<Declaration> _formalArgs;
+      vector<Declaration> _localVars;
+      Command* _body;
+    };
+}
 
 #endif 

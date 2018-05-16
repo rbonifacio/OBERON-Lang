@@ -2,7 +2,7 @@
 #include <string>
 
 #include "Environment.hpp"
-
+using namespace std;
 namespace OberonLang { 
   Environment* Environment::_instance = 0;
   
@@ -13,23 +13,32 @@ namespace OberonLang {
     return _instance; 
   }
 
-  void Environment::env(std::string var, Value* value) {
+  void Environment::env(string var, Value* value) {
     if(_env->empty()) {
       this->push();
     }
-    _env->top()->insert( std::pair<std::string, Value*>(var, value) ); 
+    _env->top()->insert( pair<string, Value*>(var, value) );
   }
 
-  Value* Environment::lookup(std::string var) {
+  Value* Environment::lookup(string var) {
     return _env->top()->at(var);
   }
 
   void Environment::push() {
-    _env->push(new std::map<std::string, Value*>());
+    _env->push(new map<string, Value*>());
   }
 
   void Environment::pop() {
     _env->pop(); 
   }
+    void Environment::decProcedure(DecProcedure* p){
+        if(_procedures == 0){
+            _procedures = new map<string,DecProcedure*>();
+        }
+        _procedures->insert(pair<string,DecProcedure*>(p->name(),p));
+    }
+    DecProcedure* Environment::lookupProcedure(string n){
+        return _procedures->at(n);
+    }
 }
 
