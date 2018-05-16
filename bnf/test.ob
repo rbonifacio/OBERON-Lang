@@ -1,0 +1,12 @@
+MODULE teste; 
+  VAR tmp : INTEGER;
+  VAR tmp2 : INTEGER;
+  VAR tmp_bool : BOOLEAN;
+BEGIN 
+  tmp := 10
+  tmp_bool := true
+  WHILE(tmp_bool && (tmp != tmp2*12)) DO
+    tmp := 10
+  END
+  tmp := 2+2
+END a .

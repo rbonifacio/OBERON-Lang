@@ -1,21 +1,41 @@
+ModuleDeclare.  Module  ::= "MODULE" Ident ";" [VarDec] "BEGIN" [Stmt] "END" Ident ".";
 
-Module. Module ::= "module" Ident ";" [VarDec] "begin" "end" Ident "." ;
+IntType.        Type ::= "INTEGER";
+BoolType.       Type ::= "BOOLEAN";
 
-IntType. Type  := INTEGER ;
-BoolType. Type := BOOLEAN;
+ETrue.   Boolean ::= "true";
+EFalse.  Boolean ::= "false";
 
-VarDec. VarDec ::= "VAR" [Var] ":" Type ";" ;    
+VarDeclaration. VarDec  ::= "VAR" [Var] ":" Type ";";   
 
-Assignment.   Stmt ::= Ident ":=" Expression ;
-While.        Stmt ::= "while" "(" Expression ")" "DO" Stmt "END" ; 
-BlockStmt.    Stmt ::= [Stmt] ;
+While.          Stmt ::= "WHILE" "(" Expression ")" "DO" [Stmt] "END";
+Assignment.     Stmt ::= Ident ":=" Expression;
 
-Var. Var ::= Ident ;
+VarIdentifier.  Var ::= Ident;
 
-separator Stmt ";"                   ; 
-separator nonempty Var ","       ; 
-separator VarDec ""                  ; 
+OrExpression.     Expression  ::= Expression  "||" Expression1;
+AndExpression.    Expression1 ::= Expression1 "&&" Expression2;
+BooleanValue.     Expression2 ::= Boolean;
+
+NEExpression.     Expression2 ::= Expression2 "!=" Expression3;
+EQExpression.     Expression2 ::= Expression2 "==" Expression3;
+LTExpression.     Expression2 ::= Expression2  "<" Expression3;
+LEExpression.     Expression2 ::= Expression2 "<=" Expression3;
+GTExpression.     Expression2 ::= Expression2  ">" Expression3;
+GEExpression.     Expression2 ::= Expression2 ">=" Expression3;
+
+AddExpression.    Expression3 ::= Expression3  "+" Expression4;
+SubExpression.    Expression3 ::= Expression3  "-" Expression4;
+TimesExpression.  Expression4 ::= Expression4 "*" Expression5;
+DivExpression.    Expression4 ::= Expression4 "/" Expression5;
+IntValue.         Expression5 ::= Integer;
+VarValue.         Expression5 ::= Ident;
+
+coercions Expression 5;
+
+separator Stmt "";
+separator nonempty Var ",";
+separator VarDec ""; 
 
 comment "//" ;
 comment "/*" "*/" ;
-
