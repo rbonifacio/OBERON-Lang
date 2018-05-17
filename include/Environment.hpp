@@ -17,11 +17,12 @@ namespace OberonLang {
     void decProcedure(DecProcedure* p);
     Value* lookup(string var);
     DecProcedure* lookupProcedure(string n);
+    bool noVars();
     void push();                                   //it should be called after a procedure call
     void pop();                                    //it should be called after returning 
-    ~Environment() { delete _env; }
+      ~Environment() { delete _env; delete _procedures; }
   private:
-    Environment() { _env = new stack< map<string, Value*>* >(); }
+      Environment();
     static Environment* _instance;                 // according to the singleton design pattern
     stack< map<string, Value*>* >* _env;
     map<string,DecProcedure*>* _procedures;

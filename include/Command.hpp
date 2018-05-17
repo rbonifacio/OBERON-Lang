@@ -42,6 +42,15 @@ namespace OberonLang {
   private:
     list<Command*> commands;
   };
+    
+    class PrintCommand : public Command{
+        public:
+        PrintCommand(Expression* exp) {this -> expression = exp;}
+        void run();
+        
+        private:
+        Expression* expression;
+    };
 }
 
 #endif 

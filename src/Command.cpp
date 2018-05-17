@@ -4,6 +4,7 @@
 #include "Expression.hpp"
 
 #include <list>
+#include <iostream>
 
 using namespace std;
 
@@ -18,6 +19,10 @@ namespace OberonLang {
     }
   }
     
+    void PrintCommand::run() {
+        cout << expression -> eval();
+    }
+    
     void ProcedureCall::run(){
         Environment::instance()->push();
         DecProcedure* decProcedure = Environment::instance()->lookupProcedure(this->_name);
@@ -26,12 +31,14 @@ namespace OberonLang {
         
         // map each formal argument to the actual argument of the procedure call.
         for(int i = 0; i < numberOfFormalArgs; i++) {
-            Declaration* formalArg = decProcedure->formalArgs()[i];
+            Declaration formalArg = decProcedure->formalArgs()[i];
             Value* arg = this->_args[i]->eval();
             
-            Environment::instance()->env(formalArg->name(), arg);
+            Environment::instance()->env(formalArg.name(), arg);
         }
         decProcedure->body()->run();
+        Environment::instance()->pop();
+
     }
   
 }

@@ -12,7 +12,11 @@ namespace OberonLang {
     }
     return _instance; 
   }
-
+    Environment::Environment()  {
+        _env = new stack< map<string, Value*>* >();
+        _procedures = new map<string,DecProcedure*>();
+    }
+    
   void Environment::env(string var, Value* value) {
     if(_env->empty()) {
       this->push();
@@ -20,6 +24,10 @@ namespace OberonLang {
     _env->top()->insert( pair<string, Value*>(var, value) );
   }
 
+    bool Environment::noVars(){
+        return _env->top()->empty();
+    }
+    
   Value* Environment::lookup(string var) {
     return _env->top()->at(var);
   }

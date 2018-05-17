@@ -1,11 +1,17 @@
-#include <iostream> 
+#include <iostream>
+#include <vector>
+#include <string>
 #include "gtest/gtest.h"
 
 #include "Expression.hpp"
 #include "BinExpression.hpp"
 #include "Environment.hpp"
 #include "Command.hpp"
+#include "Procedure.hpp"
+#include "Declaration.hpp"
+#include "Types.hpp"
 
+using namespace std;
 using namespace OberonLang; 
 
 TEST (AddExpression, SimpleAdd) {
@@ -270,6 +276,27 @@ TEST (LTExpression, Greater) {
   delete v2;
   delete exp;
   delete result;
+}
+
+TEST (Procedure, Print){
+    string n = "Print";
+    vector<Declaration> args;
+    args.push_back(Declaration(integer , "x"));
+    
+    vector<Declaration> vars;
+    IntValue *v = new IntValue(5);
+    Command *body = new PrintCommand(v);
+    DecProcedure *print = new DecProcedure(n,args,vars,body);
+    vector<Expression*> pmts;
+    pmts.push_back(new IntValue(10));
+    ProcedureCall *call = new ProcedureCall(n,pmts);
+    Environment::instance()->decProcedure(print);
+    EXPECT_EQ (false, Environment::instance()->noVars());
+    
+    call->run();
+    
+    EXPECT_EQ (false, Environment::instance()->noVars());
+
 }
 
 int main(int argc, char **argv) {
