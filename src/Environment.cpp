@@ -41,7 +41,7 @@ namespace OberonLang {
     if(_globals == 0) {
       _globals = new map<string, Value*>();
     }
-    _globals->insert( pair<string, Value*>(var, value) );
+    (*_globals)[var] = value; // ]insert( pair<string, Value*>(var, value) );
   }
 
   Value* Environment::global(string var) {
