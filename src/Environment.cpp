@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Environment.hpp"
+
 using namespace std;
 namespace OberonLang { 
   Environment* Environment::_instance = 0;
@@ -12,10 +13,11 @@ namespace OberonLang {
     }
     return _instance; 
   }
-    Environment::Environment()  {
-        _env = new stack< map<string, Value*>* >();
-        _procedures = new map<string,DecProcedure*>();
-    }
+  
+  Environment::Environment()  {
+    _env = new stack< map<string, Value*>* >();
+    _procedures = new map<string,DecProcedure*>();
+  }
     
   void Environment::env(string var, Value* value) {
     if(_env->empty()) {
@@ -24,9 +26,9 @@ namespace OberonLang {
     _env->top()->insert( pair<string, Value*>(var, value) );
   }
 
-    bool Environment::noVars(){
-        return _env->top()->empty();
-    }
+  bool Environment::noVars(){
+    return _env->top()->empty();
+  }
     
   Value* Environment::lookup(string var) {
     return _env->top()->at(var);
@@ -39,14 +41,17 @@ namespace OberonLang {
   void Environment::pop() {
     _env->pop(); 
   }
-    void Environment::decProcedure(DecProcedure* p){
-        if(_procedures == 0){
-            _procedures = new map<string,DecProcedure*>();
-        }
-        _procedures->insert(pair<string,DecProcedure*>(p->name(),p));
+
+  void Environment::decProcedure(DecProcedure* p){
+    if(_procedures == 0){
+      _procedures = new map<string,DecProcedure*>();
     }
-    DecProcedure* Environment::lookupProcedure(string n){
-        return _procedures->at(n);
-    }
+    _procedures->insert(pair<string, DecProcedure*>(p->name(), p));
+  }
+
+  DecProcedure* Environment::lookupProcedure(string n){
+    return _procedures->at(n);
+  }
+  
 }
 

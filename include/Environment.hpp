@@ -20,16 +20,14 @@ namespace OberonLang {
     bool noVars();
     void push();                                   //it should be called after a procedure call
     void pop();                                    //it should be called after returning 
-      ~Environment() { delete _env; delete _procedures; }
+    ~Environment() { delete _env; delete _procedures; }
   private:
-      Environment();
+    Environment();
     static Environment* _instance;                 // according to the singleton design pattern
     stack< map<string, Value*>* >* _env;
-    map<string,DecProcedure*>* _procedures;
-      
+    map<string, DecProcedure*>* _procedures;  
   };
     
-
 }
 
 #endif 

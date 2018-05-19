@@ -14,31 +14,33 @@ namespace OberonLang {
   }
 
   void BlockCommand::run() {
-    for (list<Command*>::iterator it= commands.begin(); it != commands.end(); ++it) {
+    for (auto it= commands.begin(); it != commands.end(); ++it) {
       (*it)->run();
     }
   }
     
-    void PrintCommand::run() {
-        cout << expression -> eval();
-    }
+  void PrintCommand::run() {
+    auto v = expression->eval(); 
+    cout << v;
+  }
     
-    void ProcedureCall::run(){
-        Environment::instance()->push();
-        DecProcedure* decProcedure = Environment::instance()->lookupProcedure(this->_name);
+  void ProcedureCall::run(){
+    Environment::instance()->push();
+    
+    auto decProcedure = Environment::instance()->lookupProcedure(this->_name);
+    int numberOfFormalArgs = decProcedure->formalArgs().size();
         
-        int numberOfFormalArgs = decProcedure->formalArgs().size();
-        
-        // map each formal argument to the actual argument of the procedure call.
-        for(int i = 0; i < numberOfFormalArgs; i++) {
-            Declaration formalArg = decProcedure->formalArgs()[i];
-            Value* arg = this->_args[i]->eval();
+    // map each formal argument to the actual argument of the procedure call.
+    for(int i = 0; i < numberOfFormalArgs; i++) {
+      auto formalArg = decProcedure->formalArgs()[i];
+      auto arg = this->_args[i]->eval();
             
-            Environment::instance()->env(formalArg.name(), arg);
-        }
-        decProcedure->body()->run();
-        Environment::instance()->pop();
-
+      Environment::instance()->env(formalArg.name(), arg);
     }
+    // run the procedure body in the updated environment. 
+    decProcedure->body()->run();
+
+    Environment::instance()->pop();
+  }
   
 }

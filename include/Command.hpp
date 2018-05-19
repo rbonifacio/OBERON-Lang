@@ -14,13 +14,15 @@ namespace OberonLang {
 
   class Command {
   public:
-    virtual void run() = 0; 
+    virtual void run() = 0;
+    virtual ~Command() { } 
   };
 
   class Assignment : public Command {
   public:
     Assignment(string v, Expression* e) { var = v; expression = e; }
     void run();
+    ~Assignment() { delete expression; }
   private:
     string var;
     Expression* expression; 
@@ -29,7 +31,8 @@ namespace OberonLang {
   class ProcedureCall : public Command {
   public:
     ProcedureCall(string n, vector<Expression*> args) { this->_name = n; this->_args = args; }
-    void run(); 
+    void run();
+    ~ProcedureCall() { } 
   private:
     string _name;
     vector<Expression*> _args;
@@ -43,14 +46,14 @@ namespace OberonLang {
     list<Command*> commands;
   };
     
-    class PrintCommand : public Command{
-        public:
-        PrintCommand(Expression* exp) {this -> expression = exp;}
-        void run();
-        
-        private:
-        Expression* expression;
-    };
+  class PrintCommand : public Command{
+  public:
+    PrintCommand(Expression* exp) {this -> expression = exp;}
+    void run();
+    ~PrintCommand() { delete expression; }
+  private:
+    Expression* expression;
+  };
 }
 
 #endif 

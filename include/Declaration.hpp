@@ -1,10 +1,10 @@
 #ifndef DECLARATION_H
 #define DECLARATION_H
 
-
 #include "Types.hpp"
 
 using namespace std;
+
 namespace OberonLang {
     
     class Declaration {

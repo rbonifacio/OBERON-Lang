@@ -2,7 +2,9 @@
 #define TYPES_H
 
 namespace OberonLang {
-enum TypesEnum { integer, boolean };
+
+  enum TypesEnum { integer, boolean };
+
 }
 
 #endif 

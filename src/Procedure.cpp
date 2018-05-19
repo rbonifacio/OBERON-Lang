@@ -7,4 +7,8 @@ namespace OberonLang {
     this->_localVars = vars;
     this->_body = cmd; 
   }
+
+  DecProcedure::~DecProcedure() {
+    delete _body; 
+  }
 }
