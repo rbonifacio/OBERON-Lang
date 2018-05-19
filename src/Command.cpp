@@ -10,7 +10,6 @@ using namespace std;
 
 namespace OberonLang {
   void Assignment::run() {
-
     if(Environment::instance()->env(var) != Undefined::instance()) {
       Environment::instance()->env(var, expression->eval());
     }    
@@ -18,6 +17,7 @@ namespace OberonLang {
       Environment::instance()->global(var, expression->eval());
     }
     else {
+      cout << "nao achou var " << var << endl;  
       // in this case, we are assigning to a non declared variable! 
       // TODO: throw new ....
     }

@@ -35,13 +35,15 @@ TEST (AddExpression, RealAdd) {
 
 
 TEST (TestAssignment, SimpleAssignment) {
-  Environment::instance()->global("x", Undefined::instance());  
+  Environment::instance()->env("x", new IntValue(0));  
   IntValue *value = new IntValue(10);
   Assignment* assignment = new Assignment("x", value);
   
   assignment->run();
+
+  EXPECT_NE(Undefined::instance(), Environment::instance()->env("x"));
   
-  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x")->eval())->value());
+  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x"))->value());
 }
 
 TEST (SubExpression, SimpleSub) {
