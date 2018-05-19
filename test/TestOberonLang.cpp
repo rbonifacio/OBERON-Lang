@@ -208,7 +208,7 @@ TEST (Procedure, Print){
 
   // ----------------- declare the res global var --------------- //
 
-  Environment::instance()->global("res", Undefined::instance()); 
+  Environment::instance()->global("res", 0); 
   
   // ----------------- Procedure declaration -------------------- // 
 
@@ -233,7 +233,9 @@ TEST (Procedure, Print){
   
   call->run();
 
-  EXPECT_EQ (15, ((IntValue*)Environment::instance()->global("res"))->value());
+  EXPECT_NE(Undefined::instance(), Environment::instance()->global("res"));
+ 
+  EXPECT_EQ (8, ((IntValue*)Environment::instance()->global("res"))->value());
 }
 
 int main(int argc, char **argv) {

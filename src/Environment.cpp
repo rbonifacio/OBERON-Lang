@@ -45,7 +45,7 @@ namespace OberonLang {
   }
 
   Value* Environment::global(string var) {
-    return _globals->count(var) > 0 ? _globals->at(var) : Undefined::instance(); 
+    return _globals->count(var) > 0 ? (*_globals)[var] : Undefined::instance(); 
   }
   
   void Environment::push() {
