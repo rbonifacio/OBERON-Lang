@@ -28,6 +28,15 @@ namespace OberonLang {
     virtual ~Value() { } 
   };
 
+  class Undefined : public Value {
+  public:
+    Value* eval() { return this; }
+    static Undefined* instance();
+  private:
+    Undefined() {}
+    static Undefined* _undef_instance;
+  };
+    
   /* a parametric value class */   
   template <typename T>
   class GenericValue : public Value {

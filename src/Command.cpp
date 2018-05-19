@@ -10,7 +10,17 @@ using namespace std;
 
 namespace OberonLang {
   void Assignment::run() {
-    Environment::instance()->env(var, expression->eval());
+
+    if(Environment::instance()->env(var) != Undefined::instance()) {
+      Environment::instance()->env(var, expression->eval());
+    }    
+    if (Environment::instance()->global(var) != Undefined::instance()) {
+      Environment::instance()->global(var, expression->eval());
+    }
+    else {
+      // in this case, we are assigning to a non declared variable! 
+      // TODO: throw new ....
+    }
   }
 
   void BlockCommand::run() {
@@ -27,7 +37,7 @@ namespace OberonLang {
   void ProcedureCall::run(){
     Environment::instance()->push();
     
-    auto decProcedure = Environment::instance()->lookupProcedure(this->_name);
+    auto decProcedure = Environment::instance()->decProcedure(this->_name);
     int numberOfFormalArgs = decProcedure->formalArgs().size();
         
     // map each formal argument to the actual argument of the procedure call.

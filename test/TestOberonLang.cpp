@@ -10,6 +10,7 @@
 #include "Procedure.hpp"
 #include "Declaration.hpp"
 #include "Types.hpp"
+#include "VarRef.hpp" 
 
 using namespace std;
 using namespace OberonLang; 
@@ -34,11 +35,13 @@ TEST (AddExpression, RealAdd) {
 
 
 TEST (TestAssignment, SimpleAssignment) {
+  Environment::instance()->global("x", Undefined::instance());  
   IntValue *value = new IntValue(10);
   Assignment* assignment = new Assignment("x", value);
+  
   assignment->run();
   
-  EXPECT_EQ (10, ((IntValue*)Environment::instance()->lookup("x")->eval())->value());
+  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x")->eval())->value());
 }
 
 TEST (SubExpression, SimpleSub) {
@@ -186,24 +189,49 @@ TEST (LTExpression, Greater) {
 }
 
 TEST (Procedure, Print){
-    string n = "Print";
-    vector<Declaration> args;
-    args.push_back(Declaration(integer , "x"));
-    
-    vector<Declaration> vars;
-    IntValue *v = new IntValue(5);
-    Command *body = new PrintCommand(v);
-    DecProcedure *print = new DecProcedure(n,args,vars,body);
-    vector<Expression*> pmts;
-    pmts.push_back(new IntValue(10));
-    ProcedureCall *call = new ProcedureCall(n,pmts);
-    Environment::instance()->decProcedure(print);
-    EXPECT_EQ (false, Environment::instance()->noVars());
-    
-    call->run();
-    
-    EXPECT_EQ (false, Environment::instance()->noVars());
+  // --------- test the execution of a procedure ------ //
+  // it simulates a program like:
+  // -------------------------------------------------- //
+  // var res = 0; 
+  //
+  //
+  // def soma(x, y) begin
+  //   res = x + y; 
+  // end.
+  //
+  // begin
+  //  soma(5, 3) 
+  // end.   
+  // ------------------------------------------------------------ // 
 
+  // ----------------- declare the res global var --------------- //
+
+  Environment::instance()->global("res", Undefined::instance()); 
+  
+  // ----------------- Procedure declaration -------------------- // 
+
+  vector<Declaration> args;
+  vector<Declaration> vars; 
+  args.push_back(Declaration(integer, "x"));
+  args.push_back(Declaration(integer, "y"));
+  
+  Command *body = new Assignment("res", new AddExpression(new VarRef("x"), new VarRef("y")));
+  
+  DecProcedure *sum = new DecProcedure("sum", args, vars, body);
+
+  Environment::instance()->decProcedure(sum);
+    
+  // ----------------- Procedure call -----------------------------//
+    
+  vector<Expression*> pmts;
+  pmts.push_back(new IntValue(5));
+  pmts.push_back(new IntValue(3));
+    
+  ProcedureCall *call = new ProcedureCall("sum", pmts);
+  
+  call->run();
+
+  EXPECT_EQ (15, ((IntValue*)Environment::instance()->global("res"))->value());
 }
 
 int main(int argc, char **argv) {
