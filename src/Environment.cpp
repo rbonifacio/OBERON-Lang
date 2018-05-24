@@ -27,25 +27,25 @@ namespace OberonLang {
     if(_env->empty()) {
       this->push();
     }
-    _env->top()->insert( pair<string, Value*>(var, value) );
+    (*_env->top())[var] = value; //  pair<string, Value*>(var, value) );
   }
 
   Value* Environment::env(string var) {
     if(_env == 0 || _env->top() == 0 || _env->top()->count(var) == 0) {
       return Undefined::instance(); 
     }
-    return _env->top()->at(var);
+    return (*_env->top())[var];
   }
 
   void Environment::global(string var, Value* value) {
     if(_globals == 0) {
       _globals = new map<string, Value*>();
     }
-    _globals->insert( pair<string, Value*>(var, value) );
+    (*_globals)[var] = value; // ]insert( pair<string, Value*>(var, value) );
   }
 
   Value* Environment::global(string var) {
-    return _globals->count(var) > 0 ? _globals->at(var) : Undefined::instance(); 
+    return _globals->count(var) > 0 ? (*_globals)[var] : Undefined::instance(); 
   }
   
   void Environment::push() {

@@ -35,13 +35,15 @@ TEST (AddExpression, RealAdd) {
 
 
 TEST (TestAssignment, SimpleAssignment) {
-  Environment::instance()->global("x", Undefined::instance());  
+  Environment::instance()->env("x", new IntValue(0));  
   IntValue *value = new IntValue(10);
   Assignment* assignment = new Assignment("x", value);
   
   assignment->run();
+
+  EXPECT_NE(Undefined::instance(), Environment::instance()->env("x"));
   
-  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x")->eval())->value());
+  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x"))->value());
 }
 
 TEST (SubExpression, SimpleSub) {
@@ -206,7 +208,7 @@ TEST (Procedure, Print){
 
   // ----------------- declare the res global var --------------- //
 
-  Environment::instance()->global("res", Undefined::instance()); 
+  Environment::instance()->global("res", 0); 
   
   // ----------------- Procedure declaration -------------------- // 
 
@@ -231,7 +233,9 @@ TEST (Procedure, Print){
   
   call->run();
 
-  EXPECT_EQ (15, ((IntValue*)Environment::instance()->global("res"))->value());
+  EXPECT_NE(Undefined::instance(), Environment::instance()->global("res"));
+ 
+  EXPECT_EQ (8, ((IntValue*)Environment::instance()->global("res"))->value());
 }
 
 int main(int argc, char **argv) {

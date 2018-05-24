@@ -1,21 +1,39 @@
-
-Module. Module ::= "module" Ident ";" [VarDec] "begin" "end" Ident "." ;
-
-IntType. Type  := INTEGER ;
-BoolType. Type := BOOLEAN;
-
-VarDec. VarDec ::= "VAR" [Var] ":" Type ";" ;    
-
-Assignment.   Stmt ::= Ident ":=" Expression ;
-While.        Stmt ::= "while" "(" Expression ")" "DO" Stmt "END" ; 
-BlockStmt.    Stmt ::= [Stmt] ;
-
-Var. Var ::= Ident ;
-
-separator Stmt ";"                   ; 
-separator nonempty Var ","       ; 
-separator VarDec ""                  ; 
-
 comment "//" ;
 comment "/*" "*/" ;
 
+PModule. Module ::= "module" Ident "begin" Stmt "end" Ident "." ;
+
+TInt. Type  ::= "int" ;
+TBool. Type ::= "bool";
+
+PDecl. Dec ::= "var" [Ident] ":" Type ; 
+
+ELt.     Exp1 ::= Exp2 "<" Exp2  ;
+EGt.     Exp1 ::= Exp2 ">" Exp2  ;
+EEq.     Exp1 ::= Exp2 "==" Exp2 ;
+ENEq.    Exp1 ::= Exp2 "!=" Exp2 ;
+EAdd.    Exp2 ::= Exp2 "+" Exp3  ;
+ESub.    Exp2 ::= Exp2 "-" Exp3  ;
+EMul.    Exp3 ::= Exp3 "*" Exp4  ;
+EDiv.    Exp3 ::= Exp3 "/" Exp4  ; 
+EOr.     Exp2 ::= Exp2 "||" Exp3 ;
+EAnd.    Exp3 ::= Exp3 "&&" Exp4 ; 
+Call.    Exp4 ::= Ident "(" [Exp] ")" ;
+EVar.    Exp4 ::= Ident   ;
+EStr.    Exp4 ::= String  ;
+EInt.    Exp4 ::= Integer ;
+EFalse.  Exp4 ::= "false" ;
+ETrue.   Exp4 ::= "true"  ; 
+EDouble. Exp4 ::= Double  ;
+
+coercions Exp 4 ;
+
+SAssignment.   Stmt ::= Ident ":=" Exp ;
+SWhile.        Stmt ::= "while" "(" Exp ")" "do" Stmt "end" ; 
+SBlockStmt.    Stmt ::= [Stmt] ;
+SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" Stmt "end" "else" Stmt "end" ;
+SIfThen.       Stmt ::= "if" "(" Exp ")" "then" Stmt "end" ;
+
+separator Exp ","   	     	     ;
+separator Stmt ";"                   ;
+separator Ident ","                  ;

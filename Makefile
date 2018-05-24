@@ -4,13 +4,14 @@ CC := g++ # This is the main compiler
 SRCDIR := src
 BUILDDIR := build
 TARGET := bin/oberon
- 
+
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CXXFLAGS := -g -W -Wall -Wextra -Werror -std=c++11
-LIB := -lgtest -lgtest_main -pthread -L lib 
+CXXFLAGS := -g -W -Wall -Wextra -std=c++11
+LIB := -pthread -L lib
 INC := -I include
+GTEST := ${GTEST_DIR}
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
@@ -26,7 +27,11 @@ clean:
 
 # Tests
 tester:
-	$(CC) $(CFLAGS) $(LIB) test/TestOberonLang.cpp $(INC) -o bin/tester build/Expression.o build/BinExpression.o build/Command.o build/Environment.o build/Procedure.o 
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o 
+
+gtest:
+	$(CC) $(CXXFLAGS) $(LIB) -isystem $(GTEST)/include -pthread test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/Expression.o build/BinExpression.o build/Command.o build/Environment.o build/Procedure.o
+
 
 # Spikes
 #ticket:
