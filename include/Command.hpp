@@ -45,7 +45,7 @@ namespace OberonLang {
     list<Command*> commands;
   };
     
-  class PrintCommand : public Command{
+  class PrintCommand : public Command {
   public:
     PrintCommand(Expression* exp) {this -> expression = exp;}
     void run();
@@ -53,6 +53,17 @@ namespace OberonLang {
   private:
     Expression* expression;
   };
+
+  class WhileCall : public Command {
+  public:
+    WhileCall(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void run();
+    ~WhileCall() {}
+  private:
+    Expression* _cond;
+    BlockCommand* _cmds;
+  };
+
 }
 
 #endif 
