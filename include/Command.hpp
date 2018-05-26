@@ -14,7 +14,7 @@ namespace OberonLang {
   class Command {
   public:
     virtual void run() = 0;
-    virtual ~Command() { } 
+    virtual ~Command() { }
   };
 
   class Assignment : public Command {
@@ -24,27 +24,27 @@ namespace OberonLang {
     ~Assignment() { delete expression; }
   private:
     string var;
-    Expression* expression; 
+    Expression* expression;
   };
 
   class ProcedureCall : public Command {
   public:
     ProcedureCall(string n, vector<Expression*> args) { this->_name = n; this->_args = args; }
     void run();
-    ~ProcedureCall() { } 
+    ~ProcedureCall() { }
   private:
     string _name;
     vector<Expression*> _args;
   };
-    
+
   class BlockCommand : public Command {
   public:
     BlockCommand(list<Command*> cmds) { this->commands = cmds; }
-    void run(); 
+    void run();
   private:
     list<Command*> commands;
   };
-    
+
   class PrintCommand : public Command {
   public:
     PrintCommand(Expression* exp) {this -> expression = exp;}
@@ -54,11 +54,11 @@ namespace OberonLang {
     Expression* expression;
   };
 
-  class WhileCall : public Command {
+  class WhileCommand : public Command {
   public:
-    WhileCall(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    WhileCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
     void run();
-    ~WhileCall() {}
+    ~WhileCommand() {}
   private:
     Expression* _cond;
     BlockCommand* _cmds;
@@ -66,4 +66,4 @@ namespace OberonLang {
 
 }
 
-#endif 
+#endif

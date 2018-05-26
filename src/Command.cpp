@@ -53,12 +53,10 @@ namespace OberonLang {
     Environment::instance()->pop();
   }
 
-  void WhileCommand::run(expression condition,expression body, environment gamma){
-    if(eval(condition) == new BooleanValue(false));
-      return; /*if the condition is false exits to return site*/
-    else{     /*if condition is true evaluate the body, */
-
-
+  void WhileCommand::run(){
+    while (this->_cond->eval() == new BooleanValue(true)){
+      this->_cmds->run();
+    }
   }
 
 }
