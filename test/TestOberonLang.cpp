@@ -200,6 +200,25 @@ TEST (LTExpression, Greater) {
 }
 
 TEST (WhileCommand, Print) {
+
+  Environment :: instance()->global("sum",new IntValue(0));
+  Environment :: instance()->global("inc",new IntValue(10));
+
+  GTExpression *exp = new GTExpression(new VarRef("inc"), new IntValue(0));
+
+  AddExpression *add = new AddExpression(new VarRef("sum"), new VarRef("inc"));
+  Assignment* assignment1 = new Assignment("sum", add);
+
+  SubExpression *sub = new SubExpression(new VarRef("inc"), new IntValue(1));
+  Assignment* assignment2 = new Assignment("inc", sub);
+
+  list <Command*> cmds = {assignment1,assignment2};
+  BlockCommand *bc = new BlockCommand(cmds);
+
+  WhileCommand *wc = new WhileCommand(exp,bc);
+  wc -> run();
+
+  EXPECT_EQ (55, ((IntValue*)Environment :: instance()->global("sum"))->value());
   //
   // var v1 = 1;
   // var v2 = 10;

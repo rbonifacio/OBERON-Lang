@@ -54,8 +54,9 @@ namespace OberonLang {
   }
 
   void WhileCommand::run(){
-    while (this->_cond->eval() == new BooleanValue(true)){
+   while (((BooleanValue*)this->_cond->eval())->value()){
       this->_cmds->run();
+      std::cout << "whiel" << '\n';
     }
   }
 
