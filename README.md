@@ -9,6 +9,29 @@ and other high-level languages (like C or Java). In this way,
 we hope we will also get use to the LLVM and JIMPLE intermediate
 representations.
 
+### Reading list
+
+During the development of OBERON-0, we discussed several references on the field, including 
+
+   * Niklaus Wirth. Compiler Construction 2000. Addison-Wesley (1996).
+
+   * Steven Arzt. Static Data Flow Analysis for Android Applications, PhD thesis, Technische Universität 
+     Darmstadt, 2016. 
+
+   * Thomas Reps, Susan Horwitz, and Mooly Sagiv. 1995. Precise interprocedural dataflow 
+     analysis via graph reachability. In Proceedings of the 22nd ACM SIGPLAN-SIGACT symposium 
+     on Principles of programming languages (POPL '95). ACM, New York, NY, USA, 49-61. 
+     DOI=http://dx.doi.org/10.1145/199448.199462
+
+   * Eric Bodden. 2012. Inter-procedural data-flow analysis with IFDS/IDE and Soot. In Proceedings 
+     of the ACM SIGPLAN International Workshop on State of the Art in Java Program analysis (SOAP '12). 
+     ACM, New York, NY, USA, 3-8. DOI=http://dx.doi.org/10.1145/2259051.2259052
+
+   * George Balatsouras, Kostas Ferles, George Kastrinis, and Yannis Smaragdakis. 2017. A Datalog 
+     model of must-alias analysis. In Proceedings of the 6th ACM SIGPLAN International Workshop on State 
+     Of the Art in Program Analysis (SOAP 2017). ACM, New York, NY, USA, 7-12. DOI: https://doi.org/10.1145/3088515.3088517
+
+
 ### Building and Testing
 
 Currently, our implementation only depends on google C++ test framework. Please, 
