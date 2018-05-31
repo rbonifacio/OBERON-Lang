@@ -24,7 +24,7 @@ namespace OberonLang {
   }
 
   void BlockCommand::run() {
-    for (auto it= commands.begin(); it != commands.end(); ++it) {
+    for (auto it = commands.begin(); it != commands.end(); ++it) {
       (*it)->run();
     }
   }
@@ -54,9 +54,8 @@ namespace OberonLang {
   }
 
   void WhileCommand::run(){
-   while (((BooleanValue*)this->_cond->eval())->value()){
+    while (((BooleanValue*)this->_cond->eval())->value()){
       this->_cmds->run();
-      std::cout << "whiel" << '\n';
     }
   }
 

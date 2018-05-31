@@ -47,6 +47,15 @@ namespace OberonLang {
   Value* Environment::global(string var) {
     return _globals->count(var) > 0 ? (*_globals)[var] : Undefined::instance(); 
   }
+
+  Value* Environment::lookup(string var) {
+    Value* value = env(var);
+
+    if(value == Undefined::instance()) {
+      value = global(var);
+    }
+    return value; 
+  }
   
   void Environment::push() {
     _env->push(new map<string, Value*>());

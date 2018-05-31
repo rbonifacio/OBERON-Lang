@@ -19,6 +19,7 @@ namespace OberonLang {
     Value* env(string var);
     void global(string var, Value* value);
     Value* global(string var);
+    Value* lookup(string var); 
     void decProcedure(DecProcedure* p);
     DecProcedure* decProcedure(string n);
     void push();                                   //it should be called after a procedure call

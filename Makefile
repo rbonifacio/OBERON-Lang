@@ -27,7 +27,7 @@ clean:
 
 # Tests
 tester:
-	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o 
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o build/VarRef.o
 
 gtest:
 	$(CC) $(CXXFLAGS) $(LIB) -isystem $(GTEST)/include -pthread test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/Expression.o build/BinExpression.o build/Command.o build/Environment.o build/Procedure.o
