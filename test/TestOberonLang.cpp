@@ -221,7 +221,7 @@ TEST (WhileCommand, Print) {
 }
 
 TEST (Procedure, Print){
-  // --------- test the execution of a procedure ------ //
+  // --------- test the execution of a procedure ------ // 
   // it simulates a program like:
   // -------------------------------------------------- //
   // var res = 0;

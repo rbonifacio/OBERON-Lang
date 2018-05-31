@@ -49,7 +49,7 @@ namespace OberonLang {
   }
 
   Value* Environment::lookup(string var) {
-    Value* value = env(var);
+    Value* value = env(var); 
 
     if(value == Undefined::instance()) {
       value = global(var);
