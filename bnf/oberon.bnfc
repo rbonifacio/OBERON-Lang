@@ -1,12 +1,16 @@
 comment "//" ;
 comment "/*" "*/" ;
 
-PModule. Module ::= "module" Ident "begin" Stmt "end" Ident "." ;
+Module. ModuleDec ::= "module" Ident [VarDec] [ProcDec] "begin" Stmt "end" Ident "." ;
 
 TInt. Type  ::= "int" ;
 TBool. Type ::= "bool";
 
-PDecl. Dec ::= "var" [Ident] ":" Type ; 
+Decl. VarDec    ::= "var" [Ident] ":" Type ; 
+
+FPDecl. FPmtDec ::= [Ident] ":" Type ;
+
+PDec. ProcDec ::= "def" Ident "("[FPmtDec]")" [VarDec] "begin" Stmt "end"  ; 
 
 ELt.     Exp1 ::= Exp2 "<" Exp2  ;
 EGt.     Exp1 ::= Exp2 ">" Exp2  ;
@@ -37,3 +41,6 @@ SIfThen.       Stmt ::= "if" "(" Exp ")" "then" Stmt "end" ;
 separator Exp ","   	     	     ;
 separator Stmt ";"                   ;
 separator Ident ","                  ;
+separator VarDec ";"                 ;
+separator FPmtDec ","                ;
+separator ProcDec ""                 ;

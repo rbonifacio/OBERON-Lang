@@ -8,7 +8,7 @@ TARGET := bin/oberon
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CXXFLAGS := -g -W -Wall -Wextra -std=c++11
+CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11
 LIB := -pthread -L lib
 INC := -I include
 GTEST := ${GTEST_DIR}
