@@ -30,7 +30,7 @@ clean:
 
 # Tests
 tester: $(OBJECTS)
-	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o build/VarRef.o
 
 # Spikes
 #ticket:
