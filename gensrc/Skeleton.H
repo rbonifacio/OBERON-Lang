@@ -8,7 +8,7 @@
 class Skeleton : public Visitor
 {
 public:
-  void visitModuleDec(ModuleDec* p);
+  virtual void visitModuleDec(ModuleDec* p);
   void visitType(Type* p);
   void visitVarDec(VarDec* p);
   void visitFPmtDec(FPmtDec* p);
