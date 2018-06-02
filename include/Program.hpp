@@ -2,14 +2,24 @@
 #define PROGRAM_H
 
 #include "Command.hpp"
+#include "Procedure.hpp" 
+#include "VarDec.hpp" 
 
-class Program : Command {
-public:
-  Program(Command* main) { this->mains = main; }
-  void run();
-private:
-  Command* main; 
+#include <vector>
+
+using namespace std; 
+
+namespace OberonLang { 
+  class Program : Command {
+  public:
+    Program(Command* main);
+    Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main); 
+    void run();
+  private:
+    Command* _main; 
+    vector<VarDec*> _globalVars; 
+    vector<DecProcedure*> _procedures; 
+  };
 }
-
 
 #endif 

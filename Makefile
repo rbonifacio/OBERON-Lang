@@ -13,7 +13,8 @@ HEADERS := $(shell find $(HEADERSDIR) -type f -name *.$(HEADERSEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11
 LIB := -pthread -L lib
-INC := -I include
+INC := -I include -I gensrc
+
 GTEST := ${GTEST_DIR}
 
 $(TARGET): $(OBJECTS)
