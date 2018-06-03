@@ -26,6 +26,7 @@ namespace OberonLang {
     void BNFVisitor::visitTInt(TInt *p) {
     	visitorTypeReturn = integer;
     }
+    
     void BNFVisitor::visitTBool(TBool *p) {
     	visitorTypeReturn = boolean;
     }
@@ -73,14 +74,78 @@ namespace OberonLang {
     __implementBNFVisitorBinExpression(EAnd, And, And);  // Implements visitEAnd
     __implementBNFVisitorBinExpression(EOr, Or, Or);     // Implements visitEAnd
     
-    void BNFVisitor::visitEInt(EInt *p) { 
-    	visitorReturn = new IntValue(p->integer_);
+    void BNFVisitor::visitCall(Call *p) {
+    	vector<Expression*> pmts;
+    	if(p->listexp_){
+		  	for(uint32_t i=0 ; i < p->listexp_->size() ; i++){
+    			p->listexp_->at(i)->accept(this);
+		  		pmts.push_back(visitorReturn);
+		  	}
+			}
+			visitorCommandReturn = new ProcedureCall(p->ident_, pmts);
     }
     
-    void BNFVisitor::visitListIdent(ListIdent *p) {
-    	for(ListIdent::const_iterator element = p->begin() ; element != p->end() ; ++element){
-    		BNFVisitor::visitIdent(*element);
-    	}
+    void BNFVisitor::visitEInt(EInt *p) {
+    	BNFVisitor::visitInteger(p->integer_);
+    }
+    
+    void BNFVisitor::visitEVar(EVar *p) {
+    	visitorReturn = new VarRef(p->ident_);
+    }
+    
+    void BNFVisitor::visitEDouble(EDouble *p) {
+    	BNFVisitor::visitDouble(p->double_);
+    }
+    
+    void BNFVisitor::visitSCall(SCall *p) {
+    	vector<Expression*> pmts;
+    	if(p->listexp_){
+		  	for(uint32_t i=0 ; i < p->listexp_->size() ; i++){
+    			p->listexp_->at(i)->accept(this);
+		  		pmts.push_back(visitorReturn);
+		  	}
+			}
+			visitorCommandReturn = new ProcedureCall(p->ident_, pmts);
+    }
+    
+    void BNFVisitor::visitSAssignment(SAssignment *p) { 
+    	p->exp_->accept(this);
+    	visitorCommandReturn = new Assignment(p->ident_, visitorReturn);
+    }
+    
+    void BNFVisitor::visitSWhile(SWhile *p) { // Should be [Stmt] not Stmt in BNF
+    	//new WhileCommand(conditionalExpression, blockOfCommands);
+    }
+    
+    void BNFVisitor::visitPDec(PDec *p) {
+    	vector<Declaration> args;
+    	vector<Declaration> vars;
+    	Command *body;
+    	
+//    	if(p->liststmt_){
+//		  	for(uint32_t i=0 ; i < p->liststmt_->size() ; i++){
+//    			p->liststmt_->at(i)->accept(this);
+//		  		pmts.push_back(visitorReturn);
+//		  	}
+//			}
+//    	
+//			new DecProcedure(p->ident_, args, vars, body);
+    }
+    
+    void BNFVisitor::visitEFalse(EFalse *p) { 
+    	visitorReturn = new BooleanValue(false);
+    }
+    
+    void BNFVisitor::visitETrue(ETrue *p) { 
+    	visitorReturn = new BooleanValue(true);
+    }
+    
+    void BNFVisitor::visitInteger(Integer x) { 
+    	visitorReturn = new IntValue(x);
+    }
+    
+    void BNFVisitor::visitDouble(Double x) { 
+    	visitorReturn = new RealValue(x);
     }
     
     void BNFVisitor::visitIdent(Ident x) {
