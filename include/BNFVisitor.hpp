@@ -19,7 +19,7 @@ namespace OberonLang {
     BNFVisitor(const BNFVisitor& orig);
     
     
-    void visitModuleDec(ModuleDec *p) { }
+    void visitModuleDec(ModuleDec *p) {}
     void visitType(Type *p) { }
     void visitVarDec(VarDec *p) { }
     void visitFPmtDec(FPmtDec *p) { }
@@ -30,8 +30,8 @@ namespace OberonLang {
     void visitTInt(TInt *p);
     void visitTBool(TBool *p);
     void visitDecl(Decl *p);
-    void visitFPDecl(FPDecl *p) { } // !TODO
-    void visitPDec(PDec *p); // !TODO
+    void visitFPDecl(FPDecl *p) { } // !TODO, dúvidas
+    void visitPDec(PDec *p); // !TODO, dúvidas
     void visitELt(ELt *p);
     void visitEGt(EGt *p);
     void visitEEq(EEq *p);
@@ -51,9 +51,9 @@ namespace OberonLang {
     void visitEDouble(EDouble *p);
     void visitSCall(SCall *p);
     void visitSAssignment(SAssignment *p);
-    void visitSWhile(SWhile *p); //!TODO
-    void visitSIfThenElse(SIfThenElse *p) { } //!TODO
-    void visitSIfThen(SIfThen *p) { } //!TODO
+    void visitSWhile(SWhile *p);
+    void visitSIfThenElse(SIfThenElse *p) { cout << "IfThenElse não suportado\n"; } //!TODO
+    void visitSIfThen(SIfThen *p) { cout << "IfThen não suportado\n"; } //!TODO
     void visitListExp(ListExp *p) { }
     void visitListStmt(ListStmt *p) { }
     void visitListIdent(ListIdent *p) { }

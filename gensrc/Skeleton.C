@@ -239,7 +239,7 @@ void Skeleton::visitSWhile(SWhile *swhile)
   /* Code For SWhile Goes Here */
 
   swhile->exp_->accept(this);
-  swhile->stmt_->accept(this);
+  swhile->liststmt_->accept(this);
 
 }
 
@@ -248,8 +248,8 @@ void Skeleton::visitSIfThenElse(SIfThenElse *sifthenelse)
   /* Code For SIfThenElse Goes Here */
 
   sifthenelse->exp_->accept(this);
-  sifthenelse->stmt_1->accept(this);
-  sifthenelse->stmt_2->accept(this);
+  sifthenelse->liststmt_->accept(this);
+  sifthenelse->stmt_->accept(this);
 
 }
 
@@ -258,7 +258,7 @@ void Skeleton::visitSIfThen(SIfThen *sifthen)
   /* Code For SIfThen Goes Here */
 
   sifthen->exp_->accept(this);
-  sifthen->stmt_->accept(this);
+  sifthen->liststmt_->accept(this);
 
 }
 

@@ -11,7 +11,7 @@ HEADERSEXT := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 HEADERS := $(shell find $(HEADERSDIR) -type f -name *.$(HEADERSEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11
+CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11 # -Wno-unused-parameter
 LIB := -pthread -L lib
 INC := -I include -I gensrc
 

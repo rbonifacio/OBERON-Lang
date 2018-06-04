@@ -578,9 +578,9 @@ Exp : Exp1 {  $$ = $1; YY_RESULT_Exp_= $$; }
 ;
 Stmt : _IDENT_ _SYMB_2 ListExp _SYMB_3 {  std::reverse($3->begin(),$3->end()) ;$$ = new SCall($1, $3); YY_RESULT_Stmt_= $$; } 
   | _IDENT_ _SYMB_14 Exp {  $$ = new SAssignment($1, $3); YY_RESULT_Stmt_= $$; }
-  | _SYMB_30 _SYMB_2 Exp _SYMB_3 _SYMB_20 Stmt _SYMB_22 {  $$ = new SWhile($3, $6); YY_RESULT_Stmt_= $$; }
-  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 Stmt _SYMB_22 _SYMB_21 Stmt _SYMB_22 {  $$ = new SIfThenElse($3, $6, $9); YY_RESULT_Stmt_= $$; }
-  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 Stmt _SYMB_22 {  $$ = new SIfThen($3, $6); YY_RESULT_Stmt_= $$; }
+  | _SYMB_30 _SYMB_2 Exp _SYMB_3 _SYMB_20 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SWhile($3, $6); YY_RESULT_Stmt_= $$; }
+  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 ListStmt _SYMB_22 _SYMB_21 Stmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SIfThenElse($3, $6, $9); YY_RESULT_Stmt_= $$; }
+  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SIfThen($3, $6); YY_RESULT_Stmt_= $$; }
 ;
 ListExp : /* empty */ {  $$ = new ListExp(); YY_RESULT_ListExp_= $$; } 
   | Exp {  $$ = new ListExp() ; $$->push_back($1); YY_RESULT_ListExp_= $$; }

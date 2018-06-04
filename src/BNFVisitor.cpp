@@ -35,13 +35,8 @@ namespace OberonLang {
     	p->type_->accept(this); // Returns in visitorTypeReturn
     	visitorDeclarationListReturn = new vector<Declaration>;
     	if(p->listident_){
-    		for(
-    			ListIdent::const_iterator element = p->listident_->begin(); 
-    			element != p->listident_->end() ; 
-    			++element
-    			)
-    		{
-    			visitorDeclarationListReturn->push_back(Declaration(visitorTypeReturn, *element));
+    		for(auto it = p->listident_->begin(); it != p->listident_->end(); ++it) {
+    			visitorDeclarationListReturn->push_back(Declaration(visitorTypeReturn, *it));
     		}
     	}
     }
@@ -77,8 +72,8 @@ namespace OberonLang {
     void BNFVisitor::visitCall(Call *p) {
     	vector<Expression*> pmts;
     	if(p->listexp_){
-		  	for(uint32_t i=0 ; i < p->listexp_->size() ; i++){
-    			p->listexp_->at(i)->accept(this);
+    		for(auto it = p->listexp_->begin(); it != p->listexp_->end(); ++it) {
+    			(*it)->accept(this);
 		  		pmts.push_back(visitorReturn);
 		  	}
 			}
@@ -100,8 +95,8 @@ namespace OberonLang {
     void BNFVisitor::visitSCall(SCall *p) {
     	vector<Expression*> pmts;
     	if(p->listexp_){
-		  	for(uint32_t i=0 ; i < p->listexp_->size() ; i++){
-    			p->listexp_->at(i)->accept(this);
+		  	for(auto it = p->listexp_->begin(); it != p->listexp_->end(); ++it) {
+    			(*it)->accept(this);
 		  		pmts.push_back(visitorReturn);
 		  	}
 			}
@@ -113,15 +108,23 @@ namespace OberonLang {
     	visitorCommandReturn = new Assignment(p->ident_, visitorReturn);
     }
     
-    void BNFVisitor::visitSWhile(SWhile *p) { // Should be [Stmt] not Stmt in BNF
-    	//new WhileCommand(conditionalExpression, blockOfCommands);
+    void BNFVisitor::visitSWhile(SWhile *p) {
+    	list<Command *> commands;
+    	if(p->liststmt_){
+		  	for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
+		  		(*it)->accept(this);
+		  		commands.push_back(visitorCommandReturn);
+		  	}
+    	}    
+    	p->exp_->accept(this);	
+    	visitorCommandReturn = new WhileCommand(visitorReturn, new BlockCommand(commands));
     }
     
     void BNFVisitor::visitPDec(PDec *p) {
-    	vector<Declaration> args;
-    	vector<Declaration> vars;
-    	Command *body;
-    	
+//    	vector<Declaration> args;
+//    	vector<Declaration> vars;
+//    	Command *body;
+//    	
 //    	if(p->liststmt_){
 //		  	for(uint32_t i=0 ; i < p->liststmt_->size() ; i++){
 //    			p->liststmt_->at(i)->accept(this);

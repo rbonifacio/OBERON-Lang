@@ -1168,17 +1168,17 @@ SAssignment *SAssignment::clone() const
 
 
 /********************   SWhile    ********************/
-SWhile::SWhile(Exp *p1, Stmt *p2)
+SWhile::SWhile(Exp *p1, ListStmt *p2)
 {
   exp_ = p1;
-  stmt_ = p2;
+  liststmt_ = p2;
 
 }
 
 SWhile::SWhile(const SWhile & other)
 {
   exp_ = other.exp_->clone();
-  stmt_ = other.stmt_->clone();
+  liststmt_ = other.liststmt_->clone();
 
 }
 
@@ -1192,14 +1192,14 @@ SWhile &SWhile::operator=(const SWhile & other)
 void SWhile::swap(SWhile & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_, other.stmt_);
+  std::swap(liststmt_, other.liststmt_);
 
 }
 
 SWhile::~SWhile()
 {
   delete(exp_);
-  delete(stmt_);
+  delete(liststmt_);
 
 }
 
@@ -1216,19 +1216,19 @@ SWhile *SWhile::clone() const
 
 
 /********************   SIfThenElse    ********************/
-SIfThenElse::SIfThenElse(Exp *p1, Stmt *p2, Stmt *p3)
+SIfThenElse::SIfThenElse(Exp *p1, ListStmt *p2, Stmt *p3)
 {
   exp_ = p1;
-  stmt_1 = p2;
-  stmt_2 = p3;
+  liststmt_ = p2;
+  stmt_ = p3;
 
 }
 
 SIfThenElse::SIfThenElse(const SIfThenElse & other)
 {
   exp_ = other.exp_->clone();
-  stmt_1 = other.stmt_1->clone();
-  stmt_2 = other.stmt_2->clone();
+  liststmt_ = other.liststmt_->clone();
+  stmt_ = other.stmt_->clone();
 
 }
 
@@ -1242,16 +1242,16 @@ SIfThenElse &SIfThenElse::operator=(const SIfThenElse & other)
 void SIfThenElse::swap(SIfThenElse & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_1, other.stmt_1);
-  std::swap(stmt_2, other.stmt_2);
+  std::swap(liststmt_, other.liststmt_);
+  std::swap(stmt_, other.stmt_);
 
 }
 
 SIfThenElse::~SIfThenElse()
 {
   delete(exp_);
-  delete(stmt_1);
-  delete(stmt_2);
+  delete(liststmt_);
+  delete(stmt_);
 
 }
 
@@ -1268,17 +1268,17 @@ SIfThenElse *SIfThenElse::clone() const
 
 
 /********************   SIfThen    ********************/
-SIfThen::SIfThen(Exp *p1, Stmt *p2)
+SIfThen::SIfThen(Exp *p1, ListStmt *p2)
 {
   exp_ = p1;
-  stmt_ = p2;
+  liststmt_ = p2;
 
 }
 
 SIfThen::SIfThen(const SIfThen & other)
 {
   exp_ = other.exp_->clone();
-  stmt_ = other.stmt_->clone();
+  liststmt_ = other.liststmt_->clone();
 
 }
 
@@ -1292,14 +1292,14 @@ SIfThen &SIfThen::operator=(const SIfThen & other)
 void SIfThen::swap(SIfThen & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_, other.stmt_);
+  std::swap(liststmt_, other.liststmt_);
 
 }
 
 SIfThen::~SIfThen()
 {
   delete(exp_);
-  delete(stmt_);
+  delete(liststmt_);
 
 }
 

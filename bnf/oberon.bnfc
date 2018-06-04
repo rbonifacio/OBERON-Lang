@@ -34,9 +34,9 @@ coercions Exp 4 ;
     
 SCall.         Stmt ::= Ident "("[Exp]")" ;  
 SAssignment.   Stmt ::= Ident ":=" Exp ;
-SWhile.        Stmt ::= "while" "(" Exp ")" "do" Stmt "end" ; 
-SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" Stmt "end" "else" Stmt "end" ;
-SIfThen.       Stmt ::= "if" "(" Exp ")" "then" Stmt "end" ;
+SWhile.        Stmt ::= "while" "(" Exp ")" "do" [Stmt] "end" ; 
+SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" "else" Stmt "end" ;
+SIfThen.       Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" ;
 
 separator Exp ","   	     	     ;
 separator Stmt ";"                   ;
