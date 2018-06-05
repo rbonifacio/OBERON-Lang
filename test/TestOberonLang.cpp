@@ -250,8 +250,10 @@ TEST (Procedure, Print){
   Command *body = new Assignment("res", new AddExpression(new VarRef("x"), new VarRef("y")));
 
   DecProcedure *sum = new DecProcedure("sum", args, vars, body);
-
-  Environment::instance()->decProcedure(sum);
+  
+  sum->run();
+  
+  //  Environment::instance()->decProcedure(sum);
 
   // ----------------- Procedure call -----------------------------//
 

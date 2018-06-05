@@ -10,10 +10,11 @@
 using namespace std;
 namespace OberonLang {
     
-    class DecProcedure {
+    class DecProcedure : public Command {
     public:
       DecProcedure(string n, vector<Declaration> args, vector<Declaration> vars, Command* cmd);
       string name() { return _name; }
+      void run();
       vector<Declaration> formalArgs() { return _formalArgs; }
       vector<Declaration> localVars() { return _localVars; }
       Command* body() { return _body; }

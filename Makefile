@@ -9,8 +9,10 @@ TARGET := bin/oberon
 SRCEXT := cpp
 HEADERSEXT := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+SOURCES_TEST := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT) ! -name 'oberon.cpp')
 HEADERS := $(shell find $(HEADERSDIR) -type f -name *.$(HEADERSEXT))
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+TEST_OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES_TEST:.$(SRCEXT)=.o))
 CXXFLAGS := -g -W -Wall -Wextra -std=c++11
 LIB := -pthread -L lib
 INC := -I include
@@ -29,8 +31,11 @@ clean:
 	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
 
 # Tests
-tester: $(OBJECTS)
-	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o
+tester: $(TEST_OBJECTS)
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester $^
+
+oberon: $(OBJECTS)
+	$(CC) $(CXXFLAGS) $(LIB) -o bin/$@ $(INC) $
 
 # Spikes
 #ticket:
