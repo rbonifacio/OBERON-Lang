@@ -9,7 +9,7 @@
 #include "Environment.hpp"
 #include "Command.hpp"
 #include "Procedure.hpp"
-#include "Declaration.hpp"
+#include "VarDeclaration.hpp"
 #include "Types.hpp"
 #include "VarRef.hpp"
 
@@ -42,6 +42,33 @@ TEST (AddExpression, SelfRef) {
 
   EXPECT_EQ (2, v0->value());
 }
+
+TEST (VariableDeclaration, IntDeclaration) {
+  IntValue *value10 = new IntValue(10); 
+  VarDeclaration *variableInt = new VarDeclaration(integer, "y", value10->eval());
+
+  variableInt->run();
+
+  EXPECT_NE(Undefined::instance(), Environment::instance()->env("y"));
+
+  EXPECT_EQ(10, ((IntValue*)Environment::instance()->env("y"))->value());
+}
+
+TEST (VariableAssignment, DeclarationBeforeInitializationAfter) {
+  IntValue *value20 = new IntValue(20); 
+  VarDeclaration *varibleInt = new VarDeclaration(integer, "z");
+
+  varibleInt->run();
+
+  EXPECT_NE(Undefined::instance(), Environment::instance()->env("z"));
+
+  Assignment* setIntValue = new Assignment("z", value20);
+
+  setIntValue->run();
+
+  EXPECT_EQ(20, ((IntValue*)Environment::instance()->env("z"))->value());
+}
+
 
 TEST (TestAssignment, SimpleAssignment) {
   Environment::instance()->env("x", new IntValue(0));
@@ -242,10 +269,10 @@ TEST (Procedure, Print){
 
   // ----------------- Procedure declaration -------------------- //
 
-  vector<Declaration> args;
-  vector<Declaration> vars;
-  args.push_back(Declaration(integer, "x"));
-  args.push_back(Declaration(integer, "y"));
+  vector<VarDeclaration> args;
+  vector<VarDeclaration> vars;
+  args.push_back(VarDeclaration(integer, "x"));
+  args.push_back(VarDeclaration(integer, "y"));
 
   Command *body = new Assignment("res", new AddExpression(new VarRef("x"), new VarRef("y")));
 
