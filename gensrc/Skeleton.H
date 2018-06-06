@@ -18,6 +18,7 @@ public:
   void visitModule(Module* p);
   void visitTInt(TInt* p);
   void visitTBool(TBool* p);
+  void visitTReal(TReal* p);
   void visitDecl(Decl* p);
   void visitFPDecl(FPDecl* p);
   void visitPDec(PDec* p);
@@ -31,13 +32,12 @@ public:
   void visitEDiv(EDiv* p);
   void visitEOr(EOr* p);
   void visitEAnd(EAnd* p);
-  void visitCall(Call* p);
   void visitEVar(EVar* p);
   void visitEStr(EStr* p);
   void visitEInt(EInt* p);
   void visitEFalse(EFalse* p);
   void visitETrue(ETrue* p);
-  void visitEDouble(EDouble* p);
+  void visitEReal(EReal* p);
   void visitSCall(SCall* p);
   void visitSAssignment(SAssignment* p);
   void visitSWhile(SWhile* p);

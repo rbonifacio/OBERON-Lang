@@ -508,10 +508,11 @@ ListProcDec* pListProcDec(const char *str)
 %token _SYMB_24    //   if
 %token _SYMB_25    //   int
 %token _SYMB_26    //   module
-%token _SYMB_27    //   then
-%token _SYMB_28    //   true
-%token _SYMB_29    //   var
-%token _SYMB_30    //   while
+%token _SYMB_27    //   real
+%token _SYMB_28    //   then
+%token _SYMB_29    //   true
+%token _SYMB_30    //   var
+%token _SYMB_31    //   while
 
 %type <moduledec_> ModuleDec
 %type <type_> Type
@@ -542,8 +543,9 @@ ModuleDec : _SYMB_26 _IDENT_ ListVarDec ListProcDec _SYMB_17 ListStmt _SYMB_22 _
 ;
 Type : _SYMB_25 {  $$ = new TInt(); YY_RESULT_Type_= $$; } 
   | _SYMB_18 {  $$ = new TBool(); YY_RESULT_Type_= $$; }
+  | _SYMB_27 {  $$ = new TReal(); YY_RESULT_Type_= $$; }
 ;
-VarDec : _SYMB_29 ListIdent _SYMB_1 Type {  std::reverse($2->begin(),$2->end()) ;$$ = new Decl($2, $4); YY_RESULT_VarDec_= $$; } 
+VarDec : _SYMB_30 ListIdent _SYMB_1 Type {  std::reverse($2->begin(),$2->end()) ;$$ = new Decl($2, $4); YY_RESULT_VarDec_= $$; } 
 ;
 FPmtDec : ListIdent _SYMB_1 Type {  std::reverse($1->begin(),$1->end()) ;$$ = new FPDecl($1, $3); YY_RESULT_FPmtDec_= $$; } 
 ;
@@ -565,22 +567,21 @@ Exp3 : Exp3 _SYMB_10 Exp4 {  $$ = new EMul($1, $3); YY_RESULT_Exp_= $$; }
   | Exp3 _SYMB_13 Exp4 {  $$ = new EAnd($1, $3); YY_RESULT_Exp_= $$; }
   | Exp4 {  $$ = $1; YY_RESULT_Exp_= $$; }
 ;
-Exp4 : _IDENT_ _SYMB_2 ListExp _SYMB_3 {  std::reverse($3->begin(),$3->end()) ;$$ = new Call($1, $3); YY_RESULT_Exp_= $$; } 
-  | _IDENT_ {  $$ = new EVar($1); YY_RESULT_Exp_= $$; }
+Exp4 : _IDENT_ {  $$ = new EVar($1); YY_RESULT_Exp_= $$; } 
   | _STRING_ {  $$ = new EStr($1); YY_RESULT_Exp_= $$; }
   | _INTEGER_ {  $$ = new EInt($1); YY_RESULT_Exp_= $$; }
   | _SYMB_23 {  $$ = new EFalse(); YY_RESULT_Exp_= $$; }
-  | _SYMB_28 {  $$ = new ETrue(); YY_RESULT_Exp_= $$; }
-  | _DOUBLE_ {  $$ = new EDouble($1); YY_RESULT_Exp_= $$; }
+  | _SYMB_29 {  $$ = new ETrue(); YY_RESULT_Exp_= $$; }
+  | _DOUBLE_ {  $$ = new EReal($1); YY_RESULT_Exp_= $$; }
   | _SYMB_2 Exp _SYMB_3 {  $$ = $2; YY_RESULT_Exp_= $$; }
 ;
 Exp : Exp1 {  $$ = $1; YY_RESULT_Exp_= $$; } 
 ;
 Stmt : _IDENT_ _SYMB_2 ListExp _SYMB_3 {  std::reverse($3->begin(),$3->end()) ;$$ = new SCall($1, $3); YY_RESULT_Stmt_= $$; } 
   | _IDENT_ _SYMB_14 Exp {  $$ = new SAssignment($1, $3); YY_RESULT_Stmt_= $$; }
-  | _SYMB_30 _SYMB_2 Exp _SYMB_3 _SYMB_20 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SWhile($3, $6); YY_RESULT_Stmt_= $$; }
-  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 ListStmt _SYMB_22 _SYMB_21 Stmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SIfThenElse($3, $6, $9); YY_RESULT_Stmt_= $$; }
-  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_27 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SIfThen($3, $6); YY_RESULT_Stmt_= $$; }
+  | _SYMB_31 _SYMB_2 Exp _SYMB_3 _SYMB_20 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SWhile($3, $6); YY_RESULT_Stmt_= $$; }
+  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_28 ListStmt _SYMB_22 _SYMB_21 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ; std::reverse($9->begin(),$9->end()) ;$$ = new SIfThenElse($3, $6, $9); YY_RESULT_Stmt_= $$; }
+  | _SYMB_24 _SYMB_2 Exp _SYMB_3 _SYMB_28 ListStmt _SYMB_22 {  std::reverse($6->begin(),$6->end()) ;$$ = new SIfThen($3, $6); YY_RESULT_Stmt_= $$; }
 ;
 ListExp : /* empty */ {  $$ = new ListExp(); YY_RESULT_ListExp_= $$; } 
   | Exp {  $$ = new ListExp() ; $$->push_back($1); YY_RESULT_ListExp_= $$; }

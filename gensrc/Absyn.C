@@ -143,6 +143,46 @@ TBool *TBool::clone() const
 
 
 
+/********************   TReal    ********************/
+TReal::TReal()
+{
+
+}
+
+TReal::TReal(const TReal & other)
+{
+
+}
+
+TReal &TReal::operator=(const TReal & other)
+{
+  TReal tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void TReal::swap(TReal & other)
+{
+
+}
+
+TReal::~TReal()
+{
+
+}
+
+void TReal::accept(Visitor *v)
+{
+  v->visitTReal(this);
+}
+
+TReal *TReal::clone() const
+{
+  return new TReal(*this);
+}
+
+
+
 /********************   Decl    ********************/
 Decl::Decl(ListIdent *p1, Type *p2)
 {
@@ -774,53 +814,6 @@ EAnd *EAnd::clone() const
 
 
 
-/********************   Call    ********************/
-Call::Call(Ident p1, ListExp *p2)
-{
-  ident_ = p1;
-  listexp_ = p2;
-
-}
-
-Call::Call(const Call & other)
-{
-  ident_ = other.ident_;
-  listexp_ = other.listexp_->clone();
-
-}
-
-Call &Call::operator=(const Call & other)
-{
-  Call tmp(other);
-  swap(tmp);
-  return *this;
-}
-
-void Call::swap(Call & other)
-{
-  std::swap(ident_, other.ident_);
-  std::swap(listexp_, other.listexp_);
-
-}
-
-Call::~Call()
-{
-  delete(listexp_);
-
-}
-
-void Call::accept(Visitor *v)
-{
-  v->visitCall(this);
-}
-
-Call *Call::clone() const
-{
-  return new Call(*this);
-}
-
-
-
 /********************   EVar    ********************/
 EVar::EVar(Ident p1)
 {
@@ -1030,45 +1023,45 @@ ETrue *ETrue::clone() const
 
 
 
-/********************   EDouble    ********************/
-EDouble::EDouble(Double p1)
+/********************   EReal    ********************/
+EReal::EReal(Double p1)
 {
   double_ = p1;
 
 }
 
-EDouble::EDouble(const EDouble & other)
+EReal::EReal(const EReal & other)
 {
   double_ = other.double_;
 
 }
 
-EDouble &EDouble::operator=(const EDouble & other)
+EReal &EReal::operator=(const EReal & other)
 {
-  EDouble tmp(other);
+  EReal tmp(other);
   swap(tmp);
   return *this;
 }
 
-void EDouble::swap(EDouble & other)
+void EReal::swap(EReal & other)
 {
   std::swap(double_, other.double_);
 
 }
 
-EDouble::~EDouble()
+EReal::~EReal()
 {
 
 }
 
-void EDouble::accept(Visitor *v)
+void EReal::accept(Visitor *v)
 {
-  v->visitEDouble(this);
+  v->visitEReal(this);
 }
 
-EDouble *EDouble::clone() const
+EReal *EReal::clone() const
 {
-  return new EDouble(*this);
+  return new EReal(*this);
 }
 
 
@@ -1216,19 +1209,19 @@ SWhile *SWhile::clone() const
 
 
 /********************   SIfThenElse    ********************/
-SIfThenElse::SIfThenElse(Exp *p1, ListStmt *p2, Stmt *p3)
+SIfThenElse::SIfThenElse(Exp *p1, ListStmt *p2, ListStmt *p3)
 {
   exp_ = p1;
-  liststmt_ = p2;
-  stmt_ = p3;
+  liststmt_1 = p2;
+  liststmt_2 = p3;
 
 }
 
 SIfThenElse::SIfThenElse(const SIfThenElse & other)
 {
   exp_ = other.exp_->clone();
-  liststmt_ = other.liststmt_->clone();
-  stmt_ = other.stmt_->clone();
+  liststmt_1 = other.liststmt_1->clone();
+  liststmt_2 = other.liststmt_2->clone();
 
 }
 
@@ -1242,16 +1235,16 @@ SIfThenElse &SIfThenElse::operator=(const SIfThenElse & other)
 void SIfThenElse::swap(SIfThenElse & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(liststmt_, other.liststmt_);
-  std::swap(stmt_, other.stmt_);
+  std::swap(liststmt_1, other.liststmt_1);
+  std::swap(liststmt_2, other.liststmt_2);
 
 }
 
 SIfThenElse::~SIfThenElse()
 {
   delete(exp_);
-  delete(liststmt_);
-  delete(stmt_);
+  delete(liststmt_1);
+  delete(liststmt_2);
 
 }
 

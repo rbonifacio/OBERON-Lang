@@ -31,6 +31,10 @@ namespace OberonLang {
     	visitorTypeReturn = boolean;
     }
     
+    void BNFVisitor::visitTReal(TReal *p) {
+    	visitorTypeReturn = real;
+    }
+    
     void BNFVisitor::visitDecl(Decl *p) {
     	p->type_->accept(this); // Returns in visitorTypeReturn
     	visitorDeclarationListReturn = new vector<Declaration>;
@@ -69,16 +73,16 @@ namespace OberonLang {
     __implementBNFVisitorBinExpression(EAnd, And, And);  // Implements visitEAnd
     __implementBNFVisitorBinExpression(EOr, Or, Or);     // Implements visitEAnd
     
-    void BNFVisitor::visitCall(Call *p) {
-    	vector<Expression*> pmts;
-    	if(p->listexp_){
-    		for(auto it = p->listexp_->begin(); it != p->listexp_->end(); ++it) {
-    			(*it)->accept(this);
-		  		pmts.push_back(visitorReturn);
-		  	}
-			}
-			visitorCommandReturn = new ProcedureCall(p->ident_, pmts);
-    }
+//    void BNFVisitor::visitCall(Call *p) {
+//    	vector<Expression*> pmts;
+//    	if(p->listexp_){
+//    		for(auto it = p->listexp_->begin(); it != p->listexp_->end(); ++it) {
+//    			(*it)->accept(this);
+//		  		pmts.push_back(visitorReturn);
+//		  	}
+//			}
+//			visitorCommandReturn = new ProcedureCall(p->ident_, pmts);
+//    }
     
     void BNFVisitor::visitEInt(EInt *p) {
     	BNFVisitor::visitInteger(p->integer_);
@@ -88,7 +92,7 @@ namespace OberonLang {
     	visitorReturn = new VarRef(p->ident_);
     }
     
-    void BNFVisitor::visitEDouble(EDouble *p) {
+    void BNFVisitor::visitEReal(EReal *p) {
     	BNFVisitor::visitDouble(p->double_);
     }
     
@@ -121,18 +125,20 @@ namespace OberonLang {
     }
     
     void BNFVisitor::visitPDec(PDec *p) {
-//    	vector<Declaration> args;
-//    	vector<Declaration> vars;
-//    	Command *body;
-//    	
-//    	if(p->liststmt_){
-//		  	for(uint32_t i=0 ; i < p->liststmt_->size() ; i++){
-//    			p->liststmt_->at(i)->accept(this);
-//		  		pmts.push_back(visitorReturn);
-//		  	}
-//			}
-//    	
-//			new DecProcedure(p->ident_, args, vars, body);
+    	vector<Declaration> args;
+    	vector<Declaration> vars;
+    	list<Command *> pmts;
+    	Command *body;
+    	
+    	if(p->liststmt_){
+		  	for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
+    			(*it)->accept(this);
+		  		pmts.push_back(visitorCommandReturn);
+		  	}
+			}
+    					
+			body = new BlockCommand(pmts);
+			new DecProcedure(p->ident_, args, vars, body);
     }
     
     void BNFVisitor::visitEFalse(EFalse *p) { 

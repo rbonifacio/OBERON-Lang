@@ -5,6 +5,7 @@ Module. ModuleDec ::= "module" Ident [VarDec] [ProcDec] "begin" [Stmt] "end" Ide
 
 TInt. Type  ::= "int" ;
 TBool. Type ::= "bool";
+TReal. Type ::= "real";
 
 Decl. VarDec    ::= "var" [Ident] ":" Type ; 
 
@@ -22,20 +23,20 @@ EMul.    Exp3 ::= Exp3 "*" Exp4  ;
 EDiv.    Exp3 ::= Exp3 "/" Exp4  ; 
 EOr.     Exp2 ::= Exp2 "||" Exp3 ;
 EAnd.    Exp3 ::= Exp3 "&&" Exp4 ; 
-Call.    Exp4 ::= Ident "(" [Exp] ")" ;
+-- Call.    Exp4 ::= Ident "(" [Exp] ")" ;
 EVar.    Exp4 ::= Ident   ;
 EStr.    Exp4 ::= String  ;
 EInt.    Exp4 ::= Integer ;
 EFalse.  Exp4 ::= "false" ;
 ETrue.   Exp4 ::= "true"  ; 
-EDouble. Exp4 ::= Double  ;
+EReal.   Exp4 ::= Double  ;
 
 coercions Exp 4 ;
     
 SCall.         Stmt ::= Ident "("[Exp]")" ;  
 SAssignment.   Stmt ::= Ident ":=" Exp ;
 SWhile.        Stmt ::= "while" "(" Exp ")" "do" [Stmt] "end" ; 
-SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" "else" Stmt "end" ;
+SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" "else" [Stmt] "end" ;
 SIfThen.       Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" ;
 
 separator Exp ","   	     	     ;

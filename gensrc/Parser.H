@@ -101,10 +101,11 @@ ListProcDec* pListProcDec(const char *str);
 #define _SYMB_28 287
 #define _SYMB_29 288
 #define _SYMB_30 289
-#define _STRING_ 290
-#define _INTEGER_ 291
-#define _DOUBLE_ 292
-#define _IDENT_ 293
+#define _SYMB_31 290
+#define _STRING_ 291
+#define _INTEGER_ 292
+#define _DOUBLE_ 293
+#define _IDENT_ 294
 
 extern YYSTYPE yylval;
 

@@ -42,6 +42,13 @@ void Skeleton::visitTBool(TBool *tbool)
 
 }
 
+void Skeleton::visitTReal(TReal *treal)
+{
+  /* Code For TReal Goes Here */
+
+
+}
+
 void Skeleton::visitDecl(Decl *decl)
 {
   /* Code For Decl Goes Here */
@@ -161,15 +168,6 @@ void Skeleton::visitEAnd(EAnd *eand)
 
 }
 
-void Skeleton::visitCall(Call *call)
-{
-  /* Code For Call Goes Here */
-
-  visitIdent(call->ident_);
-  call->listexp_->accept(this);
-
-}
-
 void Skeleton::visitEVar(EVar *evar)
 {
   /* Code For EVar Goes Here */
@@ -208,11 +206,11 @@ void Skeleton::visitETrue(ETrue *etrue)
 
 }
 
-void Skeleton::visitEDouble(EDouble *edouble)
+void Skeleton::visitEReal(EReal *ereal)
 {
-  /* Code For EDouble Goes Here */
+  /* Code For EReal Goes Here */
 
-  visitDouble(edouble->double_);
+  visitDouble(ereal->double_);
 
 }
 
@@ -248,8 +246,8 @@ void Skeleton::visitSIfThenElse(SIfThenElse *sifthenelse)
   /* Code For SIfThenElse Goes Here */
 
   sifthenelse->exp_->accept(this);
-  sifthenelse->liststmt_->accept(this);
-  sifthenelse->stmt_->accept(this);
+  sifthenelse->liststmt_1->accept(this);
+  sifthenelse->liststmt_2->accept(this);
 
 }
 

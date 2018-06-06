@@ -29,6 +29,7 @@ class Stmt;
 class Module;
 class TInt;
 class TBool;
+class TReal;
 class Decl;
 class FPDecl;
 class PDec;
@@ -42,13 +43,12 @@ class EMul;
 class EDiv;
 class EOr;
 class EAnd;
-class Call;
 class EVar;
 class EStr;
 class EInt;
 class EFalse;
 class ETrue;
-class EDouble;
+class EReal;
 class SCall;
 class SAssignment;
 class SWhile;
@@ -77,6 +77,7 @@ public:
   virtual void visitModule(Module *p) = 0;
   virtual void visitTInt(TInt *p) = 0;
   virtual void visitTBool(TBool *p) = 0;
+  virtual void visitTReal(TReal *p) = 0;
   virtual void visitDecl(Decl *p) = 0;
   virtual void visitFPDecl(FPDecl *p) = 0;
   virtual void visitPDec(PDec *p) = 0;
@@ -90,13 +91,12 @@ public:
   virtual void visitEDiv(EDiv *p) = 0;
   virtual void visitEOr(EOr *p) = 0;
   virtual void visitEAnd(EAnd *p) = 0;
-  virtual void visitCall(Call *p) = 0;
   virtual void visitEVar(EVar *p) = 0;
   virtual void visitEStr(EStr *p) = 0;
   virtual void visitEInt(EInt *p) = 0;
   virtual void visitEFalse(EFalse *p) = 0;
   virtual void visitETrue(ETrue *p) = 0;
-  virtual void visitEDouble(EDouble *p) = 0;
+  virtual void visitEReal(EReal *p) = 0;
   virtual void visitSCall(SCall *p) = 0;
   virtual void visitSAssignment(SAssignment *p) = 0;
   virtual void visitSWhile(SWhile *p) = 0;
@@ -222,6 +222,19 @@ public:
   virtual void accept(Visitor *v);
   virtual TBool *clone() const;
   void swap(TBool &);
+};
+
+class TReal : public Type
+{
+public:
+
+  TReal(const TReal &);
+  TReal &operator=(const TReal &);
+  TReal();
+  ~TReal();
+  virtual void accept(Visitor *v);
+  virtual TReal *clone() const;
+  void swap(TReal &);
 };
 
 class Decl : public VarDec
@@ -421,21 +434,6 @@ public:
   void swap(EAnd &);
 };
 
-class Call : public Exp
-{
-public:
-  Ident ident_;
-  ListExp *listexp_;
-
-  Call(const Call &);
-  Call &operator=(const Call &);
-  Call(Ident p1, ListExp *p2);
-  ~Call();
-  virtual void accept(Visitor *v);
-  virtual Call *clone() const;
-  void swap(Call &);
-};
-
 class EVar : public Exp
 {
 public:
@@ -504,18 +502,18 @@ public:
   void swap(ETrue &);
 };
 
-class EDouble : public Exp
+class EReal : public Exp
 {
 public:
   Double double_;
 
-  EDouble(const EDouble &);
-  EDouble &operator=(const EDouble &);
-  EDouble(Double p1);
-  ~EDouble();
+  EReal(const EReal &);
+  EReal &operator=(const EReal &);
+  EReal(Double p1);
+  ~EReal();
   virtual void accept(Visitor *v);
-  virtual EDouble *clone() const;
-  void swap(EDouble &);
+  virtual EReal *clone() const;
+  void swap(EReal &);
 };
 
 class SCall : public Stmt
@@ -567,12 +565,12 @@ class SIfThenElse : public Stmt
 {
 public:
   Exp *exp_;
-  ListStmt *liststmt_;
-  Stmt *stmt_;
+  ListStmt *liststmt_1;
+  ListStmt *liststmt_2;
 
   SIfThenElse(const SIfThenElse &);
   SIfThenElse &operator=(const SIfThenElse &);
-  SIfThenElse(Exp *p1, ListStmt *p2, Stmt *p3);
+  SIfThenElse(Exp *p1, ListStmt *p2, ListStmt *p3);
   ~SIfThenElse();
   virtual void accept(Visitor *v);
   virtual SIfThenElse *clone() const;

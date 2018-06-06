@@ -53,10 +53,11 @@ IDENT [a-zA-Z0-9'_]
 <YYINITIAL>"if"      	 return _SYMB_24;
 <YYINITIAL>"int"      	 return _SYMB_25;
 <YYINITIAL>"module"      	 return _SYMB_26;
-<YYINITIAL>"then"      	 return _SYMB_27;
-<YYINITIAL>"true"      	 return _SYMB_28;
-<YYINITIAL>"var"      	 return _SYMB_29;
-<YYINITIAL>"while"      	 return _SYMB_30;
+<YYINITIAL>"real"      	 return _SYMB_27;
+<YYINITIAL>"then"      	 return _SYMB_28;
+<YYINITIAL>"true"      	 return _SYMB_29;
+<YYINITIAL>"var"      	 return _SYMB_30;
+<YYINITIAL>"while"      	 return _SYMB_31;
 
 <YYINITIAL>"//"[^\n]*\n  ++yy_mylinenumber ; 	 /* BNFC single-line comment */;
 <YYINITIAL>"/*"      	 BEGIN COMMENT;

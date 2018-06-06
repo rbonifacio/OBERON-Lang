@@ -34,6 +34,7 @@ void render(char* s);
   void visitType(Type *p); /* abstract class */
   void visitTInt(TInt *p);
   void visitTBool(TBool *p);
+  void visitTReal(TReal *p);
   void visitVarDec(VarDec *p); /* abstract class */
   void visitDecl(Decl *p);
   void visitFPmtDec(FPmtDec *p); /* abstract class */
@@ -51,13 +52,12 @@ void render(char* s);
   void visitEMul(EMul *p);
   void visitEDiv(EDiv *p);
   void visitEAnd(EAnd *p);
-  void visitCall(Call *p);
   void visitEVar(EVar *p);
   void visitEStr(EStr *p);
   void visitEInt(EInt *p);
   void visitEFalse(EFalse *p);
   void visitETrue(ETrue *p);
-  void visitEDouble(EDouble *p);
+  void visitEReal(EReal *p);
   void visitStmt(Stmt *p); /* abstract class */
   void visitSCall(SCall *p);
   void visitSAssignment(SAssignment *p);
@@ -148,6 +148,7 @@ class ShowAbsyn : public Visitor
   void visitType(Type *p); /* abstract class */
   void visitTInt(TInt *p);
   void visitTBool(TBool *p);
+  void visitTReal(TReal *p);
   void visitVarDec(VarDec *p); /* abstract class */
   void visitDecl(Decl *p);
   void visitFPmtDec(FPmtDec *p); /* abstract class */
@@ -165,13 +166,12 @@ class ShowAbsyn : public Visitor
   void visitEMul(EMul *p);
   void visitEDiv(EDiv *p);
   void visitEAnd(EAnd *p);
-  void visitCall(Call *p);
   void visitEVar(EVar *p);
   void visitEStr(EStr *p);
   void visitEInt(EInt *p);
   void visitEFalse(EFalse *p);
   void visitETrue(ETrue *p);
-  void visitEDouble(EDouble *p);
+  void visitEReal(EReal *p);
   void visitStmt(Stmt *p); /* abstract class */
   void visitSCall(SCall *p);
   void visitSAssignment(SAssignment *p);
