@@ -63,6 +63,28 @@ namespace OberonLang {
     Expression* _cond;
     BlockCommand* _cmds;
   };
+  class IfThenCommand : public Command {
+  public:
+    IfThenCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void run();
+    ~IfThenCommand() {}
+  private:
+    Expression* _cond;
+    BlockCommand* _cmds;
+  };
+  class IfThenElseCommand : public Command {
+  public:
+    IfThenElseCommand(Expression* condition, BlockCommand* cmds, BlockCommand* cmds2) {
+      this->_cond = condition;
+      this->_cmds = cmds;
+      this->_cmds2 = cmds2;}
+    void run();
+    ~IfThenElseCommand() {}
+  private:
+    Expression* _cond;
+    BlockCommand* _cmds;
+    BlockCommand* _cmds2;
+  };
 
 }
 
