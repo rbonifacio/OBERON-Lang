@@ -59,4 +59,19 @@ namespace OberonLang {
     }
   }
 
+  void IfThenCommand::run(){
+   if (((BooleanValue*)this->_cond->eval())->value()){
+      this->_cmds->run();
+   }
+  }
+  void IfThenElseCommand::run(){
+   if (((BooleanValue*)this->_cond->eval())->value()){
+      this->_cmds->run();
+   }
+   else{
+     this->_cmds2->run();
+   }
+  }
+
+
 }

@@ -200,6 +200,7 @@ TEST (LTExpression, Greater) {
 }
 
 TEST (WhileCommand, Print) {
+
   Environment::instance()->global("sum", new IntValue(0));
   Environment::instance()->global("inc", new IntValue(10));
 
@@ -218,10 +219,101 @@ TEST (WhileCommand, Print) {
   wc -> run();
 
   EXPECT_EQ (55, ((IntValue*)Environment :: instance()->global("sum"))->value());
+
+
+  //
+  // var soma = 0;
+  // var inc = 10;
+  // while(inc>0){
+  // soma = soma+inc;
+  // inc = inc -1;
+  //}
+
+}
+TEST (IfThenCommand, True) {
+
+  Environment::instance()->global("n", new IntValue(13));
+  LTExpression *exp = new LTExpression(new VarRef("n"), new IntValue(15));
+
+  Environment::instance()->env("x", new IntValue(0));
+  IntValue *value = new IntValue(10);
+  Assignment* assignment = new Assignment("x", value);
+
+  list <Command*> cmds = {assignment};
+  BlockCommand *bc = new BlockCommand(cmds);
+  IfThenCommand *ifthen = new IfThenCommand(exp,bc);
+  ifthen -> run();
+
+  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x"))->value());
+  // n = 13
+  // if(n<15){
+  //  x = 10;
+  //}
+}
+TEST (IfThenElseCommand, IFTrue) {
+
+  Environment::instance()->global("n", new IntValue(13));
+  LTExpression *exp = new LTExpression(new VarRef("n"), new IntValue(15));
+
+  Environment::instance()->env("x", new IntValue(0));
+
+  IntValue *value01 = new IntValue(10);
+  Assignment* assignment = new Assignment("x", value01);
+
+  IntValue *value02 = new IntValue(5);
+  Assignment* assignment2 = new Assignment("x", value02);
+
+  list <Command*> cmdsIf = {assignment};
+  list <Command*> cmdsElse = {assignment2};
+
+  BlockCommand *bcIf = new BlockCommand(cmdsIf);
+  BlockCommand *bcElse = new BlockCommand(cmdsElse);
+
+  IfThenElseCommand *ifthenElse = new IfThenElseCommand(exp,bcIf,bcElse);
+  ifthenElse -> run();
+
+  EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x"))->value());
+   //n = 13
+  // if(n<15){
+  //  x = 10;
+  //}
+  //else{
+  //  x = 5
+  //}
+}
+TEST (IfThenElseCommand, ElseTrue) {
+
+  Environment::instance()->global("n", new IntValue(13));
+  LTExpression *exp = new LTExpression(new VarRef("n"), new IntValue(9));
+
+  Environment::instance()->env("x", new IntValue(0));
+  IntValue *value01 = new IntValue(10);
+  Assignment* assignment = new Assignment("x", value01);
+
+  IntValue *value02 = new IntValue(5);
+  Assignment* assignment2 = new Assignment("x", value02);
+
+  list <Command*> cmdsIf = {assignment};
+  list <Command*> cmdsElse = {assignment2};
+
+  BlockCommand *bcIf = new BlockCommand(cmdsIf);
+  BlockCommand *bcElse = new BlockCommand(cmdsElse);
+
+  IfThenElseCommand *ifthenElse = new IfThenElseCommand(exp,bcIf,bcElse);
+  ifthenElse -> run();
+
+  EXPECT_EQ (5, ((IntValue*)Environment::instance()->env("x"))->value());
+  //n = 13
+  // if(n<9){
+  //  x = 10;
+  //}
+  //else{
+  //  x = 5
+  //}
 }
 
 TEST (Procedure, Print){
-  // --------- test the execution of a procedure ------ // 
+  // --------- test the execution of a procedure ------ //
   // it simulates a program like:
   // -------------------------------------------------- //
   // var res = 0;
