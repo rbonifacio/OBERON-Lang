@@ -6,6 +6,8 @@ HEADERSDIR := include
 BUILDDIR := build
 TARGET := bin/oberon
 
+BNFOBJ := $(BUILDDIR)/Absyn.o $(BUILDDIR)/Lexer.o $(BUILDDIR)/Parser.o $(BUILDDIR)/Printer.o
+
 SRCEXT := cpp
 HEADERSEXT := hpp
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
@@ -19,7 +21,7 @@ GTEST := ${GTEST_DIR}
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) # $(LIB)
+	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ $(BNFOBJ) -o $(TARGET) # $(LIB)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) $(HEADERS)
 	@mkdir -p $(BUILDDIR)

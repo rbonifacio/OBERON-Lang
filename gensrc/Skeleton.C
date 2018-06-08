@@ -10,7 +10,7 @@
 
 void Skeleton::visitModuleDec(ModuleDec* t) {} //abstract class
 void Skeleton::visitType(Type* t) {} //abstract class
-void Skeleton::visitVarDec(VarDec* t) {} //abstract class
+void Skeleton::visitVarDecl(VarDecl* t) {} //abstract class
 void Skeleton::visitFPmtDec(FPmtDec* t) {} //abstract class
 void Skeleton::visitProcDec(ProcDec* t) {} //abstract class
 void Skeleton::visitExp(Exp* t) {} //abstract class
@@ -21,7 +21,7 @@ void Skeleton::visitModule(Module *module)
   /* Code For Module Goes Here */
 
   visitIdent(module->ident_1);
-  module->listvardec_->accept(this);
+  module->listvardecl_->accept(this);
   module->listprocdec_->accept(this);
   module->liststmt_->accept(this);
   visitIdent(module->ident_2);
@@ -73,7 +73,7 @@ void Skeleton::visitPDec(PDec *pdec)
 
   visitIdent(pdec->ident_);
   pdec->listfpmtdec_->accept(this);
-  pdec->listvardec_->accept(this);
+  pdec->listvardecl_->accept(this);
   pdec->liststmt_->accept(this);
 
 }
@@ -214,6 +214,14 @@ void Skeleton::visitEReal(EReal *ereal)
 
 }
 
+void Skeleton::visitSPrint(SPrint *sprint)
+{
+  /* Code For SPrint Goes Here */
+
+  sprint->exp_->accept(this);
+
+}
+
 void Skeleton::visitSCall(SCall *scall)
 {
   /* Code For SCall Goes Here */
@@ -285,9 +293,9 @@ void Skeleton::visitListIdent(ListIdent* listident)
   }
 }
 
-void Skeleton::visitListVarDec(ListVarDec* listvardec)
+void Skeleton::visitListVarDecl(ListVarDecl* listvardecl)
 {
-  for (ListVarDec::iterator i = listvardec->begin() ; i != listvardec->end() ; ++i)
+  for (ListVarDecl::iterator i = listvardecl->begin() ; i != listvardecl->end() ; ++i)
   {
     (*i)->accept(this);
   }

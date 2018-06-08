@@ -7,7 +7,7 @@
 
 class ModuleDec;
 class Type;
-class VarDec;
+class VarDecl;
 class FPmtDec;
 class ProcDec;
 class Exp;
@@ -15,7 +15,7 @@ class Stmt;
 class ListExp;
 class ListStmt;
 class ListIdent;
-class ListVarDec;
+class ListVarDecl;
 class ListFPmtDec;
 class ListProcDec;
 
@@ -27,7 +27,7 @@ typedef union
   char* string_;
   ModuleDec* moduledec_;
   Type* type_;
-  VarDec* vardec_;
+  VarDecl* vardecl_;
   FPmtDec* fpmtdec_;
   ProcDec* procdec_;
   Exp* exp_;
@@ -35,7 +35,7 @@ typedef union
   ListExp* listexp_;
   ListStmt* liststmt_;
   ListIdent* listident_;
-  ListVarDec* listvardec_;
+  ListVarDecl* listvardecl_;
   ListFPmtDec* listfpmtdec_;
   ListProcDec* listprocdec_;
 } YYSTYPE;
@@ -44,8 +44,8 @@ ModuleDec* pModuleDec(FILE *inp);
 ModuleDec* pModuleDec(const char *str);
 Type* pType(FILE *inp);
 Type* pType(const char *str);
-VarDec* pVarDec(FILE *inp);
-VarDec* pVarDec(const char *str);
+VarDecl* pVarDecl(FILE *inp);
+VarDecl* pVarDecl(const char *str);
 FPmtDec* pFPmtDec(FILE *inp);
 FPmtDec* pFPmtDec(const char *str);
 ProcDec* pProcDec(FILE *inp);
@@ -60,8 +60,8 @@ ListStmt* pListStmt(FILE *inp);
 ListStmt* pListStmt(const char *str);
 ListIdent* pListIdent(FILE *inp);
 ListIdent* pListIdent(const char *str);
-ListVarDec* pListVarDec(FILE *inp);
-ListVarDec* pListVarDec(const char *str);
+ListVarDecl* pListVarDecl(FILE *inp);
+ListVarDecl* pListVarDecl(const char *str);
 ListFPmtDec* pListFPmtDec(FILE *inp);
 ListFPmtDec* pListFPmtDec(const char *str);
 ListProcDec* pListProcDec(FILE *inp);
@@ -102,10 +102,11 @@ ListProcDec* pListProcDec(const char *str);
 #define _SYMB_29 288
 #define _SYMB_30 289
 #define _SYMB_31 290
-#define _STRING_ 291
-#define _INTEGER_ 292
-#define _DOUBLE_ 293
-#define _IDENT_ 294
+#define _SYMB_32 291
+#define _STRING_ 292
+#define _INTEGER_ 293
+#define _DOUBLE_ 294
+#define _IDENT_ 295
 
 extern YYSTYPE yylval;
 

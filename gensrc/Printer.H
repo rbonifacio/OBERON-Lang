@@ -35,7 +35,7 @@ void render(char* s);
   void visitTInt(TInt *p);
   void visitTBool(TBool *p);
   void visitTReal(TReal *p);
-  void visitVarDec(VarDec *p); /* abstract class */
+  void visitVarDecl(VarDecl *p); /* abstract class */
   void visitDecl(Decl *p);
   void visitFPmtDec(FPmtDec *p); /* abstract class */
   void visitFPDecl(FPDecl *p);
@@ -59,6 +59,7 @@ void render(char* s);
   void visitETrue(ETrue *p);
   void visitEReal(EReal *p);
   void visitStmt(Stmt *p); /* abstract class */
+  void visitSPrint(SPrint *p);
   void visitSCall(SCall *p);
   void visitSAssignment(SAssignment *p);
   void visitSWhile(SWhile *p);
@@ -67,7 +68,7 @@ void render(char* s);
   void visitListExp(ListExp* p);
   void visitListStmt(ListStmt* p);
   void visitListIdent(ListIdent* p);
-  void visitListVarDec(ListVarDec* p);
+  void visitListVarDecl(ListVarDecl* p);
   void visitListFPmtDec(ListFPmtDec* p);
   void visitListProcDec(ListProcDec* p);
 
@@ -149,7 +150,7 @@ class ShowAbsyn : public Visitor
   void visitTInt(TInt *p);
   void visitTBool(TBool *p);
   void visitTReal(TReal *p);
-  void visitVarDec(VarDec *p); /* abstract class */
+  void visitVarDecl(VarDecl *p); /* abstract class */
   void visitDecl(Decl *p);
   void visitFPmtDec(FPmtDec *p); /* abstract class */
   void visitFPDecl(FPDecl *p);
@@ -173,6 +174,7 @@ class ShowAbsyn : public Visitor
   void visitETrue(ETrue *p);
   void visitEReal(EReal *p);
   void visitStmt(Stmt *p); /* abstract class */
+  void visitSPrint(SPrint *p);
   void visitSCall(SCall *p);
   void visitSAssignment(SAssignment *p);
   void visitSWhile(SWhile *p);
@@ -181,7 +183,7 @@ class ShowAbsyn : public Visitor
   void visitListExp(ListExp* p);
   void visitListStmt(ListStmt* p);
   void visitListIdent(ListIdent* p);
-  void visitListVarDec(ListVarDec* p);
+  void visitListVarDecl(ListVarDecl* p);
   void visitListFPmtDec(ListFPmtDec* p);
   void visitListProcDec(ListProcDec* p);
 

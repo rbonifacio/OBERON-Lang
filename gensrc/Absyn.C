@@ -6,10 +6,10 @@
 #include "Absyn.H"
 
 /********************   Module    ********************/
-Module::Module(Ident p1, ListVarDec *p2, ListProcDec *p3, ListStmt *p4, Ident p5)
+Module::Module(Ident p1, ListVarDecl *p2, ListProcDec *p3, ListStmt *p4, Ident p5)
 {
   ident_1 = p1;
-  listvardec_ = p2;
+  listvardecl_ = p2;
   listprocdec_ = p3;
   liststmt_ = p4;
   ident_2 = p5;
@@ -19,7 +19,7 @@ Module::Module(Ident p1, ListVarDec *p2, ListProcDec *p3, ListStmt *p4, Ident p5
 Module::Module(const Module & other)
 {
   ident_1 = other.ident_1;
-  listvardec_ = other.listvardec_->clone();
+  listvardecl_ = other.listvardecl_->clone();
   listprocdec_ = other.listprocdec_->clone();
   liststmt_ = other.liststmt_->clone();
   ident_2 = other.ident_2;
@@ -36,7 +36,7 @@ Module &Module::operator=(const Module & other)
 void Module::swap(Module & other)
 {
   std::swap(ident_1, other.ident_1);
-  std::swap(listvardec_, other.listvardec_);
+  std::swap(listvardecl_, other.listvardecl_);
   std::swap(listprocdec_, other.listprocdec_);
   std::swap(liststmt_, other.liststmt_);
   std::swap(ident_2, other.ident_2);
@@ -45,7 +45,7 @@ void Module::swap(Module & other)
 
 Module::~Module()
 {
-  delete(listvardec_);
+  delete(listvardecl_);
   delete(listprocdec_);
   delete(liststmt_);
 
@@ -280,11 +280,11 @@ FPDecl *FPDecl::clone() const
 
 
 /********************   PDec    ********************/
-PDec::PDec(Ident p1, ListFPmtDec *p2, ListVarDec *p3, ListStmt *p4)
+PDec::PDec(Ident p1, ListFPmtDec *p2, ListVarDecl *p3, ListStmt *p4)
 {
   ident_ = p1;
   listfpmtdec_ = p2;
-  listvardec_ = p3;
+  listvardecl_ = p3;
   liststmt_ = p4;
 
 }
@@ -293,7 +293,7 @@ PDec::PDec(const PDec & other)
 {
   ident_ = other.ident_;
   listfpmtdec_ = other.listfpmtdec_->clone();
-  listvardec_ = other.listvardec_->clone();
+  listvardecl_ = other.listvardecl_->clone();
   liststmt_ = other.liststmt_->clone();
 
 }
@@ -309,7 +309,7 @@ void PDec::swap(PDec & other)
 {
   std::swap(ident_, other.ident_);
   std::swap(listfpmtdec_, other.listfpmtdec_);
-  std::swap(listvardec_, other.listvardec_);
+  std::swap(listvardecl_, other.listvardecl_);
   std::swap(liststmt_, other.liststmt_);
 
 }
@@ -317,7 +317,7 @@ void PDec::swap(PDec & other)
 PDec::~PDec()
 {
   delete(listfpmtdec_);
-  delete(listvardec_);
+  delete(listvardecl_);
   delete(liststmt_);
 
 }
@@ -1066,6 +1066,50 @@ EReal *EReal::clone() const
 
 
 
+/********************   SPrint    ********************/
+SPrint::SPrint(Exp *p1)
+{
+  exp_ = p1;
+
+}
+
+SPrint::SPrint(const SPrint & other)
+{
+  exp_ = other.exp_->clone();
+
+}
+
+SPrint &SPrint::operator=(const SPrint & other)
+{
+  SPrint tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void SPrint::swap(SPrint & other)
+{
+  std::swap(exp_, other.exp_);
+
+}
+
+SPrint::~SPrint()
+{
+  delete(exp_);
+
+}
+
+void SPrint::accept(Visitor *v)
+{
+  v->visitSPrint(this);
+}
+
+SPrint *SPrint::clone() const
+{
+  return new SPrint(*this);
+}
+
+
+
 /********************   SCall    ********************/
 SCall::SCall(Ident p1, ListExp *p2)
 {
@@ -1351,17 +1395,17 @@ ListIdent *ListIdent::clone() const
 }
 
 
-/********************   ListVarDec    ********************/
+/********************   ListVarDecl    ********************/
 
-void ListVarDec::accept(Visitor *v)
+void ListVarDecl::accept(Visitor *v)
 {
-  v->visitListVarDec(this);
+  v->visitListVarDecl(this);
 }
 
 
-ListVarDec *ListVarDec::clone() const
+ListVarDecl *ListVarDecl::clone() const
 {
-  return new ListVarDec(*this);
+  return new ListVarDecl(*this);
 }
 
 

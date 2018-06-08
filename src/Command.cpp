@@ -31,7 +31,7 @@ namespace OberonLang {
 
   void PrintCommand::run() {
     auto v = expression->eval();
-    cout << v;
+    v->show();
   }
 
   void ProcedureCall::run(){

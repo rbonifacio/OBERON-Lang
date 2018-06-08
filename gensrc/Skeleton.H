@@ -10,7 +10,7 @@ class Skeleton : public Visitor
 public:
   void visitModuleDec(ModuleDec* p);
   void visitType(Type* p);
-  void visitVarDec(VarDec* p);
+  void visitVarDecl(VarDecl* p);
   void visitFPmtDec(FPmtDec* p);
   void visitProcDec(ProcDec* p);
   void visitExp(Exp* p);
@@ -38,6 +38,7 @@ public:
   void visitEFalse(EFalse* p);
   void visitETrue(ETrue* p);
   void visitEReal(EReal* p);
+  void visitSPrint(SPrint* p);
   void visitSCall(SCall* p);
   void visitSAssignment(SAssignment* p);
   void visitSWhile(SWhile* p);
@@ -46,7 +47,7 @@ public:
   void visitListExp(ListExp* p);
   void visitListStmt(ListStmt* p);
   void visitListIdent(ListIdent* p);
-  void visitListVarDec(ListVarDec* p);
+  void visitListVarDecl(ListVarDecl* p);
   void visitListFPmtDec(ListFPmtDec* p);
   void visitListProcDec(ListProcDec* p);
 

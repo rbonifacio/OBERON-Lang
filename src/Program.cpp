@@ -1,5 +1,6 @@
 #include "Program.hpp"
 
+#include <iostream>
 #include <vector>
 
 #include "Environment.hpp"
@@ -21,6 +22,7 @@ namespace OberonLang {
 
   void Program::run() {
     for(auto it = this->_globalVars.begin(); it != this->_globalVars.end(); ++it) {
+    	cout << "globalvar: " << (*it)->name() << " added\n";
       Environment::instance()->global((*it)->name(), Undefined::instance());
     }
 

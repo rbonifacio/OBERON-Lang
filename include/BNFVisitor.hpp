@@ -11,6 +11,7 @@
 #include "Declaration.hpp"
 #include "Procedure.hpp"
 #include "VarRef.hpp"
+#include "Program.hpp"
 
 namespace OberonLang {
   class BNFVisitor : public Visitor {
@@ -18,20 +19,22 @@ namespace OberonLang {
     BNFVisitor();
     BNFVisitor(const BNFVisitor& orig);
     
+    void runProgram(ModuleDec *p);
+    
     void visitModuleDec(ModuleDec *p) {}
     void visitType(Type *p) { }
-    void visitVarDec(VarDec *p) { }
+    void visitVarDecl(VarDecl *p) { }
     void visitFPmtDec(FPmtDec *p) { }
     void visitProcDec(ProcDec *p) { }
     void visitExp(Exp *p) { }
     void visitStmt(Stmt *p) { }
-    void visitModule(Module *p) { cout << "Module não suportado\n"; } // !TODO
+    void visitModule(Module *p);
     void visitTInt(TInt *p);
     void visitTBool(TBool *p);
     void visitTReal(TReal *p);
     void visitDecl(Decl *p);
-    void visitFPDecl(FPDecl *p) { } // !TODO, dúvidas
-    void visitPDec(PDec *p); // !TODO, dúvidas
+    void visitFPDecl(FPDecl *p);
+    void visitPDec(PDec *p);
     void visitELt(ELt *p);
     void visitEGt(EGt *p);
     void visitEEq(EEq *p);
@@ -49,6 +52,7 @@ namespace OberonLang {
     void visitEFalse(EFalse *p);
     void visitETrue(ETrue *p);
     void visitEReal(EReal *p);
+    void visitSPrint(SPrint *p);
     void visitSCall(SCall *p);
     void visitSAssignment(SAssignment *p);
     void visitSWhile(SWhile *p);
@@ -57,7 +61,7 @@ namespace OberonLang {
     void visitListExp(ListExp *p) { }
     void visitListStmt(ListStmt *p) { }
     void visitListIdent(ListIdent *p) { }
-    void visitListVarDec(ListVarDec *p) { }
+    void visitListVarDecl(ListVarDecl *p) { }
     void visitListFPmtDec(ListFPmtDec *p) { }
     void visitListProcDec(ListProcDec *p) { }
     void visitInteger(Integer x);
@@ -74,6 +78,8 @@ namespace OberonLang {
     Command *visitorCommandReturn;
     TypesEnum visitorTypeReturn;
     vector<Declaration> *visitorDeclarationListReturn;
+    DecProcedure *decProcedureReturn;
+    Program *programReturn;
     
     // When an expression is parsed we don't know if there will be reals
     bool doubleFlag = 0; // Detects if a double occourred in an expression

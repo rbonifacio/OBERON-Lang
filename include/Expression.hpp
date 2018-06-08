@@ -25,6 +25,7 @@ namespace OberonLang {
   class Value : public Expression{
   public:
     virtual Value* eval() = 0;
+    virtual void show() = 0;
     virtual ~Value() { } 
   };
 
@@ -32,6 +33,7 @@ namespace OberonLang {
   public:
     Value* eval() { return this; }
     static Undefined* instance();
+    void show(){ cout << "Variável indefinida!"; }
   private:
     Undefined() {}
     static Undefined* _undef_instance;
@@ -44,6 +46,7 @@ namespace OberonLang {
     GenericValue(T v) { _value = v; }
     Value* eval() { return this; } ;
     T value() { return _value; }
+    void show(){ cout << _value; }
     virtual ~GenericValue() { }  
   private:
     T _value; 

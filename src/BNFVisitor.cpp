@@ -23,6 +23,52 @@ namespace OberonLang {
     BNFVisitor::~BNFVisitor() {
     }
     
+    void BNFVisitor::runProgram(ModuleDec *p){
+    	p->accept(this);
+    	if(programReturn){
+    		programReturn->run();
+    	}
+    }
+    
+    void BNFVisitor::visitModule(Module *p) {
+    	vector<VarDec*> globalVars;
+    	vector<DecProcedure*> procedures;
+    	list<Command*> cmds;
+    	BlockCommand *main;
+    	
+    	/* Iterate to build globalVars */
+    	if(p->listvardecl_){
+    		for(auto it = p->listvardecl_->begin(); it != p->listvardecl_->end(); ++it){
+    			(*it)->accept(this);
+    			if(visitorDeclarationListReturn){
+    				for(auto dec = visitorDeclarationListReturn->begin(); dec != visitorDeclarationListReturn->end(); ++dec){
+    					globalVars.push_back(new VarDec(dec->name(), dec->type()));
+    				}
+    			}
+    		}
+    	}
+    	
+    	/* Iterate to build procedures */
+    	if(p->listprocdec_){
+    		for(auto it = p->listprocdec_->begin(); it != p->listprocdec_->end(); ++it){
+    			(*it)->accept(this);
+    			procedures.push_back(decProcedureReturn);
+    		}
+    	}
+    	
+    	/* Iterate to build BlockCommand */
+    	if(p->liststmt_){
+		  	for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
+		  		(*it)->accept(this);
+		  		cmds.push_back(visitorCommandReturn);
+		  	}
+    	}    	
+    	
+    	main = new BlockCommand(cmds);
+    	
+    	programReturn = new Program(globalVars, procedures, main);
+    }
+    
     void BNFVisitor::visitTInt(TInt *p) {
     	visitorTypeReturn = integer;
     }
@@ -45,6 +91,16 @@ namespace OberonLang {
     	}
     }
     
+    void BNFVisitor::visitFPDecl(FPDecl *p) {
+    	p->type_->accept(this); // Returns in visitorTypeReturn
+    	visitorDeclarationListReturn = new vector<Declaration>;
+    	if(p->listident_){
+    		for(auto it = p->listident_->begin(); it != p->listident_->end(); ++it) {
+    			visitorDeclarationListReturn->push_back(Declaration(visitorTypeReturn, *it));
+    		}
+    	}
+    }
+    
     #define __implementBNFVisitorBinExpression(BNFClassName, ASTInfix, ASTRealInfix)\
     void BNFVisitor::visit##BNFClassName(BNFClassName *p) { \
     	Expression *lhs, *rhs;\
@@ -56,6 +112,7 @@ namespace OberonLang {
     	if(doubleFlag) visitorReturn = new ASTRealInfix##Expression(lhs, rhs);\
     	else visitorReturn = new ASTInfix##Expression(lhs, rhs);\
     }
+    
     
     // Those can have real or integers
     __implementBNFVisitorBinExpression(EAdd, Add, AddReal);     // Implements visitEAdd
@@ -94,6 +151,11 @@ namespace OberonLang {
     
     void BNFVisitor::visitEReal(EReal *p) {
     	BNFVisitor::visitDouble(p->double_);
+    }
+    
+    void BNFVisitor::visitSPrint(SPrint *p) {
+    	p->exp_->accept(this);
+    	visitorCommandReturn = new PrintCommand(visitorReturn);
     }
     
     void BNFVisitor::visitSCall(SCall *p) {
@@ -136,9 +198,31 @@ namespace OberonLang {
 		  		pmts.push_back(visitorCommandReturn);
 		  	}
 			}
+			
+    	if(p->listvardecl_){
+    		for(auto it = p->listvardecl_->begin(); it != p->listvardecl_->end(); ++it){
+    			(*it)->accept(this);
+    			if(visitorDeclarationListReturn){
+    				for(auto dec = visitorDeclarationListReturn->begin(); dec != visitorDeclarationListReturn->end(); ++dec){
+    					vars.push_back(*(new Declaration(dec->type(), dec->name())));
+    				}
+    			}
+    		}
+    	}
+			
+    	if(p->listfpmtdec_){
+    		for(auto it = p->listfpmtdec_->begin(); it != p->listfpmtdec_->end(); ++it){
+    			(*it)->accept(this);
+    			if(visitorDeclarationListReturn){
+    				for(auto dec = visitorDeclarationListReturn->begin(); dec != visitorDeclarationListReturn->end(); ++dec){
+    					args.push_back(*(new Declaration(dec->type(), dec->name())));
+    				}
+    			}
+    		}
+    	}
     					
 			body = new BlockCommand(pmts);
-			new DecProcedure(p->ident_, args, vars, body);
+			decProcedureReturn = new DecProcedure(p->ident_, args, vars, body);
     }
     
     void BNFVisitor::visitEFalse(EFalse *p) { 
