@@ -1,5 +1,5 @@
 # Ignore the build and lib dirs
-build
+build/*
 lib/*
 
 # Ignore any executables
@@ -13,3 +13,8 @@ bin/*
 
 # Ignoring swapping files
 *.swp
+
+
+# Ignore .bnf files
+.bnfsource
+.bnfobjects

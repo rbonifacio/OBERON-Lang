@@ -1,42 +1,70 @@
+## Main compiler
+CC := g++
+BNFC := bnfc
 
-CC := g++ # This is the main compiler
+## Directories
+SRCDIR		:= src
+HEADERDIR := include
+BUILDDIR	:= build
+BNFDIR		:= bnf
+GENSRCDIR := gensrc
 
-SRCDIR := src
-HEADERSDIR := include
-BUILDDIR := build
-TARGET := bin/oberon
+## Targets
+MAINTARGET		:= bin/oberon
+TESTERTARGET	:= bin/tester
 
-BNFOBJ := $(BUILDDIR)/Absyn.o $(BUILDDIR)/Lexer.o $(BUILDDIR)/Parser.o $(BUILDDIR)/Printer.o
+## Extensions
+SRCEXT		:= cpp
+HEADEREXT := hpp
 
-SRCEXT := cpp
-HEADERSEXT := hpp
+## Source requisites
 SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-HEADERS := $(shell find $(HEADERSDIR) -type f -name *.$(HEADERSEXT))
-OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11 # -Wno-unused-parameter
-LIB := -pthread -L lib
-INC := -I include -I gensrc
+BNFSOURCE := $(GENSRCDIR)/Absyn.C $(GENSRCDIR)/Makefile $(GENSRCDIR)/oberon.y $(GENSRCDIR)/Printer.C $(GENSRCDIR)/Skeleton.C $(GENSRCDIR)/Test.C $(GENSRCDIR)/Absyn.H $(GENSRCDIR)/oberon.l $(GENSRCDIR)/Parser.H $(GENSRCDIR)/Printer.H $(GENSRCDIR)/Skeleton.H
 
-GTEST := ${GTEST_DIR}
+## Tester requisites
+TESTEROBJ	:= $(BUILDDIR)/BinExpression.o $(BUILDDIR)/Expression.o $(BUILDDIR)/Command.o $(BUILDDIR)/Environment.o $(BUILDDIR)/Procedure.o $(BUILDDIR)/VarRef.o
 
-$(TARGET): $(OBJECTS)
-	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ $(BNFOBJ) -o $(TARGET) # $(LIB)
+## Objects targets
+OBJECTS			:= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+BNFOBJECTS	:= $(BUILDDIR)/Absyn.o $(BUILDDIR)/Lexer.o $(BUILDDIR)/Parser.o $(BUILDDIR)/Printer.o
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) $(HEADERS)
-	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CXXFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CXXFLAGS) $(INC) -c -o $@ $<
+## Flags
+CXXFLAGS	:= -g -W -Wall -Wextra -Wno-unused-parameter -std=c++11 #-Wno-unused-parameter
+LIB				:= -pthread -L lib
+INC				:= -I $(HEADERDIR) -I $(GENSRCDIR)
+GTEST			:= ${GTEST_DIR}
 
-clean:
-	@echo " Cleaning...";
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+## Generate main program
+$(MAINTARGET): $(OBJECTS) .bnfobjects
+	$(CC) $(OBJECTS) $(BNFOBJECTS) -o $(MAINTARGET)
 
-# Tests
+## Generate obj with dependency info
+-include $(OBJECTS:.o=.d)
+
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) .bnfsource
+	$(CC) $(CXXFLAGS) $(INC) -c -o $@ $<
+	printf "$(BUILDDIR)/" "%s" > $(BUILDDIR)/$*.d
+	$(CC) $(CXXFLAGS) $(INC) -MM $< >> $(BUILDDIR)/$*.d
+
+## Generate bnf source
+
+.bnfsource: $(BNFDIR)/oberon.bnfc
+	$(BNFC) -m -cpp $(BNFDIR)/oberon.bnfc -o $(GENSRCDIR)
+	touch .bnfsource
+	
+## Generate bnf obj
+.bnfobjects: .bnfsource
+	make -C $(GENSRCDIR) all
+	mv $(GENSRCDIR)/*.o $(BUILDDIR)
+	touch .bnfobjects
+	
+## Generate tester
 tester: $(OBJECTS)
-	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o build/VarRef.o
-
-# Spikes
-#ticket:
-#  $(CC) $(CFLAGS) spikes/ticket.cpp $(INC) $(LIB) -o bin/ticket
-
-.PHONY: clean
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(INC) -o $(TESTERTARGET) $(GTEST)/libgtest.a $(TESTEROBJ)
+	
+	
+## Clean
+clean:
+	rm -rf $(BUILDDIR)/* $(MAINTARGET) $(TESTERTARGET) $(GENSRCDIR)/* $(BNFDIR)/*.bak $(SRCDIR)/*.d .bnfobjects .bnfsource
+	
+.PHONY: clean 
