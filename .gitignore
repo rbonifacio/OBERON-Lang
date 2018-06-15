@@ -6,7 +6,6 @@ lib/
 bin/
 
 # Ignore generated sources
-gensrc/
 
 # Ignore Mac specific files
 .DS_Store
@@ -20,5 +19,4 @@ gensrc/
 
 # Ignore .bnf files
 .folders
-.bnfsource
 .bnfobjects

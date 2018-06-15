@@ -73,6 +73,10 @@ tester: $(OBJECTS) .folders
 
 ## Clean
 clean:
+	rm -rf $(BUILDDIR) $(BINDIR) -R
+	rm -rf $(MAINTARGET) $(TESTERTARGET) $(BNFDIR)/*.bak .bnfobjects .folders
+
+cleanAll:
 	rm -rf $(BUILDDIR) $(GENSRCDIR) $(BINDIR) -R
 	rm -rf $(MAINTARGET) $(TESTERTARGET) $(BNFDIR)/*.bak .bnfobjects .bnfsource .folders
 
