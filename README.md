@@ -39,11 +39,17 @@ install it and define an environemnt variable (GTEST_DIR) pointing to the dir
 that includes the library *libgtest.a*. For instance, for some OSX distributions, 
 it is located at /usr/local/lib. 
 
-To compile, first create an empty folder called bin, then just run the command 'make'.
+The bin/oberon program depends on flex, bison and bnfc.
+
+To compile, just run the command 'make'.
 
 ```bash
-mkdir bin
 make
+```
+
+Makefile supports parallel execution with the flag -j
+```bash
+make -j
 ```
 
 There is a 'clean' command to compile from scratch.

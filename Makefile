@@ -1,40 +1,83 @@
+## Main compiler
+CC := g++
+BNFC := bnfc
 
-CC := g++ # This is the main compiler
-
+## Directories
 SRCDIR := src
-HEADERSDIR := include
+HEADERDIR := include
 BUILDDIR := build
-TARGET := bin/oberon
+BINDIR := bin
+BNFDIR := bnf
+GENSRCDIR := gensrc
 
+## Targets
+MAINTARGET := bin/oberon
+TESTERTARGET := bin/tester
+
+## Extensions
 SRCEXT := cpp
-HEADERSEXT := hpp
-SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
-HEADERS := $(shell find $(HEADERSDIR) -type f -name *.$(HEADERSEXT))
-OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-CXXFLAGS := -g -W -Wall -Wextra -Wunused-parameter -std=c++11
-LIB := -pthread -L lib
-INC := -I include -I gensrc
+HEADEREXT := hpp
 
+## Source requisites
+SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
+BNFSOURCE := $(GENSRCDIR)/Absyn.C $(GENSRCDIR)/Makefile $(GENSRCDIR)/oberon.y $(GENSRCDIR)/Printer.C $(GENSRCDIR)/Skeleton.C $(GENSRCDIR)/Test.C $(GENSRCDIR)/Absyn.H $(GENSRCDIR)/oberon.l $(GENSRCDIR)/Parser.H $(GENSRCDIR)/Printer.H $(GENSRCDIR)/Skeleton.H
+
+## Tester requisites
+TESTEROBJ := $(BUILDDIR)/BinExpression.o $(BUILDDIR)/Expression.o $(BUILDDIR)/Command.o $(BUILDDIR)/Environment.o $(BUILDDIR)/Procedure.o $(BUILDDIR)/VarRef.o
+
+## Objects targets
+OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+BNFOBJECTS := $(BUILDDIR)/Absyn.o $(BUILDDIR)/Lexer.o $(BUILDDIR)/Parser.o $(BUILDDIR)/Printer.o
+
+## Flags
+CXXFLAGS := -g -W -Wall -Wextra -Wno-unused-parameter -std=c++11 #-Wno-unused-parameter
+LIB := -pthread -L lib
+INC := -I $(HEADERDIR) -I $(GENSRCDIR)
 GTEST := ${GTEST_DIR}
 
-$(TARGET): $(OBJECTS)
-	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) # $(LIB)
+## Generate main program
+$(MAINTARGET): $(OBJECTS) .bnfobjects .folders
+	$(CC) $(OBJECTS) $(BNFOBJECTS) -o $(MAINTARGET)
 
-$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) $(HEADERS)
-	@mkdir -p $(BUILDDIR)
-	@echo " $(CC) $(CXXFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CXXFLAGS) $(INC) -c -o $@ $<
+## Generate obj with dependency info
+-include $(OBJECTS:.o=.d)
 
+$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) .folders .bnfsource
+	$(CC) $(CXXFLAGS) $(INC) -c -o $@ $<
+	printf "$(BUILDDIR)/" "%s" > $(BUILDDIR)/$*.d
+	$(CC) $(CXXFLAGS) $(INC) -MM $< >> $(BUILDDIR)/$*.d
+
+## Generate bnf source
+
+.bnfsource: $(BNFDIR)/oberon.bnfc .folders
+	$(BNFC) -m -cpp $(BNFDIR)/oberon.bnfc -o $(GENSRCDIR)
+	touch .bnfsource
+
+## Generate bnf obj
+.bnfobjects: .bnfsource .folders
+	make -C $(GENSRCDIR) all
+	mv $(GENSRCDIR)/*.o $(BUILDDIR)
+	touch .bnfobjects
+
+## Generate folders
+.folders:
+	mkdir -p $(GENSRCDIR)
+	mkdir -p $(BUILDDIR)
+	mkdir -p $(BINDIR)
+	touch .folders
+
+## Generate tester
+tester: $(OBJECTS) .folders
+	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(INC) -o $(TESTERTARGET) $(GTEST)/libgtest.a $(TESTEROBJ)
+
+
+## Clean
 clean:
-	@echo " Cleaning...";
-	@echo " $(RM) -r $(BUILDDIR) $(TARGET)"; $(RM) -r $(BUILDDIR) $(TARGET)
+	rm -rf $(BUILDDIR) $(BINDIR) -R
+	rm -rf $(MAINTARGET) $(TESTERTARGET) $(BNFDIR)/*.bak .bnfobjects .folders
 
-# Tests
-tester: $(OBJECTS)
-	$(CC) $(CXXFLAGS) $(LIB) test/TestOberonLang.cpp $(GTEST)/libgtest.a $(INC) -o bin/tester build/BinExpression.o build/Expression.o build/Command.o build/Environment.o build/Procedure.o build/VarRef.o
-
-# Spikes
-#ticket:
-#  $(CC) $(CFLAGS) spikes/ticket.cpp $(INC) $(LIB) -o bin/ticket
+cleanAll:
+	rm -rf $(BUILDDIR) $(GENSRCDIR) $(BINDIR) -R
+	rm -rf $(MAINTARGET) $(TESTERTARGET) $(BNFDIR)/*.bak .bnfobjects .bnfsource .folders
 
 .PHONY: clean

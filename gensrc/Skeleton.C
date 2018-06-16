@@ -10,7 +10,7 @@
 
 void Skeleton::visitModuleDec(ModuleDec* t) {} //abstract class
 void Skeleton::visitType(Type* t) {} //abstract class
-void Skeleton::visitVarDec(VarDec* t) {} //abstract class
+void Skeleton::visitVarDecl(VarDecl* t) {} //abstract class
 void Skeleton::visitFPmtDec(FPmtDec* t) {} //abstract class
 void Skeleton::visitProcDec(ProcDec* t) {} //abstract class
 void Skeleton::visitExp(Exp* t) {} //abstract class
@@ -21,7 +21,7 @@ void Skeleton::visitModule(Module *module)
   /* Code For Module Goes Here */
 
   visitIdent(module->ident_1);
-  module->listvardec_->accept(this);
+  module->listvardecl_->accept(this);
   module->listprocdec_->accept(this);
   module->liststmt_->accept(this);
   visitIdent(module->ident_2);
@@ -38,6 +38,13 @@ void Skeleton::visitTInt(TInt *tint)
 void Skeleton::visitTBool(TBool *tbool)
 {
   /* Code For TBool Goes Here */
+
+
+}
+
+void Skeleton::visitTReal(TReal *treal)
+{
+  /* Code For TReal Goes Here */
 
 
 }
@@ -66,7 +73,7 @@ void Skeleton::visitPDec(PDec *pdec)
 
   visitIdent(pdec->ident_);
   pdec->listfpmtdec_->accept(this);
-  pdec->listvardec_->accept(this);
+  pdec->listvardecl_->accept(this);
   pdec->liststmt_->accept(this);
 
 }
@@ -161,15 +168,6 @@ void Skeleton::visitEAnd(EAnd *eand)
 
 }
 
-void Skeleton::visitCall(Call *call)
-{
-  /* Code For Call Goes Here */
-
-  visitIdent(call->ident_);
-  call->listexp_->accept(this);
-
-}
-
 void Skeleton::visitEVar(EVar *evar)
 {
   /* Code For EVar Goes Here */
@@ -208,11 +206,19 @@ void Skeleton::visitETrue(ETrue *etrue)
 
 }
 
-void Skeleton::visitEDouble(EDouble *edouble)
+void Skeleton::visitEReal(EReal *ereal)
 {
-  /* Code For EDouble Goes Here */
+  /* Code For EReal Goes Here */
 
-  visitDouble(edouble->double_);
+  visitDouble(ereal->double_);
+
+}
+
+void Skeleton::visitSPrint(SPrint *sprint)
+{
+  /* Code For SPrint Goes Here */
+
+  sprint->exp_->accept(this);
 
 }
 
@@ -239,7 +245,7 @@ void Skeleton::visitSWhile(SWhile *swhile)
   /* Code For SWhile Goes Here */
 
   swhile->exp_->accept(this);
-  swhile->stmt_->accept(this);
+  swhile->liststmt_->accept(this);
 
 }
 
@@ -248,8 +254,8 @@ void Skeleton::visitSIfThenElse(SIfThenElse *sifthenelse)
   /* Code For SIfThenElse Goes Here */
 
   sifthenelse->exp_->accept(this);
-  sifthenelse->stmt_1->accept(this);
-  sifthenelse->stmt_2->accept(this);
+  sifthenelse->liststmt_1->accept(this);
+  sifthenelse->liststmt_2->accept(this);
 
 }
 
@@ -258,7 +264,7 @@ void Skeleton::visitSIfThen(SIfThen *sifthen)
   /* Code For SIfThen Goes Here */
 
   sifthen->exp_->accept(this);
-  sifthen->stmt_->accept(this);
+  sifthen->liststmt_->accept(this);
 
 }
 
@@ -287,9 +293,9 @@ void Skeleton::visitListIdent(ListIdent* listident)
   }
 }
 
-void Skeleton::visitListVarDec(ListVarDec* listvardec)
+void Skeleton::visitListVarDecl(ListVarDecl* listvardecl)
 {
-  for (ListVarDec::iterator i = listvardec->begin() ; i != listvardec->end() ; ++i)
+  for (ListVarDecl::iterator i = listvardecl->begin() ; i != listvardecl->end() ; ++i)
   {
     (*i)->accept(this);
   }

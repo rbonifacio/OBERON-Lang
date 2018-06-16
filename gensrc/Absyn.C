@@ -6,10 +6,10 @@
 #include "Absyn.H"
 
 /********************   Module    ********************/
-Module::Module(Ident p1, ListVarDec *p2, ListProcDec *p3, ListStmt *p4, Ident p5)
+Module::Module(Ident p1, ListVarDecl *p2, ListProcDec *p3, ListStmt *p4, Ident p5)
 {
   ident_1 = p1;
-  listvardec_ = p2;
+  listvardecl_ = p2;
   listprocdec_ = p3;
   liststmt_ = p4;
   ident_2 = p5;
@@ -19,7 +19,7 @@ Module::Module(Ident p1, ListVarDec *p2, ListProcDec *p3, ListStmt *p4, Ident p5
 Module::Module(const Module & other)
 {
   ident_1 = other.ident_1;
-  listvardec_ = other.listvardec_->clone();
+  listvardecl_ = other.listvardecl_->clone();
   listprocdec_ = other.listprocdec_->clone();
   liststmt_ = other.liststmt_->clone();
   ident_2 = other.ident_2;
@@ -36,7 +36,7 @@ Module &Module::operator=(const Module & other)
 void Module::swap(Module & other)
 {
   std::swap(ident_1, other.ident_1);
-  std::swap(listvardec_, other.listvardec_);
+  std::swap(listvardecl_, other.listvardecl_);
   std::swap(listprocdec_, other.listprocdec_);
   std::swap(liststmt_, other.liststmt_);
   std::swap(ident_2, other.ident_2);
@@ -45,7 +45,7 @@ void Module::swap(Module & other)
 
 Module::~Module()
 {
-  delete(listvardec_);
+  delete(listvardecl_);
   delete(listprocdec_);
   delete(liststmt_);
 
@@ -139,6 +139,46 @@ void TBool::accept(Visitor *v)
 TBool *TBool::clone() const
 {
   return new TBool(*this);
+}
+
+
+
+/********************   TReal    ********************/
+TReal::TReal()
+{
+
+}
+
+TReal::TReal(const TReal & other)
+{
+
+}
+
+TReal &TReal::operator=(const TReal & other)
+{
+  TReal tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void TReal::swap(TReal & other)
+{
+
+}
+
+TReal::~TReal()
+{
+
+}
+
+void TReal::accept(Visitor *v)
+{
+  v->visitTReal(this);
+}
+
+TReal *TReal::clone() const
+{
+  return new TReal(*this);
 }
 
 
@@ -240,11 +280,11 @@ FPDecl *FPDecl::clone() const
 
 
 /********************   PDec    ********************/
-PDec::PDec(Ident p1, ListFPmtDec *p2, ListVarDec *p3, ListStmt *p4)
+PDec::PDec(Ident p1, ListFPmtDec *p2, ListVarDecl *p3, ListStmt *p4)
 {
   ident_ = p1;
   listfpmtdec_ = p2;
-  listvardec_ = p3;
+  listvardecl_ = p3;
   liststmt_ = p4;
 
 }
@@ -253,7 +293,7 @@ PDec::PDec(const PDec & other)
 {
   ident_ = other.ident_;
   listfpmtdec_ = other.listfpmtdec_->clone();
-  listvardec_ = other.listvardec_->clone();
+  listvardecl_ = other.listvardecl_->clone();
   liststmt_ = other.liststmt_->clone();
 
 }
@@ -269,7 +309,7 @@ void PDec::swap(PDec & other)
 {
   std::swap(ident_, other.ident_);
   std::swap(listfpmtdec_, other.listfpmtdec_);
-  std::swap(listvardec_, other.listvardec_);
+  std::swap(listvardecl_, other.listvardecl_);
   std::swap(liststmt_, other.liststmt_);
 
 }
@@ -277,7 +317,7 @@ void PDec::swap(PDec & other)
 PDec::~PDec()
 {
   delete(listfpmtdec_);
-  delete(listvardec_);
+  delete(listvardecl_);
   delete(liststmt_);
 
 }
@@ -774,53 +814,6 @@ EAnd *EAnd::clone() const
 
 
 
-/********************   Call    ********************/
-Call::Call(Ident p1, ListExp *p2)
-{
-  ident_ = p1;
-  listexp_ = p2;
-
-}
-
-Call::Call(const Call & other)
-{
-  ident_ = other.ident_;
-  listexp_ = other.listexp_->clone();
-
-}
-
-Call &Call::operator=(const Call & other)
-{
-  Call tmp(other);
-  swap(tmp);
-  return *this;
-}
-
-void Call::swap(Call & other)
-{
-  std::swap(ident_, other.ident_);
-  std::swap(listexp_, other.listexp_);
-
-}
-
-Call::~Call()
-{
-  delete(listexp_);
-
-}
-
-void Call::accept(Visitor *v)
-{
-  v->visitCall(this);
-}
-
-Call *Call::clone() const
-{
-  return new Call(*this);
-}
-
-
-
 /********************   EVar    ********************/
 EVar::EVar(Ident p1)
 {
@@ -1030,45 +1023,89 @@ ETrue *ETrue::clone() const
 
 
 
-/********************   EDouble    ********************/
-EDouble::EDouble(Double p1)
+/********************   EReal    ********************/
+EReal::EReal(Double p1)
 {
   double_ = p1;
 
 }
 
-EDouble::EDouble(const EDouble & other)
+EReal::EReal(const EReal & other)
 {
   double_ = other.double_;
 
 }
 
-EDouble &EDouble::operator=(const EDouble & other)
+EReal &EReal::operator=(const EReal & other)
 {
-  EDouble tmp(other);
+  EReal tmp(other);
   swap(tmp);
   return *this;
 }
 
-void EDouble::swap(EDouble & other)
+void EReal::swap(EReal & other)
 {
   std::swap(double_, other.double_);
 
 }
 
-EDouble::~EDouble()
+EReal::~EReal()
 {
 
 }
 
-void EDouble::accept(Visitor *v)
+void EReal::accept(Visitor *v)
 {
-  v->visitEDouble(this);
+  v->visitEReal(this);
 }
 
-EDouble *EDouble::clone() const
+EReal *EReal::clone() const
 {
-  return new EDouble(*this);
+  return new EReal(*this);
+}
+
+
+
+/********************   SPrint    ********************/
+SPrint::SPrint(Exp *p1)
+{
+  exp_ = p1;
+
+}
+
+SPrint::SPrint(const SPrint & other)
+{
+  exp_ = other.exp_->clone();
+
+}
+
+SPrint &SPrint::operator=(const SPrint & other)
+{
+  SPrint tmp(other);
+  swap(tmp);
+  return *this;
+}
+
+void SPrint::swap(SPrint & other)
+{
+  std::swap(exp_, other.exp_);
+
+}
+
+SPrint::~SPrint()
+{
+  delete(exp_);
+
+}
+
+void SPrint::accept(Visitor *v)
+{
+  v->visitSPrint(this);
+}
+
+SPrint *SPrint::clone() const
+{
+  return new SPrint(*this);
 }
 
 
@@ -1168,17 +1205,17 @@ SAssignment *SAssignment::clone() const
 
 
 /********************   SWhile    ********************/
-SWhile::SWhile(Exp *p1, Stmt *p2)
+SWhile::SWhile(Exp *p1, ListStmt *p2)
 {
   exp_ = p1;
-  stmt_ = p2;
+  liststmt_ = p2;
 
 }
 
 SWhile::SWhile(const SWhile & other)
 {
   exp_ = other.exp_->clone();
-  stmt_ = other.stmt_->clone();
+  liststmt_ = other.liststmt_->clone();
 
 }
 
@@ -1192,14 +1229,14 @@ SWhile &SWhile::operator=(const SWhile & other)
 void SWhile::swap(SWhile & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_, other.stmt_);
+  std::swap(liststmt_, other.liststmt_);
 
 }
 
 SWhile::~SWhile()
 {
   delete(exp_);
-  delete(stmt_);
+  delete(liststmt_);
 
 }
 
@@ -1216,19 +1253,19 @@ SWhile *SWhile::clone() const
 
 
 /********************   SIfThenElse    ********************/
-SIfThenElse::SIfThenElse(Exp *p1, Stmt *p2, Stmt *p3)
+SIfThenElse::SIfThenElse(Exp *p1, ListStmt *p2, ListStmt *p3)
 {
   exp_ = p1;
-  stmt_1 = p2;
-  stmt_2 = p3;
+  liststmt_1 = p2;
+  liststmt_2 = p3;
 
 }
 
 SIfThenElse::SIfThenElse(const SIfThenElse & other)
 {
   exp_ = other.exp_->clone();
-  stmt_1 = other.stmt_1->clone();
-  stmt_2 = other.stmt_2->clone();
+  liststmt_1 = other.liststmt_1->clone();
+  liststmt_2 = other.liststmt_2->clone();
 
 }
 
@@ -1242,16 +1279,16 @@ SIfThenElse &SIfThenElse::operator=(const SIfThenElse & other)
 void SIfThenElse::swap(SIfThenElse & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_1, other.stmt_1);
-  std::swap(stmt_2, other.stmt_2);
+  std::swap(liststmt_1, other.liststmt_1);
+  std::swap(liststmt_2, other.liststmt_2);
 
 }
 
 SIfThenElse::~SIfThenElse()
 {
   delete(exp_);
-  delete(stmt_1);
-  delete(stmt_2);
+  delete(liststmt_1);
+  delete(liststmt_2);
 
 }
 
@@ -1268,17 +1305,17 @@ SIfThenElse *SIfThenElse::clone() const
 
 
 /********************   SIfThen    ********************/
-SIfThen::SIfThen(Exp *p1, Stmt *p2)
+SIfThen::SIfThen(Exp *p1, ListStmt *p2)
 {
   exp_ = p1;
-  stmt_ = p2;
+  liststmt_ = p2;
 
 }
 
 SIfThen::SIfThen(const SIfThen & other)
 {
   exp_ = other.exp_->clone();
-  stmt_ = other.stmt_->clone();
+  liststmt_ = other.liststmt_->clone();
 
 }
 
@@ -1292,14 +1329,14 @@ SIfThen &SIfThen::operator=(const SIfThen & other)
 void SIfThen::swap(SIfThen & other)
 {
   std::swap(exp_, other.exp_);
-  std::swap(stmt_, other.stmt_);
+  std::swap(liststmt_, other.liststmt_);
 
 }
 
 SIfThen::~SIfThen()
 {
   delete(exp_);
-  delete(stmt_);
+  delete(liststmt_);
 
 }
 
@@ -1358,17 +1395,17 @@ ListIdent *ListIdent::clone() const
 }
 
 
-/********************   ListVarDec    ********************/
+/********************   ListVarDecl    ********************/
 
-void ListVarDec::accept(Visitor *v)
+void ListVarDecl::accept(Visitor *v)
 {
-  v->visitListVarDec(this);
+  v->visitListVarDecl(this);
 }
 
 
-ListVarDec *ListVarDec::clone() const
+ListVarDecl *ListVarDecl::clone() const
 {
-  return new ListVarDec(*this);
+  return new ListVarDecl(*this);
 }
 
 

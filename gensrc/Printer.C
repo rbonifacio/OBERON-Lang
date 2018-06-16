@@ -117,7 +117,7 @@ void PrintAbsyn::visitModule(Module* p)
 
   render("module");
   visitIdent(p->ident_1);
-  if(p->listvardec_) {_i_ = 0; p->listvardec_->accept(this);}  if(p->listprocdec_) {_i_ = 0; p->listprocdec_->accept(this);}  render("begin");
+  if(p->listvardecl_) {_i_ = 0; p->listvardecl_->accept(this);}  if(p->listprocdec_) {_i_ = 0; p->listprocdec_->accept(this);}  render("begin");
   if(p->liststmt_) {_i_ = 0; p->liststmt_->accept(this);}  render("end");
   visitIdent(p->ident_2);
   render('.');
@@ -153,7 +153,19 @@ void PrintAbsyn::visitTBool(TBool* p)
   _i_ = oldi;
 }
 
-void PrintAbsyn::visitVarDec(VarDec*p) {} //abstract class
+void PrintAbsyn::visitTReal(TReal* p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("real");
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
+
+void PrintAbsyn::visitVarDecl(VarDecl*p) {} //abstract class
 
 void PrintAbsyn::visitDecl(Decl* p)
 {
@@ -195,7 +207,7 @@ void PrintAbsyn::visitPDec(PDec* p)
   visitIdent(p->ident_);
   render('(');
   if(p->listfpmtdec_) {_i_ = 0; p->listfpmtdec_->accept(this);}  render(')');
-  if(p->listvardec_) {_i_ = 0; p->listvardec_->accept(this);}  render("begin");
+  if(p->listvardecl_) {_i_ = 0; p->listvardecl_->accept(this);}  render("begin");
   if(p->liststmt_) {_i_ = 0; p->liststmt_->accept(this);}  render("end");
 
   if (oldi > 0) render(_R_PAREN);
@@ -345,20 +357,6 @@ void PrintAbsyn::visitEAnd(EAnd* p)
   _i_ = oldi;
 }
 
-void PrintAbsyn::visitCall(Call* p)
-{
-  int oldi = _i_;
-  if (oldi > 4) render(_L_PAREN);
-
-  visitIdent(p->ident_);
-  render('(');
-  if(p->listexp_) {_i_ = 0; p->listexp_->accept(this);}  render(')');
-
-  if (oldi > 4) render(_R_PAREN);
-
-  _i_ = oldi;
-}
-
 void PrintAbsyn::visitEVar(EVar* p)
 {
   int oldi = _i_;
@@ -419,7 +417,7 @@ void PrintAbsyn::visitETrue(ETrue* p)
   _i_ = oldi;
 }
 
-void PrintAbsyn::visitEDouble(EDouble* p)
+void PrintAbsyn::visitEReal(EReal* p)
 {
   int oldi = _i_;
   if (oldi > 4) render(_L_PAREN);
@@ -432,6 +430,20 @@ void PrintAbsyn::visitEDouble(EDouble* p)
 }
 
 void PrintAbsyn::visitStmt(Stmt*p) {} //abstract class
+
+void PrintAbsyn::visitSPrint(SPrint* p)
+{
+  int oldi = _i_;
+  if (oldi > 0) render(_L_PAREN);
+
+  render("print(");
+  _i_ = 0; p->exp_->accept(this);
+  render(')');
+
+  if (oldi > 0) render(_R_PAREN);
+
+  _i_ = oldi;
+}
 
 void PrintAbsyn::visitSCall(SCall* p)
 {
@@ -471,8 +483,7 @@ void PrintAbsyn::visitSWhile(SWhile* p)
   _i_ = 0; p->exp_->accept(this);
   render(')');
   render("do");
-  _i_ = 0; p->stmt_->accept(this);
-  render("end");
+  if(p->liststmt_) {_i_ = 0; p->liststmt_->accept(this);}  render("end");
 
   if (oldi > 0) render(_R_PAREN);
 
@@ -489,11 +500,9 @@ void PrintAbsyn::visitSIfThenElse(SIfThenElse* p)
   _i_ = 0; p->exp_->accept(this);
   render(')');
   render("then");
-  _i_ = 0; p->stmt_1->accept(this);
-  render("end");
+  if(p->liststmt_1) {_i_ = 0; p->liststmt_1->accept(this);}  render("end");
   render("else");
-  _i_ = 0; p->stmt_2->accept(this);
-  render("end");
+  if(p->liststmt_2) {_i_ = 0; p->liststmt_2->accept(this);}  render("end");
 
   if (oldi > 0) render(_R_PAREN);
 
@@ -510,8 +519,7 @@ void PrintAbsyn::visitSIfThen(SIfThen* p)
   _i_ = 0; p->exp_->accept(this);
   render(')');
   render("then");
-  _i_ = 0; p->stmt_->accept(this);
-  render("end");
+  if(p->liststmt_) {_i_ = 0; p->liststmt_->accept(this);}  render("end");
 
   if (oldi > 0) render(_R_PAREN);
 
@@ -539,12 +547,12 @@ void PrintAbsyn::visitListExp(ListExp *listexp)
     visitIdent(*i) ;
     if (i != listident->end() - 1) render(',');
   }
-}void PrintAbsyn::visitListVarDec(ListVarDec *listvardec)
+}void PrintAbsyn::visitListVarDecl(ListVarDecl *listvardecl)
 {
-  for (ListVarDec::const_iterator i = listvardec->begin() ; i != listvardec->end() ; ++i)
+  for (ListVarDecl::const_iterator i = listvardecl->begin() ; i != listvardecl->end() ; ++i)
   {
     (*i)->accept(this);
-    if (i != listvardec->end() - 1) render(';');
+    if (i != listvardecl->end() - 1) render(';');
   }
 }void PrintAbsyn::visitListFPmtDec(ListFPmtDec *listfpmtdec)
 {
@@ -615,7 +623,7 @@ void ShowAbsyn::visitModule(Module* p)
   visitIdent(p->ident_1);
   bufAppend(' ');
   bufAppend('[');
-  if (p->listvardec_)  p->listvardec_->accept(this);
+  if (p->listvardecl_)  p->listvardecl_->accept(this);
   bufAppend(']');
   bufAppend(' ');
   bufAppend('[');
@@ -640,7 +648,11 @@ void ShowAbsyn::visitTBool(TBool* p)
 {
   bufAppend("TBool");
 }
-void ShowAbsyn::visitVarDec(VarDec* p) {} //abstract class
+void ShowAbsyn::visitTReal(TReal* p)
+{
+  bufAppend("TReal");
+}
+void ShowAbsyn::visitVarDecl(VarDecl* p) {} //abstract class
 
 void ShowAbsyn::visitDecl(Decl* p)
 {
@@ -686,7 +698,7 @@ void ShowAbsyn::visitPDec(PDec* p)
   bufAppend(']');
   bufAppend(' ');
   bufAppend('[');
-  if (p->listvardec_)  p->listvardec_->accept(this);
+  if (p->listvardecl_)  p->listvardecl_->accept(this);
   bufAppend(']');
   bufAppend(' ');
   bufAppend('[');
@@ -797,19 +809,6 @@ void ShowAbsyn::visitEAnd(EAnd* p)
   p->exp_2->accept(this);
   bufAppend(')');
 }
-void ShowAbsyn::visitCall(Call* p)
-{
-  bufAppend('(');
-  bufAppend("Call");
-  bufAppend(' ');
-  visitIdent(p->ident_);
-  bufAppend(' ');
-  bufAppend('[');
-  if (p->listexp_)  p->listexp_->accept(this);
-  bufAppend(']');
-  bufAppend(' ');
-  bufAppend(')');
-}
 void ShowAbsyn::visitEVar(EVar* p)
 {
   bufAppend('(');
@@ -842,16 +841,27 @@ void ShowAbsyn::visitETrue(ETrue* p)
 {
   bufAppend("ETrue");
 }
-void ShowAbsyn::visitEDouble(EDouble* p)
+void ShowAbsyn::visitEReal(EReal* p)
 {
   bufAppend('(');
-  bufAppend("EDouble");
+  bufAppend("EReal");
   bufAppend(' ');
   visitDouble(p->double_);
   bufAppend(')');
 }
 void ShowAbsyn::visitStmt(Stmt* p) {} //abstract class
 
+void ShowAbsyn::visitSPrint(SPrint* p)
+{
+  bufAppend('(');
+  bufAppend("SPrint");
+  bufAppend(' ');
+  bufAppend('[');
+  if (p->exp_)  p->exp_->accept(this);
+  bufAppend(']');
+  bufAppend(' ');
+  bufAppend(')');
+}
 void ShowAbsyn::visitSCall(SCall* p)
 {
   bufAppend('(');
@@ -887,7 +897,7 @@ void ShowAbsyn::visitSWhile(SWhile* p)
   bufAppend(']');
   bufAppend(' ');
   bufAppend('[');
-  if (p->stmt_)  p->stmt_->accept(this);
+  if (p->liststmt_)  p->liststmt_->accept(this);
   bufAppend(']');
   bufAppend(' ');
   bufAppend(')');
@@ -901,9 +911,9 @@ void ShowAbsyn::visitSIfThenElse(SIfThenElse* p)
   if (p->exp_)  p->exp_->accept(this);
   bufAppend(']');
   bufAppend(' ');
-  p->stmt_1->accept(this);
+  p->liststmt_1->accept(this);
   bufAppend(' ');
-  p->stmt_2->accept(this);
+  p->liststmt_2->accept(this);
   bufAppend(' ');
   bufAppend(')');
 }
@@ -917,7 +927,7 @@ void ShowAbsyn::visitSIfThen(SIfThen* p)
   bufAppend(']');
   bufAppend(' ');
   bufAppend('[');
-  if (p->stmt_)  p->stmt_->accept(this);
+  if (p->liststmt_)  p->liststmt_->accept(this);
   bufAppend(']');
   bufAppend(' ');
   bufAppend(')');
@@ -949,12 +959,12 @@ void ShowAbsyn::visitListIdent(ListIdent *listident)
   }
 }
 
-void ShowAbsyn::visitListVarDec(ListVarDec *listvardec)
+void ShowAbsyn::visitListVarDecl(ListVarDecl *listvardecl)
 {
-  for (ListVarDec::const_iterator i = listvardec->begin() ; i != listvardec->end() ; ++i)
+  for (ListVarDecl::const_iterator i = listvardecl->begin() ; i != listvardecl->end() ; ++i)
   {
     (*i)->accept(this);
-    if (i != listvardec->end() - 1) bufAppend(", ");
+    if (i != listvardecl->end() - 1) bufAppend(", ");
   }
 }
 

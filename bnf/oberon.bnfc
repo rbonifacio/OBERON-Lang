@@ -1,16 +1,17 @@
 comment "//" ;
 comment "/*" "*/" ;
 
-Module. ModuleDec ::= "module" Ident [VarDec] [ProcDec] "begin" [Stmt] "end" Ident "." ;
+Module. ModuleDec ::= "module" Ident [VarDecl] [ProcDec] "begin" [Stmt] "end" Ident "." ;
 
 TInt. Type  ::= "int" ;
 TBool. Type ::= "bool";
+TReal. Type ::= "real";
 
-Decl. VarDec    ::= "var" [Ident] ":" Type ; 
+Decl. VarDecl    ::= "var" [Ident] ":" Type ; 
 
 FPDecl. FPmtDec ::= [Ident] ":" Type ;
 
-PDec. ProcDec ::= "def" Ident "("[FPmtDec]")" [VarDec] "begin" [Stmt] "end"  ; 
+PDec. ProcDec ::= "def" Ident "("[FPmtDec]")" [VarDecl] "begin" [Stmt] "end"  ; 
 
 ELt.     Exp1 ::= Exp1 "<" Exp2  ;
 EGt.     Exp1 ::= Exp1 ">" Exp2  ;
@@ -22,25 +23,26 @@ EMul.    Exp3 ::= Exp3 "*" Exp4  ;
 EDiv.    Exp3 ::= Exp3 "/" Exp4  ; 
 EOr.     Exp2 ::= Exp2 "||" Exp3 ;
 EAnd.    Exp3 ::= Exp3 "&&" Exp4 ; 
-Call.    Exp4 ::= Ident "(" [Exp] ")" ;
+-- Call.    Exp4 ::= Ident "(" [Exp] ")" ;
 EVar.    Exp4 ::= Ident   ;
 EStr.    Exp4 ::= String  ;
 EInt.    Exp4 ::= Integer ;
 EFalse.  Exp4 ::= "false" ;
 ETrue.   Exp4 ::= "true"  ; 
-EDouble. Exp4 ::= Double  ;
+EReal.   Exp4 ::= Double  ;
 
 coercions Exp 4 ;
-    
+
+SPrint.        Stmt ::= "print(" Exp ")";
 SCall.         Stmt ::= Ident "("[Exp]")" ;  
 SAssignment.   Stmt ::= Ident ":=" Exp ;
-SWhile.        Stmt ::= "while" "(" Exp ")" "do" Stmt "end" ; 
-SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" Stmt "end" "else" Stmt "end" ;
-SIfThen.       Stmt ::= "if" "(" Exp ")" "then" Stmt "end" ;
+SWhile.        Stmt ::= "while" "(" Exp ")" "do" [Stmt] "end" ; 
+SIfThenElse.   Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" "else" [Stmt] "end" ;
+SIfThen.       Stmt ::= "if" "(" Exp ")" "then" [Stmt] "end" ;
 
 separator Exp ","   	     	     ;
 separator Stmt ";"                   ;
 separator Ident ","                  ;
-separator VarDec ";"                 ;
+separator VarDecl ";"                 ;
 separator FPmtDec ","                ;
 separator ProcDec ""                 ;

@@ -1,0 +1,10 @@
+module TO5 
+	def a() 
+		var x,a,b,c : int;
+	begin
+		x := 1;
+		print(x);
+	end
+begin 
+	a();
+end T05. 

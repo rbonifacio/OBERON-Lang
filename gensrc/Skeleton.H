@@ -8,9 +8,9 @@
 class Skeleton : public Visitor
 {
 public:
-  virtual void visitModuleDec(ModuleDec* p);
+  void visitModuleDec(ModuleDec* p);
   void visitType(Type* p);
-  void visitVarDec(VarDec* p);
+  void visitVarDecl(VarDecl* p);
   void visitFPmtDec(FPmtDec* p);
   void visitProcDec(ProcDec* p);
   void visitExp(Exp* p);
@@ -18,6 +18,7 @@ public:
   void visitModule(Module* p);
   void visitTInt(TInt* p);
   void visitTBool(TBool* p);
+  void visitTReal(TReal* p);
   void visitDecl(Decl* p);
   void visitFPDecl(FPDecl* p);
   void visitPDec(PDec* p);
@@ -31,13 +32,13 @@ public:
   void visitEDiv(EDiv* p);
   void visitEOr(EOr* p);
   void visitEAnd(EAnd* p);
-  void visitCall(Call* p);
   void visitEVar(EVar* p);
   void visitEStr(EStr* p);
   void visitEInt(EInt* p);
   void visitEFalse(EFalse* p);
   void visitETrue(ETrue* p);
-  void visitEDouble(EDouble* p);
+  void visitEReal(EReal* p);
+  void visitSPrint(SPrint* p);
   void visitSCall(SCall* p);
   void visitSAssignment(SAssignment* p);
   void visitSWhile(SWhile* p);
@@ -46,15 +47,15 @@ public:
   void visitListExp(ListExp* p);
   void visitListStmt(ListStmt* p);
   void visitListIdent(ListIdent* p);
-  void visitListVarDec(ListVarDec* p);
+  void visitListVarDecl(ListVarDecl* p);
   void visitListFPmtDec(ListFPmtDec* p);
   void visitListProcDec(ListProcDec* p);
 
-  void visitInteger(Integer x);
-  void visitChar(Char x);
-  void visitDouble(Double x);
-  void visitString(String x);
-  void visitIdent(Ident x);
+  void visit"Integer"("Integer" x);
+  void visit"Char"("Char" x);
+  void visit"Double"("Double" x);
+  void visit"String"("String" x);
+  void visit"Ident"("Ident" x);
 
 };
 

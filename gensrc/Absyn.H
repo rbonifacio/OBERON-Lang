@@ -21,7 +21,7 @@ typedef std::string Ident;
 
 class ModuleDec;
 class Type;
-class VarDec;
+class VarDecl;
 class FPmtDec;
 class ProcDec;
 class Exp;
@@ -29,6 +29,7 @@ class Stmt;
 class Module;
 class TInt;
 class TBool;
+class TReal;
 class Decl;
 class FPDecl;
 class PDec;
@@ -42,13 +43,13 @@ class EMul;
 class EDiv;
 class EOr;
 class EAnd;
-class Call;
 class EVar;
 class EStr;
 class EInt;
 class EFalse;
 class ETrue;
-class EDouble;
+class EReal;
+class SPrint;
 class SCall;
 class SAssignment;
 class SWhile;
@@ -57,7 +58,7 @@ class SIfThen;
 class ListExp;
 class ListStmt;
 class ListIdent;
-class ListVarDec;
+class ListVarDecl;
 class ListFPmtDec;
 class ListProcDec;
 
@@ -69,7 +70,7 @@ public:
   virtual ~Visitor() {}
   virtual void visitModuleDec(ModuleDec *p) = 0;
   virtual void visitType(Type *p) = 0;
-  virtual void visitVarDec(VarDec *p) = 0;
+  virtual void visitVarDecl(VarDecl *p) = 0;
   virtual void visitFPmtDec(FPmtDec *p) = 0;
   virtual void visitProcDec(ProcDec *p) = 0;
   virtual void visitExp(Exp *p) = 0;
@@ -77,6 +78,7 @@ public:
   virtual void visitModule(Module *p) = 0;
   virtual void visitTInt(TInt *p) = 0;
   virtual void visitTBool(TBool *p) = 0;
+  virtual void visitTReal(TReal *p) = 0;
   virtual void visitDecl(Decl *p) = 0;
   virtual void visitFPDecl(FPDecl *p) = 0;
   virtual void visitPDec(PDec *p) = 0;
@@ -90,13 +92,13 @@ public:
   virtual void visitEDiv(EDiv *p) = 0;
   virtual void visitEOr(EOr *p) = 0;
   virtual void visitEAnd(EAnd *p) = 0;
-  virtual void visitCall(Call *p) = 0;
   virtual void visitEVar(EVar *p) = 0;
   virtual void visitEStr(EStr *p) = 0;
   virtual void visitEInt(EInt *p) = 0;
   virtual void visitEFalse(EFalse *p) = 0;
   virtual void visitETrue(ETrue *p) = 0;
-  virtual void visitEDouble(EDouble *p) = 0;
+  virtual void visitEReal(EReal *p) = 0;
+  virtual void visitSPrint(SPrint *p) = 0;
   virtual void visitSCall(SCall *p) = 0;
   virtual void visitSAssignment(SAssignment *p) = 0;
   virtual void visitSWhile(SWhile *p) = 0;
@@ -105,7 +107,7 @@ public:
   virtual void visitListExp(ListExp *p) = 0;
   virtual void visitListStmt(ListStmt *p) = 0;
   virtual void visitListIdent(ListIdent *p) = 0;
-  virtual void visitListVarDec(ListVarDec *p) = 0;
+  virtual void visitListVarDecl(ListVarDecl *p) = 0;
   virtual void visitListFPmtDec(ListFPmtDec *p) = 0;
   virtual void visitListProcDec(ListProcDec *p) = 0;
 
@@ -143,10 +145,10 @@ public:
 
 };
 
-class VarDec : public Visitable
+class VarDecl : public Visitable
 {
 public:
-  virtual VarDec *clone() const = 0;
+  virtual VarDecl *clone() const = 0;
 
 };
 
@@ -184,14 +186,14 @@ class Module : public ModuleDec
 {
 public:
   Ident ident_1;
-  ListVarDec *listvardec_;
+  ListVarDecl *listvardecl_;
   ListProcDec *listprocdec_;
   ListStmt *liststmt_;
   Ident ident_2;
 
   Module(const Module &);
   Module &operator=(const Module &);
-  Module(Ident p1, ListVarDec *p2, ListProcDec *p3, ListStmt *p4, Ident p5);
+  Module(Ident p1, ListVarDecl *p2, ListProcDec *p3, ListStmt *p4, Ident p5);
   ~Module();
   virtual void accept(Visitor *v);
   virtual Module *clone() const;
@@ -224,7 +226,20 @@ public:
   void swap(TBool &);
 };
 
-class Decl : public VarDec
+class TReal : public Type
+{
+public:
+
+  TReal(const TReal &);
+  TReal &operator=(const TReal &);
+  TReal();
+  ~TReal();
+  virtual void accept(Visitor *v);
+  virtual TReal *clone() const;
+  void swap(TReal &);
+};
+
+class Decl : public VarDecl
 {
 public:
   ListIdent *listident_;
@@ -259,12 +274,12 @@ class PDec : public ProcDec
 public:
   Ident ident_;
   ListFPmtDec *listfpmtdec_;
-  ListVarDec *listvardec_;
+  ListVarDecl *listvardecl_;
   ListStmt *liststmt_;
 
   PDec(const PDec &);
   PDec &operator=(const PDec &);
-  PDec(Ident p1, ListFPmtDec *p2, ListVarDec *p3, ListStmt *p4);
+  PDec(Ident p1, ListFPmtDec *p2, ListVarDecl *p3, ListStmt *p4);
   ~PDec();
   virtual void accept(Visitor *v);
   virtual PDec *clone() const;
@@ -421,21 +436,6 @@ public:
   void swap(EAnd &);
 };
 
-class Call : public Exp
-{
-public:
-  Ident ident_;
-  ListExp *listexp_;
-
-  Call(const Call &);
-  Call &operator=(const Call &);
-  Call(Ident p1, ListExp *p2);
-  ~Call();
-  virtual void accept(Visitor *v);
-  virtual Call *clone() const;
-  void swap(Call &);
-};
-
 class EVar : public Exp
 {
 public:
@@ -504,18 +504,32 @@ public:
   void swap(ETrue &);
 };
 
-class EDouble : public Exp
+class EReal : public Exp
 {
 public:
   Double double_;
 
-  EDouble(const EDouble &);
-  EDouble &operator=(const EDouble &);
-  EDouble(Double p1);
-  ~EDouble();
+  EReal(const EReal &);
+  EReal &operator=(const EReal &);
+  EReal(Double p1);
+  ~EReal();
   virtual void accept(Visitor *v);
-  virtual EDouble *clone() const;
-  void swap(EDouble &);
+  virtual EReal *clone() const;
+  void swap(EReal &);
+};
+
+class SPrint : public Stmt
+{
+public:
+  Exp *exp_;
+
+  SPrint(const SPrint &);
+  SPrint &operator=(const SPrint &);
+  SPrint(Exp *p1);
+  ~SPrint();
+  virtual void accept(Visitor *v);
+  virtual SPrint *clone() const;
+  void swap(SPrint &);
 };
 
 class SCall : public Stmt
@@ -552,11 +566,11 @@ class SWhile : public Stmt
 {
 public:
   Exp *exp_;
-  Stmt *stmt_;
+  ListStmt *liststmt_;
 
   SWhile(const SWhile &);
   SWhile &operator=(const SWhile &);
-  SWhile(Exp *p1, Stmt *p2);
+  SWhile(Exp *p1, ListStmt *p2);
   ~SWhile();
   virtual void accept(Visitor *v);
   virtual SWhile *clone() const;
@@ -567,12 +581,12 @@ class SIfThenElse : public Stmt
 {
 public:
   Exp *exp_;
-  Stmt *stmt_1;
-  Stmt *stmt_2;
+  ListStmt *liststmt_1;
+  ListStmt *liststmt_2;
 
   SIfThenElse(const SIfThenElse &);
   SIfThenElse &operator=(const SIfThenElse &);
-  SIfThenElse(Exp *p1, Stmt *p2, Stmt *p3);
+  SIfThenElse(Exp *p1, ListStmt *p2, ListStmt *p3);
   ~SIfThenElse();
   virtual void accept(Visitor *v);
   virtual SIfThenElse *clone() const;
@@ -583,11 +597,11 @@ class SIfThen : public Stmt
 {
 public:
   Exp *exp_;
-  Stmt *stmt_;
+  ListStmt *liststmt_;
 
   SIfThen(const SIfThen &);
   SIfThen &operator=(const SIfThen &);
-  SIfThen(Exp *p1, Stmt *p2);
+  SIfThen(Exp *p1, ListStmt *p2);
   ~SIfThen();
   virtual void accept(Visitor *v);
   virtual SIfThen *clone() const;
@@ -617,11 +631,11 @@ public:
   virtual ListIdent *clone() const;
 };
 
-class ListVarDec : public Visitable, public std::vector<VarDec*>
+class ListVarDecl : public Visitable, public std::vector<VarDecl*>
 {
 public:
   virtual void accept(Visitor *v);
-  virtual ListVarDec *clone() const;
+  virtual ListVarDecl *clone() const;
 };
 
 class ListFPmtDec : public Visitable, public std::vector<FPmtDec*>

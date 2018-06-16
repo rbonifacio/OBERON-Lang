@@ -19,19 +19,9 @@ clean:
 distclean: clean
 	rm -f Absyn.C Absyn.H Test.C Parser.C Parser.H Lexer.C Skeleton.C Skeleton.H Printer.C Printer.H Makefile oberon.l oberon.y oberon.tex 
 
-gensrc:
-	bnfc --cpp oberon.bnfc 
-
 Testoberon: ${OBJS} Test.o
 	@echo "Linking Testoberon..."
 	${CC} ${CCFLAGS} ${OBJS} Test.o -o Testoberon
-	@echo "Moving files..."
-	mv oberon.l ../gensrc
-	mv oberon.y ../gensrc
-	mv *.H ../gensrc
-	mv *.C ../gensrc
-	mv *.o ../build 
-	
 
 Absyn.o: Absyn.C Absyn.H
 	${CC} ${CCFLAGS} -c Absyn.C
