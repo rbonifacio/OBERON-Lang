@@ -6,12 +6,31 @@
 #include "VarRef.hpp"
 #include "Command.hpp"
 #include "Declaration.hpp"
-//#include "Procedure.hpp"
+#include "Procedure.hpp"
 
 // #include "Types.hpp"
 
 namespace OberonLang {
-
+  class Undefined;
+  class IntValue;
+  class RealValue;
+  class AddExpression;
+  class SubExpression;
+  class TimesExpression;
+  class DivExpression;
+  class RemExpression;
+  class AddRealExpression;
+  class SubRealExpression;
+  class TimesRealExpressio;
+  class DivRealExpression;
+  class EQExpression;
+  class NEExpression;
+  class LTExpression;
+  class LEExpression;
+  class GTExpression;
+  class GEEXpression;
+  class AndExpression;
+  class OrExpression; 
   class Assignment;
   class ProcedureCall;
   class BlockCommand; 
@@ -19,8 +38,8 @@ namespace OberonLang {
   class WhileCommand;
   class IfThenCommand;
   class IfThenElseCommand;
-
-  class Declaration; 
+  class Declaration;
+  class DecProcedure; 
 
   class OBRVisitor {
   public:
@@ -62,7 +81,7 @@ namespace OberonLang {
 
     virtual void visit(Declaration* dec) = 0; 
 
-    //  virtual void visit(DecProcedure* procedure) = 0;
+    virtual void visit(DecProcedure* procedure) = 0;
 
     // virtual void visit(TypesEnum type) = 0;
   };
