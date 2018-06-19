@@ -15,73 +15,11 @@ namespace OberonLang {
       return new valueTypeOberonReturn(v1 operator v2);\
     }\
 
-  void AddExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
+ #define __acceptMethodBinExp(infix)		  \
+  void infix##Expression::accept(OBRVisitor* v) { \
+    v->visit(this);\
   }
-
-  void SubExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void TimesExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void DivExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void RemExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void AddRealExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void SubRealExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void TimesRealExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void DivRealExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void EQExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void NEExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void LTExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void LEExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void GTExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void GEExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void AndExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
-
-  void OrExpression::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  						\
 
 
   /* Integer binary expressions */
@@ -109,10 +47,26 @@ namespace OberonLang {
   __implementArithBinExp(And, &&, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ AndExpression
   __implementArithBinExp(Or,  ||, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ OrExpression
 
-  // __acceptArithBinExp(Add);
-  // __acceptArithBinExp(Sub);
-  // __acceptArithBinExp(Times);
-  // __acceptArithBinExp(Div);
-  // __acceptArithBinExp(Rem);
+
+  __acceptMethodBinExp(Add);
+  __acceptMethodBinExp(Sub);
+  __acceptMethodBinExp(Times);
+  __acceptMethodBinExp(Div);
+  __acceptMethodBinExp(Rem);
+
+  __acceptMethodBinExp(AddReal);
+  __acceptMethodBinExp(SubReal);
+  __acceptMethodBinExp(TimesReal);
+  __acceptMethodBinExp(DivReal);
+
+  __acceptMethodBinExp(EQ);
+  __acceptMethodBinExp(NE);
+  __acceptMethodBinExp(LT);
+  __acceptMethodBinExp(LE);
+  __acceptMethodBinExp(GT);
+  __acceptMethodBinExp(GE);
+
+  __acceptMethodBinExp(And);
+  __acceptMethodBinExp(Or);
   
 }

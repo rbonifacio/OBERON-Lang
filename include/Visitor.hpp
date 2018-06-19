@@ -11,6 +11,7 @@
 // #include "Types.hpp"
 
 namespace OberonLang {
+  
   class Undefined;
   class IntValue;
   class RealValue;
