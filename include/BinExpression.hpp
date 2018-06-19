@@ -12,6 +12,7 @@ namespace OberonLang {
   public:
     BinExpression(Expression* l, Expression* r) { lhs = l; rhs = r; };
     virtual Value* eval() = 0;
+    virtual void accept(OBRVisitor* v) = 0; 
     ~BinExpression() { delete lhs; delete rhs; }  
   };  
   
@@ -19,7 +20,8 @@ namespace OberonLang {
     class infix##Expression : public BinExpression {\
     public:\
       infix##Expression(Expression* l, Expression* r) : BinExpression(l, r) {};\
-      Value* eval();\
+      void accept(OBRVisitor* v);\
+      Value* eval();				\
     };\
   
   __headerArithBinExp(Add);   // ~ AddExpression

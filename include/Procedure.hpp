@@ -6,6 +6,7 @@
 
 #include "Declaration.hpp"
 #include "Command.hpp"
+#include "Visitor.hpp"
 
 using namespace std;
 namespace OberonLang {

@@ -10,10 +10,11 @@
 using namespace std;
 
 namespace OberonLang {
-
-  class Command {
+  
+  class Command  {
   public:
     virtual void run() = 0;
+    virtual void accept(OBRVisitor* v) = 0; 
     virtual ~Command() { }
   };
 
@@ -21,6 +22,7 @@ namespace OberonLang {
   public:
     Assignment(string v, Expression* e) { var = v; expression = e; }
     void run();
+    void accept(OBRVisitor* v);
     ~Assignment() { delete expression; }
   private:
     string var;
@@ -30,6 +32,7 @@ namespace OberonLang {
   class ProcedureCall : public Command {
   public:
     ProcedureCall(string n, vector<Expression*> args) { this->_name = n; this->_args = args; }
+    void accept(OBRVisitor* v);
     void run();
     ~ProcedureCall() { }
   private:
@@ -40,6 +43,7 @@ namespace OberonLang {
   class BlockCommand : public Command {
   public:
     BlockCommand(list<Command*> cmds) { this->commands = cmds; }
+    void accept(OBRVisitor* v);
     void run();
   private:
     list<Command*> commands;
@@ -48,6 +52,7 @@ namespace OberonLang {
   class PrintCommand : public Command {
   public:
     PrintCommand(Expression* exp) {this -> expression = exp;}
+    void accept(OBRVisitor* v);
     void run();
     ~PrintCommand() { delete expression; }
   private:
@@ -57,6 +62,7 @@ namespace OberonLang {
   class WhileCommand : public Command {
   public:
     WhileCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void accept(OBRVisitor* v);
     void run();
     ~WhileCommand() {}
   private:
@@ -66,6 +72,7 @@ namespace OberonLang {
   class IfThenCommand : public Command {
   public:
     IfThenCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void accept(OBRVisitor* v);
     void run();
     ~IfThenCommand() {}
   private:
@@ -78,6 +85,7 @@ namespace OberonLang {
       this->_cond = condition;
       this->_cmds = cmds;
       this->_cmds2 = cmds2;}
+    void accept(OBRVisitor* v);
     void run();
     ~IfThenElseCommand() {}
   private:

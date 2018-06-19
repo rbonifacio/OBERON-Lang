@@ -9,5 +9,22 @@ namespace OberonLang {
     }
     return _undef_instance; 
   }
+
   
+  void Undefined::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
+  void IntValue::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
+  void RealValue::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+  
+  void BooleanValue::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
 }
