@@ -12,6 +12,7 @@ namespace OberonLang {
   public:
     VarRef(string v) { this->_var = v; }
     Value* eval();
+    TypesEnum expType(); 
     void accept(OBRVisitor* v); 
   private:
     string _var; 

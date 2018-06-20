@@ -7,66 +7,72 @@ namespace OberonLang {
      
    */
    
-  #define __implementArithBinExp(infix, operator, valueTypeCpp, valueTypeOberon, valueTypeOberonReturn)\
+   #define __implementArithBinExp(infix, operator, valueTypeCpp, valueTypeOberon, valueTypeOberonReturn, oberonType) \
     Value* infix##Expression::eval() {\
       valueTypeCpp v1 = ((valueTypeOberon *)lhs->eval())->value();\
       valueTypeCpp v2 = ((valueTypeOberon *)rhs->eval())->value();\
       \
       return new valueTypeOberonReturn(v1 operator v2);\
     }\
-
- #define __acceptMethodBinExp(infix)		  \
-  void infix##Expression::accept(OBRVisitor* v) { \
-    v->visit(this);\
-  }
-  						\
+    \
+    void infix##Expression::accept(OBRVisitor* v) { \
+       v->visit(this);\
+    }\
+    \
+    TypesEnum infix##Expression::expType() {\
+      TypesEnum t1 = lhs->expType();\
+      TypesEnum t2 = rhs->expType();\
+      \
+      return ((t1 == t2) && (t1 == oberonType)) ? oberonType : undef;\
+    }\
+  
 
 
   /* Integer binary expressions */
-  __implementArithBinExp(Add,  +, TYPE_INTEGER, IntValue, IntValue);   // ~ AddExpression
-  __implementArithBinExp(Sub,  -, TYPE_INTEGER, IntValue, IntValue);   // ~ SubExpression
-  __implementArithBinExp(Times,*, TYPE_INTEGER, IntValue, IntValue);   // ~ TimesExpression
-  __implementArithBinExp(Div,  /, TYPE_INTEGER, IntValue, IntValue);   // ~ DivExpression
-  __implementArithBinExp(Rem,  %, TYPE_INTEGER, IntValue, IntValue);   // ~ RemExpression
+  __implementArithBinExp(Add,  +, TYPE_INTEGER, IntValue, IntValue, integer);   // ~ AddExpression
+  __implementArithBinExp(Sub,  -, TYPE_INTEGER, IntValue, IntValue, integer);   // ~ SubExpression
+  __implementArithBinExp(Times,*, TYPE_INTEGER, IntValue, IntValue, integer);   // ~ TimesExpression
+  __implementArithBinExp(Div,  /, TYPE_INTEGER, IntValue, IntValue, integer);   // ~ DivExpression
+  __implementArithBinExp(Rem,  %, TYPE_INTEGER, IntValue, IntValue, integer);   // ~ RemExpression
   
   /* Real binary expressions */
-  __implementArithBinExp(AddReal,   +, TYPE_REAL, RealValue, RealValue);  // ~ AddRealExpression
-  __implementArithBinExp(SubReal,   -, TYPE_REAL, RealValue, RealValue);  // ~ SubRealExpression
-  __implementArithBinExp(TimesReal, *, TYPE_REAL, RealValue, RealValue);  // ~ TimesRealExpression
-  __implementArithBinExp(DivReal,   /, TYPE_REAL, RealValue, RealValue);  // ~ DivRealExpression
+  __implementArithBinExp(AddReal,   +, TYPE_REAL, RealValue, RealValue, real);  // ~ AddRealExpression
+  __implementArithBinExp(SubReal,   -, TYPE_REAL, RealValue, RealValue, real);  // ~ SubRealExpression
+  __implementArithBinExp(TimesReal, *, TYPE_REAL, RealValue, RealValue, real);  // ~ TimesRealExpression
+  __implementArithBinExp(DivReal,   /, TYPE_REAL, RealValue, RealValue, real);  // ~ DivRealExpression
   
   /* Relational Expressions for integers */
-  __implementArithBinExp(EQ,  ==, TYPE_INTEGER, IntValue, BooleanValue);  // ~ EQExpression
-  __implementArithBinExp(NE,  !=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ NEExpression
-  __implementArithBinExp(LT,   <, TYPE_INTEGER, IntValue, BooleanValue);  // ~ LTExpression
-  __implementArithBinExp(LE,  <=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ LEE/xpression
-  __implementArithBinExp(GT,   >, TYPE_INTEGER, IntValue, BooleanValue);  // ~ GTExpression
-  __implementArithBinExp(GE,  >=, TYPE_INTEGER, IntValue, BooleanValue);  // ~ GEExpression
+  __implementArithBinExp(EQ,  ==, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ EQExpression
+  __implementArithBinExp(NE,  !=, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ NEExpression
+  __implementArithBinExp(LT,   <, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ LTExpression
+  __implementArithBinExp(LE,  <=, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ LEE/xpression
+  __implementArithBinExp(GT,   >, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ GTExpression
+  __implementArithBinExp(GE,  >=, TYPE_INTEGER, IntValue, BooleanValue, boolean);  // ~ GEExpression
   
   /* Logical binary expressions */
-  __implementArithBinExp(And, &&, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ AndExpression
-  __implementArithBinExp(Or,  ||, TYPE_BOOLEAN, BooleanValue, BooleanValue);  // ~ OrExpression
+  __implementArithBinExp(And, &&, TYPE_BOOLEAN, BooleanValue, BooleanValue, boolean);  // ~ AndExpression
+  __implementArithBinExp(Or,  ||, TYPE_BOOLEAN, BooleanValue, BooleanValue, boolean);  // ~ OrExpression
 
 
-  __acceptMethodBinExp(Add);
-  __acceptMethodBinExp(Sub);
-  __acceptMethodBinExp(Times);
-  __acceptMethodBinExp(Div);
-  __acceptMethodBinExp(Rem);
+  // __acceptMethodBinExp(Add);
+  // __acceptMethodBinExp(Sub);
+  // __acceptMethodBinExp(Times);
+  // __acceptMethodBinExp(Div);
+  // __acceptMethodBinExp(Rem);
 
-  __acceptMethodBinExp(AddReal);
-  __acceptMethodBinExp(SubReal);
-  __acceptMethodBinExp(TimesReal);
-  __acceptMethodBinExp(DivReal);
+  // __acceptMethodBinExp(AddReal);
+  // __acceptMethodBinExp(SubReal);
+  // __acceptMethodBinExp(TimesReal);
+  // __acceptMethodBinExp(DivReal);
 
-  __acceptMethodBinExp(EQ);
-  __acceptMethodBinExp(NE);
-  __acceptMethodBinExp(LT);
-  __acceptMethodBinExp(LE);
-  __acceptMethodBinExp(GT);
-  __acceptMethodBinExp(GE);
+  // __acceptMethodBinExp(EQ);
+  // __acceptMethodBinExp(NE);
+  // __acceptMethodBinExp(LT);
+  // __acceptMethodBinExp(LE);
+  // __acceptMethodBinExp(GT);
+  // __acceptMethodBinExp(GE);
 
-  __acceptMethodBinExp(And);
-  __acceptMethodBinExp(Or);
+  // __acceptMethodBinExp(And);
+  // __acceptMethodBinExp(Or);
   
 }
