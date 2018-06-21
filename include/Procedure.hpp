@@ -17,6 +17,7 @@ namespace OberonLang {
       vector<Declaration> formalArgs() { return _formalArgs; }
       vector<Declaration> localVars() { return _localVars; }
       Command* body() { return _body; }
+      void acceptVisit(IVisitor* visitor);
       ~DecProcedure();
     private:
       string _name;

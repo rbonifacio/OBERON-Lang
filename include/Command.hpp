@@ -15,12 +15,14 @@ namespace OberonLang {
   public:
     virtual void run() = 0;
     virtual ~Command() { }
+    virtual void acceptVisit(IVisitor* visitor) = 0;
   };
 
   class Assignment : public Command {
   public:
     Assignment(string v, Expression* e) { var = v; expression = e; }
     void run();
+    void acceptVisit(IVisitor* visitor);
     ~Assignment() { delete expression; }
   private:
     string var;
@@ -31,6 +33,7 @@ namespace OberonLang {
   public:
     ProcedureCall(string n, vector<Expression*> args) { this->_name = n; this->_args = args; }
     void run();
+    void acceptVisit(IVisitor* visitor);
     ~ProcedureCall() { }
   private:
     string _name;
@@ -40,6 +43,7 @@ namespace OberonLang {
   class BlockCommand : public Command {
   public:
     BlockCommand(list<Command*> cmds) { this->commands = cmds; }
+    void acceptVisit(IVisitor* visitor);
     void run();
   private:
     list<Command*> commands;
@@ -48,6 +52,7 @@ namespace OberonLang {
   class PrintCommand : public Command {
   public:
     PrintCommand(Expression* exp) {this -> expression = exp;}
+    void acceptVisit(IVisitor* visitor);
     void run();
     ~PrintCommand() { delete expression; }
   private:
@@ -57,6 +62,7 @@ namespace OberonLang {
   class WhileCommand : public Command {
   public:
     WhileCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void acceptVisit(IVisitor* visitor);
     void run();
     ~WhileCommand() {}
   private:
@@ -66,6 +72,7 @@ namespace OberonLang {
   class IfThenCommand : public Command {
   public:
     IfThenCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
+    void acceptVisit(IVisitor* visitor);
     void run();
     ~IfThenCommand() {}
   private:
@@ -79,6 +86,7 @@ namespace OberonLang {
       this->_cmds = cmds;
       this->_cmds2 = cmds2;}
     void run();
+    void acceptVisit(IVisitor* visitor);
     ~IfThenElseCommand() {}
   private:
     Expression* _cond;

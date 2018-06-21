@@ -11,6 +11,7 @@ namespace OberonLang {
     Expression* rhs;
   public:
     BinExpression(Expression* l, Expression* r) { lhs = l; rhs = r; };
+    void acceptVisit(IVisitor* visitor);
     virtual Value* eval() = 0;
     ~BinExpression() { delete lhs; delete rhs; }  
   };  
