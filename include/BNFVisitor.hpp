@@ -70,10 +70,12 @@ namespace OberonLang {
     void visitString(String x) { cout << "String não suportado\n"; } // !TODO, não temos uma classe de valor para string
     void visitIdent(Ident x);
     
+    Program* getProgram() { return programReturn; }
+    
     virtual  ~BNFVisitor();
   private:
-  	
-  	// As visitors can't return, these variables will store the results of a visitor.
+    
+    // As visitors can't return, these variables will store the results of a visitor.
     Expression *visitorReturn;
     Command *visitorCommandReturn;
     TypesEnum visitorTypeReturn;
