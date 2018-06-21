@@ -34,6 +34,7 @@ CXXFLAGS := -g -W -Wall -Wextra -Wno-unused-parameter -std=c++11 #-Wno-unused-pa
 LIB := -pthread -L lib
 INC := -I $(HEADERDIR) -I $(GENSRCDIR)
 GTEST := ${GTEST_DIR}
+LLVMFLAGS := `llvm-config --cxxflags --ldflags --system-libs --libs core`
 
 ## Generate main program
 $(MAINTARGET): $(OBJECTS) .bnfobjects .folders
@@ -43,9 +44,9 @@ $(MAINTARGET): $(OBJECTS) .bnfobjects .folders
 -include $(OBJECTS:.o=.d)
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) .folders .bnfsource
-	$(CC) $(CXXFLAGS) $(INC) -c -o $@ $<
+	$(CC) $(CXXFLAGS) $(LLVMFLAGS) $(INC) -c -o $@ $<
 	printf "$(BUILDDIR)/" "%s" > $(BUILDDIR)/$*.d
-	$(CC) $(CXXFLAGS) $(INC) -MM $< >> $(BUILDDIR)/$*.d
+	$(CC) $(CXXFLAGS) $(LLVMFLAGS) $(INC) -MM $< >> $(BUILDDIR)/$*.d
 
 ## Generate bnf source
 
