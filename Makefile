@@ -38,7 +38,7 @@ LLVMFLAGS := `llvm-config --cxxflags --ldflags --system-libs --libs core`
 
 ## Generate main program
 $(MAINTARGET): $(OBJECTS) .bnfobjects .folders
-	$(CC) $(OBJECTS) $(BNFOBJECTS) -o $(MAINTARGET)
+	$(CC) $(OBJECTS) $(LLVMFLAGS) $(BNFOBJECTS) -o $(MAINTARGET)
 
 ## Generate obj with dependency info
 -include $(OBJECTS:.o=.d)
