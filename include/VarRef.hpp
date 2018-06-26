@@ -1,3 +1,5 @@
+#ifndef VARREF_H
+#define VARREF_H
 
 #include <string>
 
@@ -9,6 +11,7 @@ namespace OberonLang {
   class VarRef : public Expression {
   public:
     VarRef(string v) { this->_var = v; }
+    string name() { return _var; }
     void acceptVisit(IVisitor* visitor);
     Value* eval();
   private:
@@ -16,3 +19,4 @@ namespace OberonLang {
   };
   
 }
+#endif

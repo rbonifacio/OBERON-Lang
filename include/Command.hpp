@@ -23,6 +23,7 @@ namespace OberonLang {
     Assignment(string v, Expression* e) { var = v; expression = e; }
     void run();
     void acceptVisit(IVisitor* visitor);
+    string name() { return var; }
     ~Assignment() { delete expression; }
   private:
     string var;
@@ -45,6 +46,7 @@ namespace OberonLang {
     BlockCommand(list<Command*> cmds) { this->commands = cmds; }
     void acceptVisit(IVisitor* visitor);
     void run();
+    list<Command*>* getCommands() { return &commands; }
   private:
     list<Command*> commands;
   };
