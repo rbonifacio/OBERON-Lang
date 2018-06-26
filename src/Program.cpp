@@ -9,11 +9,11 @@ using namespace std;
 
 namespace OberonLang {
 
-  Program::Program(Command* main) {
+  Program::Program(BlockCommand* main) {
     this->_main = main; 
   }
 
-  Program::Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main) {
+  Program::Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, BlockCommand* main) {
     this->_globalVars = globalVars; 
     this->_procedures = procedures; 
     this->_main = main; 
@@ -23,7 +23,8 @@ namespace OberonLang {
   void Program::run() {
     for(auto it = this->_globalVars.begin(); it != this->_globalVars.end(); ++it) {
       cout << "globalvar: " << (*it)->name() << " added\n";
-      Environment::instance()->global((*it)->name(), Undefined::instance());
+      // Environment::instance()->global((*it)->name(), Undefined::instance());
+      Environment::instance()->global((*it)->name(), NULL); 
     }
 
     for(auto it = this->_procedures.begin(); it != this->_procedures.end(); ++it) {

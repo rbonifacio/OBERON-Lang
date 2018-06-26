@@ -190,7 +190,7 @@ namespace OberonLang {
       vector<Declaration> args;
       vector<Declaration> vars;
       list<Command *> pmts;
-      Command *body;
+      BlockCommand *body;
       
       if(p->liststmt_){
         for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
