@@ -9,10 +9,13 @@
 #include "Printer.H"
 #include "Absyn.H"
 #include "BNFVisitor.hpp"
+#include "LLVMVisitor.hpp"
+#include <string.h>
 
 int main(int argc, char ** argv)
 {
   FILE *input;
+  int useLLVM = 0;
   if (argc > 1) 
   {
     input = fopen(argv[1], "r");
@@ -20,6 +23,13 @@ int main(int argc, char ** argv)
     {
       fprintf(stderr, "Error opening input file.\n");
       exit(1);
+    }
+    if (argc >= 3) { 
+      for (int i = 2; i < argc; i++) {
+        if (!strcmp(argv[i], "--llvm")) {
+          useLLVM = 1;      
+        }      
+      }
     }
   }
   else input = stdin;
@@ -38,6 +48,11 @@ int main(int argc, char ** argv)
     OberonLang::BNFVisitor *BNFtoAST = new OberonLang::BNFVisitor();
     
     BNFtoAST->runProgram(parse_tree);
+    
+    if (useLLVM) {
+      OberonLang::LLVMVisitor* llvm = new OberonLang::LLVMVisitor(BNFtoAST->getProgram());
+      llvm->codegen();
+    }
     
     return 0;
   }
