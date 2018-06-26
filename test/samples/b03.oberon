@@ -1,0 +1,9 @@
+module TO1 
+ var res : int;
+
+ def sum(x, y : int) begin 
+    res := x;
+ end
+
+begin 
+end T01. 
