@@ -13,6 +13,8 @@
 #include "Types.hpp"
 #include "VarRef.hpp"
 
+#include "TCVisitor.hpp"
+
 using namespace std;
 using namespace OberonLang;
 
@@ -377,6 +379,30 @@ TEST (TCAddExpression, RealAdd) {
   AddRealExpression *add = new AddRealExpression(v1, v2);
 
   EXPECT_EQ (real, add->expType());
+}
+
+
+TEST (TCVisitor, IntAdd) {
+  IntValue *v1 = new IntValue(10);
+  IntValue *v2 = new IntValue(5);
+  AddExpression *add = new AddExpression(v1, v2);
+
+  TCVisitor* v = new TCVisitor();
+  add->accept(v);
+  
+  EXPECT_EQ (true, v->validType());
+}
+
+
+TEST (TCVisitor, InvalidIntAdd) {
+  IntValue *v1 = new IntValue(10);
+  BooleanValue *v2 = new BooleanValue(true);
+  AddExpression *add = new AddExpression(v1, v2);
+
+  TCVisitor* v = new TCVisitor();
+  add->accept(v);
+  
+  EXPECT_EQ (false, v->validType());
 }
 
 int main(int argc, char **argv) {

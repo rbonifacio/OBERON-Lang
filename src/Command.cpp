@@ -10,14 +10,14 @@ using namespace std;
 
 namespace OberonLang {
   void Assignment::run() {
-    if(Environment::instance()->env(var) != Undefined::instance()) {
-      Environment::instance()->env(var, expression->eval());
+    if(Environment::instance()->env(_var) != Undefined::instance()) {
+      Environment::instance()->env(_var, _expression->eval());
     }
-    if (Environment::instance()->global(var) != Undefined::instance()) {
-      Environment::instance()->global(var, expression->eval());
+    if (Environment::instance()->global(_var) != Undefined::instance()) {
+      Environment::instance()->global(_var, _expression->eval());
     }
     else {
-      cout << "nao achou var " << var << endl;
+      cout << "nao achou var " << _var << endl;
       // in this case, we are assigning to a non declared variable!
       // TODO: throw new ....
     }
@@ -28,7 +28,7 @@ namespace OberonLang {
   }
 
   void BlockCommand::run() {
-    for (auto it = commands.begin(); it != commands.end(); ++it) {
+    for (auto it = _commands.begin(); it != _commands.end(); ++it) {
       (*it)->run();
     }
   }
@@ -38,7 +38,7 @@ namespace OberonLang {
   }
 
   void PrintCommand::run() {
-    auto v = expression->eval();
+    auto v = _expression->eval();
     v->show();
   }
 
@@ -82,7 +82,7 @@ namespace OberonLang {
 
   void IfThenCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
-      this->_cmds->run();
+     this->thenCmd()->run();
    }
   }
 
@@ -92,10 +92,10 @@ namespace OberonLang {
   
   void IfThenElseCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
-      this->_cmds->run();
+     this->thenCmd()->run();
    }
    else{
-     this->_cmds2->run();
+     this->elseCmd()->run();
    }
   }
 
