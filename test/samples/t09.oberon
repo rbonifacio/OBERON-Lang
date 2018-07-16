@@ -1,0 +1,18 @@
+module TO8 
+    var res, undefined_value : int;
+
+    def sum(x, y : int) 
+        var a, b : int;
+    begin
+        b := 2;
+        a := 3;
+        res := x + y;
+        while (b > 0) do
+            a := res + x;
+            b := b - 1;
+        end
+    end
+begin 
+    sum(3, 4); 
+    print(res); 
+end T01.
