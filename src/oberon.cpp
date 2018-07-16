@@ -10,12 +10,14 @@
 #include "Absyn.H"
 #include "BNFVisitor.hpp"
 #include "LLVMVisitor.hpp"
+#include "CFGVisitor.hpp"
 #include <string.h>
 
 int main(int argc, char ** argv)
 {
   FILE *input;
   int useLLVM = 0;
+  int useOptimizer = 0;
   if (argc > 1) 
   {
     input = fopen(argv[1], "r");
@@ -28,7 +30,10 @@ int main(int argc, char ** argv)
       for (int i = 2; i < argc; i++) {
         if (!strcmp(argv[i], "--llvm")) {
           useLLVM = 1;      
-        }      
+        }
+        if (!strcmp(argv[i], "--optimize")) {
+          useOptimizer = 1;      
+        }
       }
     }
   }
@@ -48,6 +53,10 @@ int main(int argc, char ** argv)
     OberonLang::BNFVisitor *BNFtoAST = new OberonLang::BNFVisitor();
     
     BNFtoAST->runProgram(parse_tree);
+
+    if (useOptimizer) {
+      OberonLang::CFGVisitor* optimizer = new OberonLang::CFGVisitor(BNFtoAST->getProgram());
+    }
     
     if (useLLVM) {
       OberonLang::LLVMVisitor* llvm = new OberonLang::LLVMVisitor(BNFtoAST->getProgram());
