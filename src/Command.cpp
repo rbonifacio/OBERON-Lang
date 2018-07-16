@@ -12,11 +12,9 @@ namespace OberonLang {
   void Assignment::run() {
     if(Environment::instance()->env(var) != Undefined::instance()) {
       Environment::instance()->env(var, expression->eval());
-    }
-    if (Environment::instance()->global(var) != Undefined::instance()) {
+    } else if (Environment::instance()->global(var) != Undefined::instance()) {
       Environment::instance()->global(var, expression->eval());
-    }
-    else {
+    } else {
       cout << "nao achou var " << var << endl;
       // in this case, we are assigning to a non declared variable!
       // TODO: throw new ....
@@ -47,6 +45,15 @@ namespace OberonLang {
 
       Environment::instance()->env(formalArg.name(), arg);
     }
+
+    int numberOfLocalVars = decProcedure->localVars().size();
+
+    // map each formal argument to the actual argument of the procedure call.
+    for(int i = 0; i < numberOfLocalVars; i++) {
+      auto localVar = decProcedure->localVars()[i];
+      Environment::instance()->env(localVar.name(), NULL);
+    }
+
     // run the procedure body in the updated environment.
     decProcedure->body()->run();
 
