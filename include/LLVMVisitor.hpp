@@ -57,7 +57,7 @@ namespace OberonLang {
 
       std::vector<VarDec*>* globalVars = p->getGlobalVars();
       std::vector<DecProcedure*>* procedures = p->getProcedures();
-      BlockCommand* commands = p->getCommands();
+      Command* commands = p->getCommands();
 
       std::vector<VarDec*>::iterator itGlobalVars = globalVars->begin(); 
       for (; itGlobalVars != globalVars->end(); ++itGlobalVars) {
@@ -85,7 +85,9 @@ namespace OberonLang {
 
     }
 //  void visit(TypesEnum* p) { } // This visit can be unnecessary
-    void visit(Command*) { }
+    void visit(Command* p) {
+      p->acceptVisit(this);
+    }
     void visit(IntValue* p) {
       accumulator.push_back(llvm::ConstantInt::get(TheContext, llvm::APInt(32, p->value(), true)));  
     }
@@ -121,6 +123,7 @@ namespace OberonLang {
       accumulator.push_back(standart);
     }
     void visit(PrintCommand* p) { }
+
     void visit(WhileCommand* p) { }
     void visit(IfThenCommand* p) { }
     void visit(IfThenElseCommand* p) { }

@@ -9,11 +9,11 @@ using namespace std;
 
 namespace OberonLang {
 
-  Program::Program(BlockCommand* main) {
+  Program::Program(Command* main) {
     this->_main = main; 
   }
 
-  Program::Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, BlockCommand* main) {
+  Program::Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main) {
     this->_globalVars = globalVars; 
     this->_procedures = procedures; 
     this->_main = main; 
