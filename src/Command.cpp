@@ -10,27 +10,42 @@ using namespace std;
 
 namespace OberonLang {
   void Assignment::run() {
-    if(Environment::instance()->env(var) != Undefined::instance()) {
-      Environment::instance()->env(var, expression->eval());
-    } else if (Environment::instance()->global(var) != Undefined::instance()) {
-      Environment::instance()->global(var, expression->eval());
-    } else {
-      cout << "nao achou var " << var << endl;
+    if(Environment::instance()->env(_var) != Undefined::instance()) {
+      Environment::instance()->env(_var, _expression->eval());
+    }
+    if (Environment::instance()->global(_var) != Undefined::instance()) {
+      Environment::instance()->global(_var, _expression->eval());
+    }
+    else {
+      cout << "nao achou var " << _var << endl;
       // in this case, we are assigning to a non declared variable!
       // TODO: throw new ....
     }
   }
 
+  void Assignment::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
   void BlockCommand::run() {
-    for (auto it = commands.begin(); it != commands.end(); ++it) {
+    for (auto it = _commands.begin(); it != _commands.end(); ++it) {
       (*it)->run();
     }
   }
 
+  void BlockCommand::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
   void PrintCommand::run() {
-    auto v = expression->eval();
+    auto v = _expression->eval();
     v->show();
   }
+
+  void PrintCommand::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+  
 
   void ProcedureCall::run(){
     Environment::instance()->push();
@@ -60,25 +75,41 @@ namespace OberonLang {
     Environment::instance()->pop();
   }
 
+  void ProcedureCall::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
   void WhileCommand::run(){
     while (((BooleanValue*)this->_cond->eval())->value()){
       this->_cmds->run();
     }
   }
 
+  void WhileCommand::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+
   void IfThenCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
-      this->_cmds->run();
+     this->thenCmd()->run();
    }
   }
+
+  void IfThenCommand::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
+  
   void IfThenElseCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
-      this->_cmds->run();
+     this->thenCmd()->run();
    }
    else{
-     this->_cmds2->run();
+     this->elseCmd()->run();
    }
   }
 
 
+  void IfThenElseCommand::accept(OBRVisitor* v) {
+    v->visit(this); 
+  }
 }

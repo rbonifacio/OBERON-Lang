@@ -9,6 +9,10 @@ namespace OberonLang {
     this->_body = cmd; 
   }
 
+  void DecProcedure::accept(OBRVisitor* v) {
+    v->visit(this);
+  }
+  
   DecProcedure::~DecProcedure() {
     delete _body; 
   }

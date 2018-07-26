@@ -23,7 +23,7 @@ SOURCES := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 BNFSOURCE := $(GENSRCDIR)/Absyn.C $(GENSRCDIR)/Makefile $(GENSRCDIR)/oberon.y $(GENSRCDIR)/Printer.C $(GENSRCDIR)/Skeleton.C $(GENSRCDIR)/Test.C $(GENSRCDIR)/Absyn.H $(GENSRCDIR)/oberon.l $(GENSRCDIR)/Parser.H $(GENSRCDIR)/Printer.H $(GENSRCDIR)/Skeleton.H
 
 ## Tester requisites
-TESTEROBJ := $(BUILDDIR)/BinExpression.o $(BUILDDIR)/Expression.o $(BUILDDIR)/Command.o $(BUILDDIR)/Environment.o $(BUILDDIR)/Procedure.o $(BUILDDIR)/VarRef.o $(BUILDDIR)/IVisitor.o $(BUILDDIR)/Program.o
+TESTEROBJ := $(BUILDDIR)/BinExpression.o $(BUILDDIR)/Expression.o $(BUILDDIR)/Command.o $(BUILDDIR)/Environment.o $(BUILDDIR)/Procedure.o $(BUILDDIR)/VarRef.o $(BUILDDIR)/IVisitor.o $(BUILDDIR)/Program.o $(BUILDDIR)/TCVisitor.o
 
 ## Objects targets
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
@@ -34,7 +34,7 @@ CXXFLAGS := -g -W -Wall -Wextra -Wno-unused-parameter -std=c++11 #-Wno-unused-pa
 LIB := -pthread -L lib
 INC := -I $(HEADERDIR) -I $(GENSRCDIR)
 GTEST := ${GTEST_DIR}
-LLVMFLAGS := `llvm-config --cxxflags --ldflags --system-libs --libs core`
+LLVMFLAGS := `llvm-config-6.0 --cxxflags --ldflags --system-libs --libs core`
 
 ## Generate main program
 $(MAINTARGET): $(OBJECTS) .bnfobjects .folders

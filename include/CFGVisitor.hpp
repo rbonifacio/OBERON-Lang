@@ -12,7 +12,7 @@
 #include "IVisitor.hpp"
 
 namespace OberonLang {
-class CFGVisitor : public IVisitor {
+class CFGVisitor : public OBRVisitor {
 public:
   void visit(Program *p) {
     procedureCount = 0;
@@ -70,7 +70,7 @@ public:
     lastTypeOfValue = TOP;
   };
 
-  void visit(Command *p) { p->acceptVisit(this); };
+  void visit(Command *p) { p->accept(this); };
 
   void visit(Assignment *p) {
     auto index = getCurrentScope()->find("p" +
@@ -263,7 +263,7 @@ public:
     procedureCount++;
   };
 
-  void visit(Expression *p) { p->acceptVisit(this); };
+  void visit(Expression *p) { p->accept(this); };
 
   void visit(VarRef *p) {
     auto index = getCurrentScope()->find("p" +
@@ -299,6 +299,11 @@ public:
       lastTypeOfValue = CONSTANT;
     }
   };
+
+	void visit(AddRealExpression *p) {}
+	void visit(SubRealExpression *p) {}
+	void visit(TimesRealExpression *p) {}
+	void visit(DivRealExpression *p) {}
 
   //  maybe to be necessary copy the implementation on BinExpression for all BinExpressions
   void visit(AddExpression *p) {

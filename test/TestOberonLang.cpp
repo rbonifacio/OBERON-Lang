@@ -13,6 +13,8 @@
 #include "Types.hpp"
 #include "VarRef.hpp"
 
+#include "TCVisitor.hpp"
+
 using namespace std;
 using namespace OberonLang;
 
@@ -24,6 +26,8 @@ TEST (AddExpression, IntAdd) {
 
   EXPECT_EQ (15, result->value());
 }
+
+
 
 TEST (AddExpression, RealAdd) {
   RealValue *v1 = new RealValue(10.4);
@@ -358,6 +362,47 @@ TEST (Procedure, Print){
   EXPECT_NE(Undefined::instance(), Environment::instance()->global("res"));
 
   EXPECT_EQ (8, ((IntValue*)Environment::instance()->global("res"))->value());
+}
+
+
+TEST (TCAddExpression, IntAdd) {
+  IntValue *v1 = new IntValue(10);
+  IntValue *v2 = new IntValue(5);
+  AddExpression *add = new AddExpression(v1, v2);
+
+  EXPECT_EQ (integer, add->expType());
+}
+
+TEST (TCAddExpression, RealAdd) {
+  RealValue *v1 = new RealValue(10);
+  RealValue *v2 = new RealValue(5);
+  AddRealExpression *add = new AddRealExpression(v1, v2);
+
+  EXPECT_EQ (real, add->expType());
+}
+
+
+TEST (TCVisitor, IntAdd) {
+  IntValue *v1 = new IntValue(10);
+  IntValue *v2 = new IntValue(5);
+  AddExpression *add = new AddExpression(v1, v2);
+
+  TCVisitor* v = new TCVisitor();
+  add->accept(v);
+  
+  EXPECT_EQ (true, v->validType());
+}
+
+
+TEST (TCVisitor, InvalidIntAdd) {
+  IntValue *v1 = new IntValue(10);
+  BooleanValue *v2 = new BooleanValue(true);
+  AddExpression *add = new AddExpression(v1, v2);
+
+  TCVisitor* v = new TCVisitor();
+  add->accept(v);
+  
+  EXPECT_EQ (false, v->validType());
 }
 
 int main(int argc, char **argv) {

@@ -1,5 +1,5 @@
-#ifndef VARREF_H
-#define VARREF_H
+#ifndef VAR_REF_H
+#define VAR_REF_H
 
 #include <string>
 
@@ -14,6 +14,8 @@ namespace OberonLang {
     string name() { return _var; }
     void acceptVisit(IVisitor* visitor);
     Value* eval();
+    TypesEnum expType(); 
+    void accept(OBRVisitor* v); 
   private:
     string _var; 
   };

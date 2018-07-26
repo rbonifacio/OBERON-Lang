@@ -13,8 +13,9 @@ namespace OberonLang {
   class Program : Command {
   public:
     Program(Command* main);
-    Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main); 
+    Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main);
     void acceptVisit(IVisitor* visitor);
+    void accept(OBRVisitor* v); 
     void run();
     vector<VarDec*>* getGlobalVars() { return &_globalVars; }  
     vector<DecProcedure*>* getProcedures() { return &_procedures; }

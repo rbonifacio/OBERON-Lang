@@ -6,10 +6,15 @@
 
 #include "Declaration.hpp"
 #include "Command.hpp"
+#include "Visitor.hpp"
 
 using namespace std;
 namespace OberonLang {
     
+		class Command;
+		class Declaration;
+		class OBRVisitor;
+		
     class DecProcedure {
     public:
       DecProcedure(string n, vector<Declaration> args, vector<Declaration> vars, Command* cmd);
@@ -20,6 +25,7 @@ namespace OberonLang {
       vector<Declaration>* localVarsPointer() { return &_localVars; }
       Command* body() { return _body; }
       void acceptVisit(IVisitor* visitor);
+    	void accept(OBRVisitor* v); 
       ~DecProcedure();
     private:
       string _name;
