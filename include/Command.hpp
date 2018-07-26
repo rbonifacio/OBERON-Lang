@@ -14,7 +14,7 @@ namespace OberonLang {
   class Command  {
   public:
     virtual void run() = 0;
-    virtual void accept(OBRVisitor* v) = 0; 
+    // virtual void accept(OBRVisitor* v) = 0; 
     virtual ~Command() { }
     virtual void acceptVisit(IVisitor* visitor) = 0;
   };
@@ -24,7 +24,7 @@ namespace OberonLang {
     Assignment(string v, Expression* e) { _var = v; _expression = e; }
     void run();
     void acceptVisit(IVisitor* visitor);
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     string name() { return _var; } // !TODO: Escolher qual usar
     string var() { return _var; }
     Expression* getValue() { return _expression; } // !TODO: Escolher qual usar
@@ -38,7 +38,7 @@ namespace OberonLang {
   class ProcedureCall : public Command {
   public:
     ProcedureCall(string n, vector<Expression*> args) { this->_name = n; this->_args = args; }
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     void acceptVisit(IVisitor* visitor);
     void run();
     string name() { return _name; };
@@ -52,7 +52,7 @@ namespace OberonLang {
   class BlockCommand : public Command {
   public:
     void acceptVisit(IVisitor* visitor);
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     void run();
     list<Command*>* getCommands() { return &_commands; } // !TODO: Talvez apenas um getCommands seja necessário
     list<Command*> commands() { return _commands; } 
@@ -64,7 +64,7 @@ namespace OberonLang {
   class PrintCommand : public Command {
   public:
     void acceptVisit(IVisitor* visitor);
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     PrintCommand(Expression* exp) {this ->_expression = exp;}
     void run();
     Expression* expression() { return _expression; }
@@ -77,7 +77,7 @@ namespace OberonLang {
   public:
     WhileCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_cmds = cmds; }
     void acceptVisit(IVisitor* visitor);
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     void run();
     Expression* condition() { return _cond; }
     BlockCommand* command() { return _cmds; }
@@ -91,7 +91,7 @@ namespace OberonLang {
   class IfThenCommand : public Command {
   public:
     void acceptVisit(IVisitor* visitor);
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     IfThenCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_then = cmds; }
     void run();
     Expression* condition() { return _cond; }
@@ -110,7 +110,7 @@ namespace OberonLang {
       this->_then = cmds1;
       this->_else = cmds2;
     }
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     void acceptVisit(IVisitor* visitor);
     void run();
     BlockCommand* getTrueConditionCommands() { return _then; }; // !TODO: Escolher qual usar

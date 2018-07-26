@@ -1,38 +1,38 @@
-#include "Visitor.hpp"
+#include "IVisitor.hpp"
 
 
 namespace OberonLang {
-  class Undefined;
-  class IntValue;
-  class RealValue;
-  class AddExpression;
-  class SubExpression;
-  class TimesExpression;
-  class DivExpression;
-  class RemExpression;
-  class AddRealExpression;
-  class SubRealExpression;
-  class TimesRealExpressio;
-  class DivRealExpression;
-  class EQExpression;
-  class NEExpression;
-  class LTExpression;
-  class LEExpression;
-  class GTExpression;
-  class GEEXpression;
-  class AndExpression;
-  class OrExpression; 
-  class Assignment;
-  class ProcedureCall;
-  class BlockCommand; 
-  class PrintCommand; 
-  class WhileCommand;
-  class IfThenCommand;
-  class IfThenElseCommand;
-  class Declaration;
-  class DecProcedure; 
+  // class Undefined;
+  // class IntValue;
+  // class RealValue;
+  // class AddExpression;
+  // class SubExpression;
+  // class TimesExpression;
+  // class DivExpression;
+  // class RemExpression;
+  // class AddRealExpression;
+  // class SubRealExpression;
+  // class TimesRealExpressio;
+  // class DivRealExpression;
+  // class EQExpression;
+  // class NEExpression;
+  // class LTExpression;
+  // class LEExpression;
+  // class GTExpression;
+  // class GEEXpression;
+  // class AndExpression;
+  // class OrExpression; 
+  // class Assignment;
+  // class ProcedureCall;
+  // class BlockCommand; 
+  // class PrintCommand; 
+  // class WhileCommand;
+  // class IfThenCommand;
+  // class IfThenElseCommand;
+  // class Declaration;
+  // class DecProcedure; 
 
-  class TCVisitor : public OBRVisitor {
+  class TCVisitor : public IVisitor {
   public:
     TCVisitor() { _validType = false; }
     
@@ -62,7 +62,7 @@ namespace OberonLang {
     void visit(AndExpression* exp);
     void visit(OrExpression* exp); 
 
-    //  void visit(VarRef* exp);
+    void visit(VarRef* exp);
 
     void visit(Assignment* cmd);
     void visit(ProcedureCall* cmd);
@@ -74,6 +74,10 @@ namespace OberonLang {
     void visit(Declaration* dec);
     
     void visit(DecProcedure* procedure);
+
+    void visit(Program* program);
+    void visit(VarDec* exp);
+    void visit(BinExpression* exp); 
 
     bool validType() { return _validType; }
   private:

@@ -10,8 +10,8 @@ namespace OberonLang {
     return Environment::instance()->lookup(this->_var)->expType(); 
   }
   
-  void VarRef::accept(OBRVisitor* v) {
-    //v->visit(this); 
-  }
+  // void VarRef::accept(OBRVisitor* v) {
+  //   //v->visit(this); 
+  // }
   
 }

@@ -20,5 +20,5 @@ namespace OberonLang {
   void IfThenCommand::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void IfThenElseCommand::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void DecProcedure::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
-  void BinExpression::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
+  void BinExpression::acceptVisit(IVisitor* visitor) { }
 }

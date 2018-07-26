@@ -83,7 +83,7 @@ namespace OberonLang {
   }
 
   void TCVisitor::visit(Assignment* cmd) {
-    cmd->expression()->accept(this); // this is a simplification, mainly because declaration does not propagate its type. 
+    cmd->expression()->acceptVisit(this); // this is a simplification, mainly because declaration does not propagate its type. 
   }
 
   void TCVisitor::visit(ProcedureCall* cmd) {
@@ -101,26 +101,26 @@ namespace OberonLang {
 	return;
       }
     }
-    decProcedure->body()->accept(this); 
+    decProcedure->body()->acceptVisit(this); 
   }
   
   void TCVisitor::visit(BlockCommand* cmd) {
     for (auto it = cmd->commands().begin(); it != cmd->commands().end(); ++it) {
-      (*it)->accept(this);
+      (*it)->acceptVisit(this);
       if(! this->_validType) { return ; } 
     }
      this->_validType = true; 
   }
   
   void TCVisitor::visit(PrintCommand* cmd) {
-    cmd->expression()->accept(this); 
+    cmd->expression()->acceptVisit(this); 
   }
   void TCVisitor::visit(WhileCommand* cmd) {
     if(cmd->condition()->expType() != boolean) {
       this->_validType = false;
       return; 
     }
-    cmd->command()->accept(this); 
+    cmd->command()->acceptVisit(this); 
   }
   
   void TCVisitor::visit(IfThenCommand* cmd) {
@@ -128,7 +128,7 @@ namespace OberonLang {
        this->_validType = false;
       return; 
     }
-    cmd->thenCmd()->accept(this);  
+    cmd->thenCmd()->acceptVisit(this);  
   }
   
   void TCVisitor::visit(IfThenElseCommand* cmd) {
@@ -136,12 +136,20 @@ namespace OberonLang {
       this->_validType = false;
       return; 
     }
-    cmd->thenCmd()->accept(this);
+    cmd->thenCmd()->acceptVisit(this);
     if(! this->_validType) { return; }
-    cmd->elseCmd()->accept(this);
+    cmd->elseCmd()->acceptVisit(this);
   }
 
   void TCVisitor::visit(Declaration* dec) { } 
 
   void TCVisitor::visit(DecProcedure* procedure) { }
+
+  void TCVisitor::visit(VarRef* exp) { } 
+
+  void TCVisitor::visit(Program* program) { } 
+
+  void TCVisitor::visit(VarDec* exp) { }
+
+  void TCVisitor::visit(BinExpression* exp) { exp->acceptVisit(this); }
 }

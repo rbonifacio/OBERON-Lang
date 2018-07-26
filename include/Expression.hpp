@@ -16,14 +16,14 @@ namespace OberonLang {
 
   class Value;
   class IVisitor; 
-  class OBRVisitor;
+  // class OBRVisitor;
   
   /* the base class of our Expression hierarchy */ 
   class Expression  { 
   public:
     virtual Value* eval() = 0;
     virtual TypesEnum expType() = 0; 
-    virtual void accept(OBRVisitor* v) = 0; 
+    // virtual void accept(OBRVisitor* v) = 0; 
     virtual ~Expression() { }
     virtual void acceptVisit(IVisitor* visitor) = 0;
   };
@@ -33,7 +33,7 @@ namespace OberonLang {
   public:
     virtual Value* eval() = 0;
     virtual TypesEnum expType() = 0; 
-    virtual void accept(OBRVisitor* v) = 0; 
+    // virtual void accept(OBRVisitor* v) = 0; 
     virtual void show() = 0;
     virtual void acceptVisit(IVisitor* visitor) = 0;
     virtual ~Value() { } 
@@ -44,7 +44,7 @@ namespace OberonLang {
     Value* eval() { return this; }
     TypesEnum expType();
     static Undefined* instance();
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     void show(){ cout << "Variável indefinida!"; }
     void acceptVisit(IVisitor* visitor);
   private:
@@ -60,7 +60,7 @@ namespace OberonLang {
     Value* eval() { return this; } ;
     virtual TypesEnum expType() = 0; 
     T value() { return _value; }
-    virtual void accept(OBRVisitor* v) = 0; 
+    // virtual void accept(OBRVisitor* v) = 0; 
     void show(){ cout << _value; }
     virtual void acceptVisit(IVisitor* visitor) = 0;
     virtual ~GenericValue() { }  
@@ -73,7 +73,7 @@ namespace OberonLang {
   public:
     IntValue(TYPE_INTEGER value) : GenericValue(value) {}
     TypesEnum expType();
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, IntValue& v) { os << v.value(); return os; } 
     void acceptVisit(IVisitor* visitor);
     ~IntValue() { }
@@ -84,7 +84,7 @@ namespace OberonLang {
   public:
     RealValue(TYPE_REAL value) : GenericValue(value) {}
     TypesEnum expType();
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, RealValue& v) { os << v.value(); return os; } 
     void acceptVisit(IVisitor* visitor);
     ~RealValue() { }
@@ -95,14 +95,14 @@ namespace OberonLang {
   public:
     BooleanValue(bool value) : GenericValue(value) {}
     TypesEnum expType();
-    void accept(OBRVisitor* v);
+    // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, BooleanValue& v) { os << v.value(); return os; } 
     void acceptVisit(IVisitor* visitor);
     ~BooleanValue() { } 
   };
 }
 
-#include "Visitor.hpp"
+// #include "Visitor.hpp"
 
 
 #endif 

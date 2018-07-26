@@ -1,7 +1,7 @@
 #ifndef LLVMVISITOR_H
 #define LLVMVISITOR_H
 
-#include "Visitor.hpp"
+#include "IVisitor.hpp"
 
 #include "llvm/IR/GlobalVariable.h"
 #include "llvm/ADT/APFloat.h"
@@ -43,7 +43,7 @@ namespace OberonLang {
     std::map<std::string, llvm::Value*> variables;
   };
 
-  class LLVMVisitor : public OBRVisitor {
+  class LLVMVisitor : public IVisitor {
   public:
     void visit(Program* p) {
       std::vector<llvm::Type*> argumentsTypes;      
@@ -86,7 +86,7 @@ namespace OberonLang {
     }
 //  void visit(TypesEnum* p) { } // This visit can be unnecessary
     void visit(Command* p) {
-      p->accept(this);
+      p->acceptVisit(this);
     }
     void visit(IntValue* p) {
       accumulator.push_back(llvm::ConstantInt::get(TheContext, llvm::APInt(32, p->value(), true)));  

@@ -1,8 +1,13 @@
 #include "Expression.hpp"
 #include "BinExpression.hpp"
+#include "IVisitor.hpp"
 
 namespace OberonLang {
   
+  // void infix##Expression::accept(OBRVisitor* v) { \
+  //  v->visit(this);\
+  // }\
+
   /* 
      
    */
@@ -14,9 +19,8 @@ namespace OberonLang {
       \
       return new valueTypeOberonReturn(v1 operator v2);\
     }\
-    \
-    void infix##Expression::accept(OBRVisitor* v) { \
-       v->visit(this);\
+    void infix##Expression::acceptVisit(IVisitor* visitor) {\
+      visitor->visit(this);\
     }\
     \
     TypesEnum infix##Expression::expType() {\

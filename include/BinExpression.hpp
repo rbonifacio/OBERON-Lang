@@ -13,18 +13,20 @@ namespace OberonLang {
     BinExpression(Expression* l, Expression* r) { lhs = l; rhs = r; };
     Expression* getLhs() { return lhs; };
     Expression* getRhs() { return rhs; };
-    void acceptVisit(IVisitor* visitor);
+    virtual void acceptVisit(IVisitor* visitor) = 0;
     virtual Value* eval() = 0;
     virtual TypesEnum expType() = 0;
-    virtual void accept(OBRVisitor* v) = 0;
+    // virtual void accept(OBRVisitor* v) = 0;
     ~BinExpression() { delete lhs; delete rhs; }  
   };  
   
+  // void accept(OBRVisitor* v); tinha uma \ aqui
+
   #define __headerArithBinExp(infix)\
     class infix##Expression : public BinExpression {\
     public:\
       infix##Expression(Expression* l, Expression* r) : BinExpression(l, r) {};\
-      void accept(OBRVisitor* v);\
+      void acceptVisit(IVisitor* visitor);\
       Value* eval();\
       TypesEnum expType();\
     };\

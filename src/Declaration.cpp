@@ -3,8 +3,8 @@
 
 namespace OberonLang {
 
-  void Declaration::accept(OBRVisitor* v) {
-    v->visit(this);
-  }
+  // void Declaration::accept(OBRVisitor* v) {
+  //   v->visit(this);
+  // }
 
 }

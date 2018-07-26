@@ -23,9 +23,9 @@ namespace OberonLang {
     }
   }
 
-  void Assignment::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void Assignment::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
 
   void BlockCommand::run() {
     for (auto it = _commands.begin(); it != _commands.end(); ++it) {
@@ -33,18 +33,18 @@ namespace OberonLang {
     }
   }
 
-  void BlockCommand::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void BlockCommand::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
 
   void PrintCommand::run() {
     auto v = _expression->eval();
     v->show();
   }
 
-  void PrintCommand::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void PrintCommand::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
   
 
   void ProcedureCall::run(){
@@ -75,9 +75,9 @@ namespace OberonLang {
     Environment::instance()->pop();
   }
 
-  void ProcedureCall::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void ProcedureCall::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
 
   void WhileCommand::run(){
     while (((BooleanValue*)this->_cond->eval())->value()){
@@ -85,9 +85,9 @@ namespace OberonLang {
     }
   }
 
-  void WhileCommand::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void WhileCommand::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
 
   void IfThenCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
@@ -95,9 +95,9 @@ namespace OberonLang {
    }
   }
 
-  void IfThenCommand::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void IfThenCommand::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
   
   void IfThenElseCommand::run(){
    if (((BooleanValue*)this->_cond->eval())->value()){
@@ -109,7 +109,7 @@ namespace OberonLang {
   }
 
 
-  void IfThenElseCommand::accept(OBRVisitor* v) {
-    v->visit(this); 
-  }
+  // void IfThenElseCommand::accept(OBRVisitor* v) {
+  //   v->visit(this); 
+  // }
 }

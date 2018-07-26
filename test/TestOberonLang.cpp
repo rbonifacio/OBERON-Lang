@@ -388,7 +388,7 @@ TEST (TCVisitor, IntAdd) {
   AddExpression *add = new AddExpression(v1, v2);
 
   TCVisitor* v = new TCVisitor();
-  add->accept(v);
+  add->acceptVisit(v);
   
   EXPECT_EQ (true, v->validType());
 }
@@ -400,7 +400,7 @@ TEST (TCVisitor, InvalidIntAdd) {
   AddExpression *add = new AddExpression(v1, v2);
 
   TCVisitor* v = new TCVisitor();
-  add->accept(v);
+  add->acceptVisit(v);
   
   EXPECT_EQ (false, v->validType());
 }
