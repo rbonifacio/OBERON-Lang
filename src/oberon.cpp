@@ -63,6 +63,8 @@ int main(int argc, char ** argv)
       llvm->codegen();
     }
     
+    delete BNFtoAST;
+    
     return 0;
   }
   return 1;

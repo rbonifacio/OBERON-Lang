@@ -19,6 +19,7 @@ namespace OberonLang {
     virtual void visit(IntValue* p) = 0;
     virtual void visit(RealValue* p) = 0;
     virtual void visit(BooleanValue* p) = 0;
+    virtual void visit(StringValue* p) = 0;
     virtual void visit(Undefined* p) = 0;
     virtual void visit(Assignment* p) = 0;
     virtual void visit(ProcedureCall* p) = 0;

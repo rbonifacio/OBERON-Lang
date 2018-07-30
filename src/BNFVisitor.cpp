@@ -21,6 +21,7 @@ namespace OberonLang {
     }
 
     BNFVisitor::~BNFVisitor() {
+    	delete programReturn; 
     }
     
     void BNFVisitor::runProgram(ModuleDec *p){
@@ -33,7 +34,7 @@ namespace OberonLang {
     void BNFVisitor::visitModule(Module *p) {
       vector<VarDec*> globalVars;
       vector<DecProcedure*> procedures;
-      list<Command*> cmds;
+      list<Command*> *cmds = new list<Command*>;
       BlockCommand *main;
       
       /* Iterate to build globalVars */
@@ -45,6 +46,7 @@ namespace OberonLang {
               globalVars.push_back(new VarDec(dec->name(), dec->type()));
             }
           }
+          delete visitorDeclarationListReturn;
         }
       }
       
@@ -60,7 +62,7 @@ namespace OberonLang {
       if(p->liststmt_){
         for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
           (*it)->accept(this);
-          cmds.push_back(visitorCommandReturn);
+          cmds->push_back(visitorCommandReturn);
         }
       }      
       
@@ -145,6 +147,10 @@ namespace OberonLang {
       BNFVisitor::visitInteger(p->integer_);
     }
     
+    void BNFVisitor::visitEStr(EStr *p) { 
+      BNFVisitor::visitString(p->string_);
+    }
+    
     void BNFVisitor::visitEVar(EVar *p) {
       visitorReturn = new VarRef(p->ident_);
     }
@@ -159,11 +165,11 @@ namespace OberonLang {
     }
     
     void BNFVisitor::visitSCall(SCall *p) {
-      vector<Expression*> pmts;
+      vector<Expression*> *pmts = new vector<Expression*>;
       if(p->listexp_){
         for(auto it = p->listexp_->begin(); it != p->listexp_->end(); ++it) {
           (*it)->accept(this);
-          pmts.push_back(visitorReturn);
+          pmts->push_back(visitorReturn);
         }
       }
       visitorCommandReturn = new ProcedureCall(p->ident_, pmts);
@@ -175,11 +181,11 @@ namespace OberonLang {
     }
     
     void BNFVisitor::visitSWhile(SWhile *p) {
-      list<Command *> commands;
+      list<Command *> *commands = new list<Command *>;
       if(p->liststmt_){
         for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
           (*it)->accept(this);
-          commands.push_back(visitorCommandReturn);
+          commands->push_back(visitorCommandReturn);
         }
       }    
       p->exp_->accept(this);  
@@ -187,15 +193,15 @@ namespace OberonLang {
     }
     
     void BNFVisitor::visitPDec(PDec *p) {
-      vector<Declaration> args;
-      vector<Declaration> vars;
-      list<Command *> pmts;
+      vector<Declaration*> *args = new vector<Declaration*>;
+      vector<Declaration*> *vars = new vector<Declaration*>;
+      list<Command *> *pmts = new list<Command *>;
       BlockCommand *body;
       
       if(p->liststmt_){
         for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
           (*it)->accept(this);
-          pmts.push_back(visitorCommandReturn);
+          pmts->push_back(visitorCommandReturn);
         }
       }
       
@@ -204,9 +210,10 @@ namespace OberonLang {
           (*it)->accept(this);
           if(visitorDeclarationListReturn){
             for(auto dec = visitorDeclarationListReturn->begin(); dec != visitorDeclarationListReturn->end(); ++dec){
-              vars.push_back(*(new Declaration(dec->type(), dec->name())));
+              vars->push_back(new Declaration(dec->type(), dec->name()));
             }
           }
+          delete visitorDeclarationListReturn;
         }
       }
       
@@ -215,9 +222,10 @@ namespace OberonLang {
           (*it)->accept(this);
           if(visitorDeclarationListReturn){
             for(auto dec = visitorDeclarationListReturn->begin(); dec != visitorDeclarationListReturn->end(); ++dec){
-              args.push_back(*(new Declaration(dec->type(), dec->name())));
+              args->push_back(new Declaration(dec->type(), dec->name()));
             }
           }
+          delete visitorDeclarationListReturn;
         }
       }
               
@@ -239,6 +247,10 @@ namespace OberonLang {
     
     void BNFVisitor::visitDouble(Double x) { 
       visitorReturn = new RealValue(x);
+    }
+    
+    void BNFVisitor::visitString(String x){
+    	visitorReturn = new StringValue(x);
     }
     
     void BNFVisitor::visitIdent(Ident x) {

@@ -43,5 +43,9 @@ namespace OberonLang {
   TypesEnum BooleanValue::expType() {
     return boolean; 
   }
+ 
+  TypesEnum StringValue::expType() {
+    return str; 
+  }
 
 }

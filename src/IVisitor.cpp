@@ -7,6 +7,7 @@ namespace OberonLang {
   void IntValue::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void RealValue::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void BooleanValue::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
+  void StringValue::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void Undefined::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void VarDec::acceptVisit(IVisitor* visitor) { visitor->visit(this); }
   void VarRef::acceptVisit(IVisitor* visitor) { visitor->visit(this); }

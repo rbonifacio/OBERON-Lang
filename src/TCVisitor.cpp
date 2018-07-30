@@ -15,6 +15,9 @@ namespace OberonLang {
   void TCVisitor::visit(BooleanValue* exp) {
     this->_validType = true; 
   } 
+  void TCVisitor::visit(StringValue* exp) {
+    this->_validType = true; 
+  } 
   
   void TCVisitor::visit(AddExpression* exp) {
     this->_validType = exp->expType() == integer; 
@@ -88,15 +91,15 @@ namespace OberonLang {
 
   void TCVisitor::visit(ProcedureCall* cmd) {
     auto decProcedure = Environment::instance()->decProcedure(cmd->name());
-    int numberOfFormalArgs = decProcedure->formalArgs().size();
-    int numberOfActualArgs = cmd->args().size();
+    int numberOfFormalArgs = decProcedure->formalArgs()->size();
+    int numberOfActualArgs = cmd->args()->size();
     if(numberOfActualArgs != numberOfFormalArgs) {
       this->_validType = false;
       return; 
     }
     
     for(int i = 0; i < numberOfFormalArgs; i++ ) {
-     if((decProcedure->formalArgs())[i].type() != (cmd->args())[i]->expType()) {
+     if((*decProcedure->formalArgs())[i]->type() != (*cmd->args())[i]->expType()) {
 	this->_validType = false;
 	return;
       }
@@ -105,7 +108,7 @@ namespace OberonLang {
   }
   
   void TCVisitor::visit(BlockCommand* cmd) {
-    for (auto it = cmd->commands().begin(); it != cmd->commands().end(); ++it) {
+    for (auto it = cmd->commands()->begin(); it != cmd->commands()->end(); ++it) {
       (*it)->acceptVisit(this);
       if(! this->_validType) { return ; } 
     }

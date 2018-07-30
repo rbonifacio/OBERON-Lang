@@ -3,7 +3,7 @@
 
 namespace OberonLang {
 
-  enum TypesEnum { integer, boolean, real, undef };
+  enum TypesEnum { integer, boolean, real, str, undef };
 
 }
 

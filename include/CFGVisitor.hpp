@@ -66,6 +66,10 @@ public:
     lastTypeOfValue = CONSTANT;
   };
 
+  void visit(StringValue *p) {
+    lastTypeOfValue = CONSTANT;
+  };
+
   void visit(Undefined *p) {
     lastTypeOfValue = TOP;
   };
@@ -589,15 +593,15 @@ private:
 
       (*this->procedureNames)[(*procedure)->name()] = procedureCount;
 
-      for (auto var = (*procedure)->formalArgs().begin();
-        var != (*procedure)->formalArgs().end(); ++var) {
-        std::string varName = "p" + std::to_string(procedureCount) + "_" + (*var).name();
+      for (auto var = (*procedure)->formalArgs()->begin();
+        var != (*procedure)->formalArgs()->end(); ++var) {
+        std::string varName = "p" + std::to_string(procedureCount) + "_" + (*var)->name();
         (*this->varState)[varName] = CONSTANT;
       }
 
-      for (auto var = (*procedure)->localVars().begin();
-        var != (*procedure)->localVars().end(); ++var) {
-        std::string varName = "p" + std::to_string(procedureCount) + "_" + (*var).name();
+      for (auto var = (*procedure)->localVars()->begin();
+        var != (*procedure)->localVars()->end(); ++var) {
+        std::string varName = "p" + std::to_string(procedureCount) + "_" + (*var)->name();
         (*this->varState)[varName] = TOP;
         varCount++;
       }

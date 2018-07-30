@@ -93,6 +93,7 @@ namespace OberonLang {
     }
     void visit(RealValue* p) { }
     void visit(BooleanValue* p) { }
+    void visit(StringValue* p) { }
     void visit(Undefined* p) { }
 
     void visit(Assignment* p) {
@@ -139,9 +140,9 @@ namespace OberonLang {
     
     void visit(DecProcedure* p) {
       std::vector<llvm::Type*> argumentsTypes;      
-      std::vector<Declaration>::iterator itArguments = p->formalArgsPointer()->begin();
+      std::vector<Declaration*>::iterator itArguments = p->formalArgsPointer()->begin();
       for (; itArguments != p->formalArgsPointer()->end(); ++itArguments) {
-        argumentsTypes.push_back(typeOf(itArguments->type()));  
+        argumentsTypes.push_back(typeOf((*itArguments)->type()));  
       }
       llvm::FunctionType *procedureType = llvm::FunctionType::get(llvm::Type::getVoidTy(TheContext), llvm::makeArrayRef(argumentsTypes), false);
       llvm::Function* procedure = llvm::Function::Create(procedureType, llvm::GlobalValue::ExternalLinkage, p->name(), &*TheModule);
@@ -155,8 +156,8 @@ namespace OberonLang {
       llvm::Value* argValue;
       itArguments = p->formalArgsPointer()->begin();
       for (auto &Arg: procedure->args()) {
-        Arg.setName(itArguments->name());
-        (*currentScope()->getVariables())[itArguments->name()] = &Arg;
+        Arg.setName((*itArguments)->name());
+        (*currentScope()->getVariables())[(*itArguments)->name()] = &Arg;
         itArguments++;
       }
       

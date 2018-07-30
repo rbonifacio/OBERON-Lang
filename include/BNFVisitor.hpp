@@ -47,7 +47,7 @@ namespace OberonLang {
     void visitEAnd(EAnd *p);
     //void visitCall(Call *p);
     void visitEVar(EVar *p);
-    void visitEStr(EStr *p) { cout << "StringExpression não suportado\n"; } // !TODO
+    void visitEStr(EStr *p); // !TODO
     void visitEInt(EInt *p);
     void visitEFalse(EFalse *p);
     void visitETrue(ETrue *p);
@@ -67,7 +67,7 @@ namespace OberonLang {
     void visitInteger(Integer x);
     void visitChar(Char x) { }
     void visitDouble(Double x);
-    void visitString(String x) { cout << "String não suportado\n"; } // !TODO, não temos uma classe de valor para string
+    void visitString(String x); // !TODO, não temos uma classe de valor para string
     void visitIdent(Ident x);
     
     Program* getProgram() { return programReturn; }

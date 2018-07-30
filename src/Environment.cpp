@@ -62,7 +62,11 @@ namespace OberonLang {
   }
 
   void Environment::pop() {
-    _env->pop(); 
+    map<string, Value*> *hashMap = _env->top();
+    for(auto it = hashMap->begin(); it != hashMap->end(); ++it)
+    	delete it->second;
+    delete hashMap;
+    _env->pop();
   }
 
   void Environment::decProcedure(DecProcedure* p){

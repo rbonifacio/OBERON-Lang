@@ -12,6 +12,14 @@ namespace OberonLang {
   Program::Program(Command* main) {
     this->_main = main; 
   }
+  
+  Program::~Program(){
+  	for(auto it = this->_globalVars.begin(); it != this->_globalVars.end(); ++it)
+  		delete *it;
+  	for(auto it = this->_procedures.begin(); it != this->_procedures.end(); ++it)
+  		delete *it;
+  	delete this->_main;
+  }
 
   Program::Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main) {
     this->_globalVars = globalVars; 

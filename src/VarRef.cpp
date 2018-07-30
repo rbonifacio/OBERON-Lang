@@ -3,7 +3,7 @@
 
 namespace OberonLang {
   Value* VarRef::eval() {
-    return Environment::instance()->lookup(this->_var);
+  	return Environment::instance()->lookup(this->_var)->eval();
   }
 
   TypesEnum VarRef::expType() {

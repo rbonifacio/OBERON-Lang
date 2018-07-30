@@ -3,10 +3,11 @@
 
 #include <cstdint>
 #include <iostream>
+#include <string>
 
 #include "Types.hpp"
 
-#define TYPE_INTEGER  uint64_t
+#define TYPE_INTEGER  int64_t
 #define TYPE_BOOLEAN  bool
 #define TYPE_REAL double
 
@@ -41,7 +42,7 @@ namespace OberonLang {
 
   class Undefined : public Value {
   public:
-    Value* eval() { return this; }
+    Value* eval() { return Undefined::instance(); }
     TypesEnum expType();
     static Undefined* instance();
     // void accept(OBRVisitor* v);
@@ -57,14 +58,13 @@ namespace OberonLang {
   class GenericValue : public Value {
   public:
     GenericValue(T v) { _value = v; }
-    Value* eval() { return this; } ;
     virtual TypesEnum expType() = 0; 
     T value() { return _value; }
     // virtual void accept(OBRVisitor* v) = 0; 
     void show(){ cout << _value; }
     virtual void acceptVisit(IVisitor* visitor) = 0;
     virtual ~GenericValue() { }  
-  private:
+  protected:
     T _value; 
   };
 
@@ -72,6 +72,7 @@ namespace OberonLang {
   class IntValue : public GenericValue<TYPE_INTEGER> {
   public:
     IntValue(TYPE_INTEGER value) : GenericValue(value) {}
+    Value *eval() { return new IntValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, IntValue& v) { os << v.value(); return os; } 
@@ -83,6 +84,7 @@ namespace OberonLang {
   class RealValue : public GenericValue<TYPE_REAL> {
   public:
     RealValue(TYPE_REAL value) : GenericValue(value) {}
+    Value *eval() { return new RealValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, RealValue& v) { os << v.value(); return os; } 
@@ -94,11 +96,24 @@ namespace OberonLang {
   class BooleanValue : public GenericValue<bool> {
   public:
     BooleanValue(bool value) : GenericValue(value) {}
+    Value *eval() { return new BooleanValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
     friend ostream& operator<< (ostream& os, BooleanValue& v) { os << v.value(); return os; } 
     void acceptVisit(IVisitor* visitor);
     ~BooleanValue() { } 
+  };
+  
+  /* the Oberon string value */ 
+  class StringValue : public GenericValue<std::string> {
+  public:
+    StringValue(std::string value) : GenericValue(value) {}
+    Value *eval() { return new StringValue(this->_value); }
+    TypesEnum expType();
+    // void accept(OBRVisitor* v);
+    friend ostream& operator<< (ostream& os, StringValue& v) { os << v.value(); return os; } 
+    void acceptVisit(IVisitor* visitor);
+    ~StringValue() { } 
   };
 }
 

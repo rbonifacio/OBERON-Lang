@@ -40,6 +40,7 @@ namespace OberonLang {
     void visit(IntValue* exp);
     void visit(RealValue* exp);
     void visit(BooleanValue* exp); 
+    void visit(StringValue* exp); 
 
     void visit(AddExpression* exp);
     void visit(SubExpression* exp); 

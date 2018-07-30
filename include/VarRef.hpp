@@ -15,6 +15,7 @@ namespace OberonLang {
     void acceptVisit(IVisitor* visitor);
     Value* eval();
     TypesEnum expType(); 
+    ~VarRef() { }
     // void accept(OBRVisitor* v); 
   private:
     string _var; 

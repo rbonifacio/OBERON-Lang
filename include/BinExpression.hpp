@@ -31,26 +31,26 @@ namespace OberonLang {
       TypesEnum expType();\
     };\
   
-  __headerArithBinExp(Add);   // ~ AddExpression
-  __headerArithBinExp(Sub);   // ~ SubExpression
+  __headerArithBinExp(Add)   // ~ AddExpression
+  __headerArithBinExp(Sub)   // ~ SubExpression
   __headerArithBinExp(Times); // ~ TimesExpression
-  __headerArithBinExp(Div);   // ~ DivExpression
-  __headerArithBinExp(Rem);   // ~ RemExpression
+  __headerArithBinExp(Div)   // ~ DivExpression
+  __headerArithBinExp(Rem)   // ~ RemExpression
   
-  __headerArithBinExp(AddReal);   // ~ AddRealExpression
-  __headerArithBinExp(SubReal);   // ~ SubRealExpression
+  __headerArithBinExp(AddReal)   // ~ AddRealExpression
+  __headerArithBinExp(SubReal)   // ~ SubRealExpression
   __headerArithBinExp(TimesReal); // ~ TimesRealExpression
-  __headerArithBinExp(DivReal);   // ~ DivRealExpression
+  __headerArithBinExp(DivReal)   // ~ DivRealExpression
   
-  __headerArithBinExp(EQ);   // ~ EQExpression
-  __headerArithBinExp(NE);   // ~ NEExpression
-  __headerArithBinExp(LT);   // ~ LTExpression
-  __headerArithBinExp(LE);   // ~ LEExpression
-  __headerArithBinExp(GT);   // ~ GTExpression
-  __headerArithBinExp(GE);   // ~ GEExpression
+  __headerArithBinExp(EQ)   // ~ EQExpression
+  __headerArithBinExp(NE)   // ~ NEExpression
+  __headerArithBinExp(LT)   // ~ LTExpression
+  __headerArithBinExp(LE)   // ~ LEExpression
+  __headerArithBinExp(GT)   // ~ GTExpression
+  __headerArithBinExp(GE)   // ~ GEExpression
   
   __headerArithBinExp(And);  // ~ AndExpression
-  __headerArithBinExp(Or);   // ~ OrExpression
+  __headerArithBinExp(Or)   // ~ OrExpression
     
 }
 #endif 

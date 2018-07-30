@@ -24,7 +24,30 @@ namespace OberonLang {
     DecProcedure* decProcedure(string n);
     void push();                                   //it should be called after a procedure call
     void pop();                                    //it should be called after returning
-    ~Environment() { delete _env; delete _procedures; }
+    ~Environment() {
+    	_env_instance = 0;
+    	
+    	// Delete _env
+		  while(!this->_env->empty()){
+		  	map<string, Value*> *el = this->_env->top();
+				for(auto it = el->begin(); it != el->end(); ++it){
+					delete it->second;
+				}
+				delete el;
+				this->_env->pop();
+		  }
+		  delete this->_env; 
+		  
+		  // Delete _procedures
+		  for(auto it = this->_procedures->begin(); it != this->_procedures->end(); ++it)
+		  	delete it->second;
+		  delete this->_procedures; 
+		  
+		  // Delete _globals
+		  for(auto it = this->_globals->begin(); it != this->_globals->end(); ++it)
+		  	delete it->second;
+		  delete this->_globals;
+    }
   private:
     Environment();
     static Environment* _env_instance;            // according to the singleton design pattern

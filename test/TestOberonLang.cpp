@@ -25,6 +25,9 @@ TEST (AddExpression, IntAdd) {
   IntValue* result = (IntValue *)(add->eval());
 
   EXPECT_EQ (15, result->value());
+  
+  delete add;
+  delete result;
 }
 
 
@@ -36,27 +39,44 @@ TEST (AddExpression, RealAdd) {
   RealValue *result = (RealValue *)(add->eval());
 
   EXPECT_EQ (19.5, result->value());
+  
+  delete add;
+  delete result;
 }
 
 TEST (AddExpression, SelfRef) {
   IntValue *v0 = new IntValue(0);
   IntValue *v1 = new IntValue(1);
-  v0 = (IntValue *)(new AddExpression(v0,v1))->eval();
-  v0 = (IntValue *)(new AddExpression(v0,v1))->eval();
+  IntValue *vr0, *vr1;
+  AddExpression *add0 = new AddExpression(v0,v1);
+  vr0 = (IntValue *)add0->eval();
+  
+  delete add0;
+  v1 = new IntValue(1);
+  
+  AddExpression *add1 = new AddExpression(vr0,v1);
+  vr1 = (IntValue *)add1->eval();
 
-  EXPECT_EQ (2, v0->value());
+  EXPECT_EQ (2, vr1->value());
+  
+  delete add1;
+  delete vr1;
 }
 
 TEST (TestAssignment, SimpleAssignment) {
-  Environment::instance()->env("x", new IntValue(0));
+	IntValue *initial = new IntValue(0);
+  Environment::instance()->env("x", initial);
+  
   IntValue *value = new IntValue(10);
   Assignment* assignment = new Assignment("x", value);
-
+	
   assignment->run();
 
   EXPECT_NE(Undefined::instance(), Environment::instance()->env("x"));
 
   EXPECT_EQ (10, ((IntValue*)Environment::instance()->env("x"))->value());
+  
+  delete assignment;
 }
 
 TEST (SubExpression, SimpleSub) {
@@ -66,6 +86,9 @@ TEST (SubExpression, SimpleSub) {
   IntValue *result = (IntValue *)sub->eval();
 
   EXPECT_EQ (-100, result->value());
+  
+  delete sub;
+  delete result;
 }
 
 TEST (SubExpression, RealSub) {
@@ -75,6 +98,9 @@ TEST (SubExpression, RealSub) {
   RealValue *result = (RealValue *)(sub->eval());
 
   EXPECT_DOUBLE_EQ (1.3, result->value());
+  
+  delete sub;
+  delete result;
 }
 
 TEST (TimesExpression, IntTimes) {
@@ -84,6 +110,9 @@ TEST (TimesExpression, IntTimes) {
   IntValue *result = (IntValue *)Times->eval();
 
   EXPECT_EQ (-16856, result->value());
+  
+  delete Times;
+  delete result;
 }
 
 TEST (TimesExpression, RealTimes) {
@@ -93,6 +122,9 @@ TEST (TimesExpression, RealTimes) {
   RealValue *result = (RealValue *)(times->eval());
 
   EXPECT_DOUBLE_EQ (0.408, result->value());
+  
+  delete times;
+  delete result;
 }
 
 TEST (DivExpression, SimpleDiv) {
@@ -102,6 +134,9 @@ TEST (DivExpression, SimpleDiv) {
   IntValue *result = (IntValue *)div->eval();
 
   EXPECT_EQ (9, result->value());
+  
+  delete div;
+  delete result;
 }
 
 TEST (DivExpression, RealDiv) {
@@ -111,6 +146,9 @@ TEST (DivExpression, RealDiv) {
   RealValue *result = (RealValue *)(div->eval());
 
   EXPECT_DOUBLE_EQ (24.6, result->value());
+  
+  delete div;
+  delete result;
 }
 
 TEST (RemExpression, SimpleRem) {
@@ -120,6 +158,9 @@ TEST (RemExpression, SimpleRem) {
   IntValue *result = (IntValue *)rem->eval();
 
   EXPECT_EQ (7, result->value());
+  
+  delete rem;
+  delete result;
 }
 
 TEST (AndExpression, TrueTrue) {
@@ -129,6 +170,9 @@ TEST (AndExpression, TrueTrue) {
   BooleanValue *result = (BooleanValue *)andExp->eval();
 
   EXPECT_EQ (true, result->value());
+  
+  delete andExp;
+  delete result;
 }
 
 TEST (AndExpression, TrueFalse) {
@@ -138,6 +182,9 @@ TEST (AndExpression, TrueFalse) {
   BooleanValue *result = (BooleanValue *)andExp->eval();
 
   EXPECT_EQ (false, result->value());
+  
+  delete andExp;
+  delete result;
 }
 
 TEST (OrExpression, TrueTrue) {
@@ -147,6 +194,9 @@ TEST (OrExpression, TrueTrue) {
   BooleanValue *result = (BooleanValue *)orExp->eval();
 
   EXPECT_EQ (true, result->value());
+  
+  delete orExp;
+  delete result;
 }
 
 TEST (OrExpression, TrueFalse) {
@@ -156,6 +206,9 @@ TEST (OrExpression, TrueFalse) {
   BooleanValue *result = (BooleanValue *)orExp->eval();
 
   EXPECT_EQ (true, result->value());
+  
+  delete orExp;
+  delete result;
 }
 
 TEST (EQExpression, Equal) {
@@ -165,6 +218,9 @@ TEST (EQExpression, Equal) {
   BooleanValue *result = (BooleanValue *)exp->eval();
 
   EXPECT_EQ (true, result->value());
+  
+  delete exp;
+  delete result;
 }
 
 TEST (EQExpression, NotEqual) {
@@ -174,6 +230,9 @@ TEST (EQExpression, NotEqual) {
   BooleanValue *result = (BooleanValue *)exp->eval();
 
   EXPECT_EQ (false, result->value());
+  
+  delete exp;
+  delete result;
 }
 
 TEST (LTExpression, LessThan) {
@@ -183,6 +242,9 @@ TEST (LTExpression, LessThan) {
   BooleanValue *result = (BooleanValue *)exp->eval();
 
   EXPECT_EQ (true, result->value());
+  
+  delete exp;
+  delete result;
 }
 
 TEST (LTExpression, Equal) {
@@ -192,6 +254,9 @@ TEST (LTExpression, Equal) {
   BooleanValue *result = (BooleanValue *)exp->eval();
 
   EXPECT_EQ (false, result->value());
+  
+  delete exp;
+  delete result;
 }
 
 TEST (LTExpression, Greater) {
@@ -201,12 +266,15 @@ TEST (LTExpression, Greater) {
   BooleanValue *result = (BooleanValue *)exp->eval();
 
   EXPECT_EQ (false, result->value());
+  
+  delete exp;
+  delete result;
 }
 
 TEST (WhileCommand, Print) {
-
-  Environment::instance()->global("sum", new IntValue(0));
+	IntValue * v0 = new IntValue(0);
   Environment::instance()->global("inc", new IntValue(10));
+  Environment::instance()->global("sum", v0);
 
   GTExpression *exp = new GTExpression(new VarRef("inc"), new IntValue(0));
 
@@ -216,7 +284,10 @@ TEST (WhileCommand, Print) {
   SubExpression *sub = new SubExpression(new VarRef("inc"), new IntValue(1));
   Assignment *assignment2 = new Assignment("inc", sub);
 
-  list <Command*> cmds = {assignment1, assignment2};
+  list<Command*> *cmds = new list<Command*>();
+  cmds->push_back(assignment1);
+  cmds->push_back(assignment2);
+  
   BlockCommand *bc = new BlockCommand(cmds);
 
   WhileCommand *wc = new WhileCommand(exp, bc);
@@ -224,7 +295,8 @@ TEST (WhileCommand, Print) {
 
   EXPECT_EQ (55, ((IntValue*)Environment :: instance()->global("sum"))->value());
 
-
+	delete wc;
+	delete Environment::instance();
   //
   // var soma = 0;
   // var inc = 10;
@@ -243,7 +315,9 @@ TEST (IfThenCommand, True) {
   IntValue *value = new IntValue(10);
   Assignment* assignment = new Assignment("x", value);
 
-  list <Command*> cmds = {assignment};
+  list <Command*> *cmds = new list <Command*>;
+  cmds->push_back(assignment);
+  
   BlockCommand *bc = new BlockCommand(cmds);
   IfThenCommand *ifthen = new IfThenCommand(exp,bc);
   ifthen -> run();
@@ -253,6 +327,8 @@ TEST (IfThenCommand, True) {
   // if(n<15){
   //  x = 10;
   //}
+  delete ifthen;
+  delete Environment::instance();
 }
 TEST (IfThenElseCommand, IFTrue) {
 
@@ -267,8 +343,11 @@ TEST (IfThenElseCommand, IFTrue) {
   IntValue *value02 = new IntValue(5);
   Assignment* assignment2 = new Assignment("x", value02);
 
-  list <Command*> cmdsIf = {assignment};
-  list <Command*> cmdsElse = {assignment2};
+  list<Command*> *cmdsIf = new list<Command*>;
+  cmdsIf->push_back(assignment);
+  
+  list<Command*> *cmdsElse = new list<Command*>;
+  cmdsElse->push_back(assignment2);
 
   BlockCommand *bcIf = new BlockCommand(cmdsIf);
   BlockCommand *bcElse = new BlockCommand(cmdsElse);
@@ -284,6 +363,8 @@ TEST (IfThenElseCommand, IFTrue) {
   //else{
   //  x = 5
   //}
+  delete ifthenElse;
+  delete Environment::instance();
 }
 TEST (IfThenElseCommand, ElseTrue) {
 
@@ -297,8 +378,11 @@ TEST (IfThenElseCommand, ElseTrue) {
   IntValue *value02 = new IntValue(5);
   Assignment* assignment2 = new Assignment("x", value02);
 
-  list <Command*> cmdsIf = {assignment};
-  list <Command*> cmdsElse = {assignment2};
+  list<Command*> *cmdsIf = new list<Command*>;
+  cmdsIf->push_back(assignment);
+  
+  list<Command*> *cmdsElse = new list<Command*>;
+  cmdsElse->push_back(assignment2);
 
   BlockCommand *bcIf = new BlockCommand(cmdsIf);
   BlockCommand *bcElse = new BlockCommand(cmdsElse);
@@ -314,6 +398,9 @@ TEST (IfThenElseCommand, ElseTrue) {
   //else{
   //  x = 5
   //}
+  
+  delete ifthenElse;
+  delete Environment::instance();
 }
 
 TEST (Procedure, Print){
@@ -338,10 +425,10 @@ TEST (Procedure, Print){
 
   // ----------------- Procedure declaration -------------------- //
 
-  vector<Declaration> args;
-  vector<Declaration> vars;
-  args.push_back(Declaration(integer, "x"));
-  args.push_back(Declaration(integer, "y"));
+  vector<Declaration*> *args = new vector<Declaration*>;
+  vector<Declaration*> *vars = new vector<Declaration*>;
+  args->push_back(new Declaration(integer, "x"));
+  args->push_back(new Declaration(integer, "y"));
 
   Command *body = new Assignment("res", new AddExpression(new VarRef("x"), new VarRef("y")));
 
@@ -351,9 +438,9 @@ TEST (Procedure, Print){
 
   // ----------------- Procedure call -----------------------------//
 
-  vector<Expression*> pmts;
-  pmts.push_back(new IntValue(5));
-  pmts.push_back(new IntValue(3));
+  vector<Expression*> *pmts = new vector<Expression*>;
+  pmts->push_back(new IntValue(5));
+  pmts->push_back(new IntValue(3));
 
   ProcedureCall *call = new ProcedureCall("sum", pmts);
 
@@ -362,6 +449,9 @@ TEST (Procedure, Print){
   EXPECT_NE(Undefined::instance(), Environment::instance()->global("res"));
 
   EXPECT_EQ (8, ((IntValue*)Environment::instance()->global("res"))->value());
+  
+  delete call;
+  delete Environment::instance();
 }
 
 
@@ -371,6 +461,7 @@ TEST (TCAddExpression, IntAdd) {
   AddExpression *add = new AddExpression(v1, v2);
 
   EXPECT_EQ (integer, add->expType());
+  delete add;
 }
 
 TEST (TCAddExpression, RealAdd) {
@@ -379,6 +470,7 @@ TEST (TCAddExpression, RealAdd) {
   AddRealExpression *add = new AddRealExpression(v1, v2);
 
   EXPECT_EQ (real, add->expType());
+  delete add;
 }
 
 
@@ -391,6 +483,9 @@ TEST (TCVisitor, IntAdd) {
   add->acceptVisit(v);
   
   EXPECT_EQ (true, v->validType());
+  
+  delete add;
+  delete v;
 }
 
 
@@ -403,9 +498,14 @@ TEST (TCVisitor, InvalidIntAdd) {
   add->acceptVisit(v);
   
   EXPECT_EQ (false, v->validType());
+  
+  delete add;
+  delete v;
 }
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
+  int ret =  RUN_ALL_TESTS();
+  delete Undefined::instance();
+  return ret;
 }
