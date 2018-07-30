@@ -33,13 +33,13 @@ namespace OberonLang {
   
   __headerArithBinExp(Add)   // ~ AddExpression
   __headerArithBinExp(Sub)   // ~ SubExpression
-  __headerArithBinExp(Times); // ~ TimesExpression
+  __headerArithBinExp(Times) // ~ TimesExpression
   __headerArithBinExp(Div)   // ~ DivExpression
   __headerArithBinExp(Rem)   // ~ RemExpression
   
   __headerArithBinExp(AddReal)   // ~ AddRealExpression
   __headerArithBinExp(SubReal)   // ~ SubRealExpression
-  __headerArithBinExp(TimesReal); // ~ TimesRealExpression
+  __headerArithBinExp(TimesReal) // ~ TimesRealExpression
   __headerArithBinExp(DivReal)   // ~ DivRealExpression
   
   __headerArithBinExp(EQ)   // ~ EQExpression
@@ -49,7 +49,7 @@ namespace OberonLang {
   __headerArithBinExp(GT)   // ~ GTExpression
   __headerArithBinExp(GE)   // ~ GEExpression
   
-  __headerArithBinExp(And);  // ~ AndExpression
+  __headerArithBinExp(And)  // ~ AndExpression
   __headerArithBinExp(Or)   // ~ OrExpression
     
 }

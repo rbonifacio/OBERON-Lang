@@ -35,6 +35,7 @@ namespace OberonLang {
   class TCVisitor : public IVisitor {
   public:
     TCVisitor() { _validType = false; }
+    virtual ~TCVisitor() {}
     
     void visit(Undefined* exp);
     void visit(IntValue* exp);

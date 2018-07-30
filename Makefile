@@ -30,7 +30,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 BNFOBJECTS := $(BUILDDIR)/Absyn.o $(BUILDDIR)/Lexer.o $(BUILDDIR)/Parser.o $(BUILDDIR)/Printer.o
 
 ## Flags
-CXXFLAGS := -g -W -Wall -Wextra -Wno-unused-parameter -std=c++11 #-Wno-unused-parameter
+CXXFLAGS := -g -W -Wall -Wextra -std=c++11 #-Wno-unused-parameter
 LIB := -pthread -L lib
 INC := -I $(HEADERDIR) -I $(GENSRCDIR)
 GTEST := ${GTEST_DIR}

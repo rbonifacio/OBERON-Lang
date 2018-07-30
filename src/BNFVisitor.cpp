@@ -117,20 +117,20 @@ namespace OberonLang {
     
     
     // Those can have real or integers
-    __implementBNFVisitorBinExpression(EAdd, Add, AddReal);     // Implements visitEAdd
-    __implementBNFVisitorBinExpression(ESub, Sub, SubReal);     // Implements visitESub
-    __implementBNFVisitorBinExpression(EMul, Times, TimesReal); // Implements visitETimes
-    __implementBNFVisitorBinExpression(EDiv, Div, DivReal);     // Implements visitEDiv
+    __implementBNFVisitorBinExpression(EAdd, Add, AddReal)     // Implements visitEAdd
+    __implementBNFVisitorBinExpression(ESub, Sub, SubReal)     // Implements visitESub
+    __implementBNFVisitorBinExpression(EMul, Times, TimesReal) // Implements visitETimes
+    __implementBNFVisitorBinExpression(EDiv, Div, DivReal)     // Implements visitEDiv
     
     // Those are only integers, we should have relational expressions for real but we don't
-    __implementBNFVisitorBinExpression(EEq, EQ, EQ);     // Implements visitEEq
-    __implementBNFVisitorBinExpression(ENEq, NE, NE);    // Implements visitENEq
-    __implementBNFVisitorBinExpression(ELt, LT, LT);     // Implements visitELt
-    __implementBNFVisitorBinExpression(EGt, GT, GT);     // Implements visitEGt
+    __implementBNFVisitorBinExpression(EEq, EQ, EQ)     // Implements visitEEq
+    __implementBNFVisitorBinExpression(ENEq, NE, NE)    // Implements visitENEq
+    __implementBNFVisitorBinExpression(ELt, LT, LT)     // Implements visitELt
+    __implementBNFVisitorBinExpression(EGt, GT, GT)     // Implements visitEGt
     
     /* Logic binary expressions */
-    __implementBNFVisitorBinExpression(EAnd, And, And);  // Implements visitEAnd
-    __implementBNFVisitorBinExpression(EOr, Or, Or);     // Implements visitEAnd
+    __implementBNFVisitorBinExpression(EAnd, And, And)  // Implements visitEAnd
+    __implementBNFVisitorBinExpression(EOr, Or, Or)     // Implements visitEAnd
     
 //    void BNFVisitor::visitCall(Call *p) {
 //      vector<Expression*> pmts;
