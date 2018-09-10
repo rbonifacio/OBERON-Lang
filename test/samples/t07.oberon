@@ -1,8 +1,8 @@
 module TO7 
     var res, undefined_value : int;
+    var a : int;
 
     def sum(x, y : int) 
-        var a, b : int;
     begin
         res := x + y;
         if (res > 5) then
@@ -15,4 +15,5 @@ module TO7
 begin 
     sum(3, 4); 
     print(res);
+    print(a);
 end T01.

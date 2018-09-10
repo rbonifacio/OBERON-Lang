@@ -56,16 +56,16 @@ namespace OberonLang {
     void visitSCall(SCall *p);
     void visitSAssignment(SAssignment *p);
     void visitSWhile(SWhile *p);
-    void visitSIfThenElse(SIfThenElse *p) { cout << "IfThenElse não suportado\n"; } //!TODO
-    void visitSIfThen(SIfThen *p) { cout << "IfThen não suportado\n"; } //!TODO
-    void visitListExp(ListExp *p) { }
-    void visitListStmt(ListStmt *p) { }
-    void visitListIdent(ListIdent *p) { }
-    void visitListVarDecl(ListVarDecl *p) { }
-    void visitListFPmtDec(ListFPmtDec *p) { }
-    void visitListProcDec(ListProcDec *p) { }
+    void visitSIfThenElse(SIfThenElse *p);
+    void visitSIfThen(SIfThen *p);
+    void visitListExp(ListExp *p) { };
+    void visitListStmt(ListStmt *p);
+    void visitListIdent(ListIdent *p) { };
+    void visitListVarDecl(ListVarDecl *p) { };
+    void visitListFPmtDec(ListFPmtDec *p) { };
+    void visitListProcDec(ListProcDec *p) { };
     void visitInteger(Integer x);
-    void visitChar(Char x) { }
+    void visitChar(Char x) { };
     void visitDouble(Double x);
     void visitString(String x); // !TODO, não temos uma classe de valor para string
     void visitIdent(Ident x);
@@ -82,6 +82,7 @@ namespace OberonLang {
     vector<Declaration> *visitorDeclarationListReturn;
     DecProcedure *decProcedureReturn;
     Program *programReturn;
+    BlockCommand *visitorBlkCmd;
     
     // When an expression is parsed we don't know if there will be reals
     bool doubleFlag = 0; // Detects if a double occourred in an expression

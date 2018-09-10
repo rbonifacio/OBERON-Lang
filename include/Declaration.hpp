@@ -11,7 +11,7 @@ namespace OberonLang {
     
     class Declaration {
     public:
-      Declaration(TypesEnum t, string n) { this->_type = t; this->_name = n; }
+      Declaration(TypesEnum t, string n) : _type(t), _name(n) { }
       TypesEnum type() { return _type; }
       string name() { return _name; }
       void acceptVisit(IVisitor* visitor);

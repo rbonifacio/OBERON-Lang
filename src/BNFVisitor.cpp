@@ -181,15 +181,56 @@ namespace OberonLang {
     }
     
     void BNFVisitor::visitSWhile(SWhile *p) {
+    	Expression *condition;
+    	BlockCommand *whileBlock;
+    	
+    	p->liststmt_->accept(this);
+    	whileBlock = visitorBlkCmd;
+    	
+      p->exp_->accept(this);
+      condition = visitorReturn;
+      
+      visitorCommandReturn = new WhileCommand(condition, whileBlock);
+    }
+    
+    void BNFVisitor::visitSIfThen(SIfThen *p) {
+    	BlockCommand *blkThen;
+    	Expression *condition;
+    	
+    	p->exp_->accept(this);
+    	condition = visitorReturn;
+    	
+    	p->liststmt_->accept(this);
+    	blkThen = visitorBlkCmd;
+    	
+    	visitorCommandReturn = new IfThenCommand(condition, blkThen);
+    }
+    
+    void BNFVisitor::visitSIfThenElse(SIfThenElse *p) {
+    	BlockCommand *blkThen, *blkElse;
+    	Expression *condition;
+    	
+    	p->exp_->accept(this);
+    	condition = visitorReturn;
+    	
+    	p->liststmt_1->accept(this);
+    	blkThen = visitorBlkCmd;
+    	
+    	p->liststmt_2->accept(this);
+    	blkElse = visitorBlkCmd;
+    	
+    	visitorCommandReturn = new IfThenElseCommand(condition, blkThen, blkElse);
+    }
+    
+    void BNFVisitor::visitListStmt(ListStmt *p){
       list<Command *> *commands = new list<Command *>;
-      if(p->liststmt_){
-        for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
+      if(p){
+        for(auto it = p->begin(); it != p->end(); ++it) {
           (*it)->accept(this);
           commands->push_back(visitorCommandReturn);
         }
-      }    
-      p->exp_->accept(this);  
-      visitorCommandReturn = new WhileCommand(visitorReturn, new BlockCommand(commands));
+      }
+      visitorBlkCmd = new BlockCommand(commands);
     }
     
     void BNFVisitor::visitPDec(PDec *p) {

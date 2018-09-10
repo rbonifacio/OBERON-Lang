@@ -21,7 +21,7 @@ namespace OberonLang {
 
   class Assignment : public Command {
   public:
-    Assignment(string v, Expression* e) { _var = v; _expression = e; }
+    Assignment(string v, Expression* e) : _var(v), _expression(e) { }
     void run();
     void acceptVisit(IVisitor* visitor);
     // void accept(OBRVisitor* v);
@@ -37,7 +37,7 @@ namespace OberonLang {
 
   class ProcedureCall : public Command {
   public:
-    ProcedureCall(string n, vector<Expression*> *args) { this->_name = n; this->_args = args; }
+    ProcedureCall(string n, vector<Expression*> *args) : _name(n), _args(args) { }
     // void accept(OBRVisitor* v);
     void acceptVisit(IVisitor* visitor);
     void run();
@@ -59,7 +59,7 @@ namespace OberonLang {
     void run();
     list<Command*>* getCommands() { return _commands; } // !TODO: Talvez apenas um getCommands seja necessário
     list<Command*>* commands() { return _commands; } 
-    BlockCommand(list<Command*> *cmds) { this->_commands = cmds; }
+    explicit BlockCommand(list<Command*> *cmds) { this->_commands = cmds; }
     ~BlockCommand() { 
     	
     	for(auto it = _commands->begin(); it != _commands->end(); ++it){
@@ -76,7 +76,7 @@ namespace OberonLang {
   public:
     void acceptVisit(IVisitor* visitor);
     // void accept(OBRVisitor* v);
-    PrintCommand(Expression* exp) {this ->_expression = exp;}
+    explicit PrintCommand(Expression* exp) {this ->_expression = exp;}
     void run();
     Expression* expression() { return _expression; }
     ~PrintCommand() { delete _expression; }

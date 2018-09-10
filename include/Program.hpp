@@ -12,7 +12,7 @@ using namespace std;
 namespace OberonLang { 
   class Program : public Command {
   public:
-    Program(Command* main);
+    explicit Program(Command* main);
     Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main);
     void acceptVisit(IVisitor* visitor);
     ~Program();

@@ -10,7 +10,7 @@ using namespace std;
 namespace OberonLang {
   class VarRef : public Expression {
   public:
-    VarRef(string v) { this->_var = v; }
+    explicit VarRef(string v) : _var(v) { }
     string name() { return _var; }
     void acceptVisit(IVisitor* visitor);
     Value* eval();

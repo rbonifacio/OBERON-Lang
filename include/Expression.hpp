@@ -57,7 +57,7 @@ namespace OberonLang {
   template <typename T>
   class GenericValue : public Value {
   public:
-    GenericValue(T v) { _value = v; }
+    explicit GenericValue(T v) { _value = v; }
     virtual TypesEnum expType() = 0; 
     T value() { return _value; }
     // virtual void accept(OBRVisitor* v) = 0; 
@@ -71,7 +71,7 @@ namespace OberonLang {
   /* the Oberon numeric value, integers are unsigned */
   class IntValue : public GenericValue<TYPE_INTEGER> {
   public:
-    IntValue(TYPE_INTEGER value) : GenericValue(value) {}
+    explicit IntValue(TYPE_INTEGER value) : GenericValue(value) {}
     Value *eval() { return new IntValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
@@ -83,7 +83,7 @@ namespace OberonLang {
   /* the Oberon real value */
   class RealValue : public GenericValue<TYPE_REAL> {
   public:
-    RealValue(TYPE_REAL value) : GenericValue(value) {}
+    explicit RealValue(TYPE_REAL value) : GenericValue(value) {}
     Value *eval() { return new RealValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
@@ -95,7 +95,7 @@ namespace OberonLang {
   /* the Oberon boolean value */ 
   class BooleanValue : public GenericValue<bool> {
   public:
-    BooleanValue(bool value) : GenericValue(value) {}
+    explicit BooleanValue(bool value) : GenericValue(value) {}
     Value *eval() { return new BooleanValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
@@ -107,7 +107,7 @@ namespace OberonLang {
   /* the Oberon string value */ 
   class StringValue : public GenericValue<std::string> {
   public:
-    StringValue(std::string value) : GenericValue(value) {}
+    explicit StringValue(std::string& value) : GenericValue(value) {}
     Value *eval() { return new StringValue(this->_value); }
     TypesEnum expType();
     // void accept(OBRVisitor* v);
