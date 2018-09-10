@@ -34,7 +34,6 @@ namespace OberonLang {
     void BNFVisitor::visitModule(Module *p) {
       vector<VarDec*> globalVars;
       vector<DecProcedure*> procedures;
-      list<Command*> *cmds = new list<Command*>;
       BlockCommand *main;
       
       /* Iterate to build globalVars */
@@ -59,14 +58,8 @@ namespace OberonLang {
       }
       
       /* Iterate to build BlockCommand */
-      if(p->liststmt_){
-        for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
-          (*it)->accept(this);
-          cmds->push_back(visitorCommandReturn);
-        }
-      }      
-      
-      main = new BlockCommand(cmds);
+      p->liststmt_->accept(this);
+      main = visitorBlkCmd;
       
       programReturn = new Program(globalVars, procedures, main);
     }
@@ -236,15 +229,10 @@ namespace OberonLang {
     void BNFVisitor::visitPDec(PDec *p) {
       vector<Declaration*> *args = new vector<Declaration*>;
       vector<Declaration*> *vars = new vector<Declaration*>;
-      list<Command *> *pmts = new list<Command *>;
       BlockCommand *body;
       
-      if(p->liststmt_){
-        for(auto it = p->liststmt_->begin(); it != p->liststmt_->end(); ++it) {
-          (*it)->accept(this);
-          pmts->push_back(visitorCommandReturn);
-        }
-      }
+      p->liststmt_->accept(this);
+      body = visitorBlkCmd;
       
       if(p->listvardecl_){
         for(auto it = p->listvardecl_->begin(); it != p->listvardecl_->end(); ++it){
@@ -270,7 +258,6 @@ namespace OberonLang {
         }
       }
               
-      body = new BlockCommand(pmts);
       decProcedureReturn = new DecProcedure(p->ident_, args, vars, body);
     }
     
