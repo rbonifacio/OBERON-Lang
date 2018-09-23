@@ -30,7 +30,7 @@ public:
     setCurrentGraph(this->procedureCount);
     setCurrentScope(varState);
 
-    this->visit(p->getCommands());
+    this->visit(p->commands());
 
     visitCount++;
 
@@ -79,10 +79,10 @@ public:
   void visit(Assignment *p) {
     auto index = getCurrentScope()->find("p" +
       std::to_string(procedureCount) + "_" + p->name());
-    
+
     if (index != getCurrentScope()->end()) {
       if (index->second == TOP) {
-        this->visit(p->getValue());
+        this->visit(p->expression());
         index->second = lastTypeOfValue;
       } else if (index->second == 1) {
         index->second = BOTTOM;
@@ -91,7 +91,7 @@ public:
       index = getCurrentScope()->find("g_" + p->name());
       if (index != getCurrentScope()->end()) {
         if (index->second == TOP) {
-          this->visit(p->getValue());
+          this->visit(p->expression());
           index->second = lastTypeOfValue;
         }
         else if (index->second == 1) {
@@ -157,7 +157,7 @@ public:
     setCurrentScope(newScope);
 
     list<Command *>::iterator command;
-    for (command = p->getCommands()->begin(); command != p->getCommands()->end(); ++command) {
+    for (command = p->commands()->begin(); command != p->commands()->end(); ++command) {
       this->visit(*command);
     }
 
@@ -175,7 +175,7 @@ public:
     (*getCurrentGraph())[visitCount].insert(visitCount + 1);
     visitCount++;
     int storedVisitCount = visitCount;
-    this->visit(p->getCommands());
+    this->visit(p->commands());
     (*getCurrentGraph())[visitCount].insert(storedVisitCount + 1);
     (*getCurrentGraph())[storedVisitCount].insert(visitCount + 1);
 
@@ -203,7 +203,7 @@ public:
     (*getCurrentGraph())[visitCount].insert(visitCount + 1);
     visitCount++;
     int storedVisitCount = visitCount;
-    this->visit(p->getCommands());
+    this->visit(p->thenCmd());
     (*getCurrentGraph())[storedVisitCount].insert(visitCount + 1);
 
     std::map<std::string, char> *ifScope = getCurrentScope();
@@ -227,12 +227,12 @@ public:
     (*getCurrentGraph())[visitCount].insert(visitCount + 1);
     visitCount++;
     int storedVisitCount = visitCount;
-    this->visit(p->getTrueConditionCommands());
+    this->visit(p->thenCmd());
     int trueConditionVisitCount = visitCount;
 
     std::map<std::string, char> *ifTrueScope = getCurrentScope();
 
-    this->visit(p->getFalseConditionCommands());
+    this->visit(p->elseCmd());
     int falseConditionVisitCount = visitCount;
 
     std::map<std::string, char> *ifFalseScope = getCurrentScope();
@@ -438,7 +438,7 @@ public:
     rhs = lastTypeOfValue;
 
     if (lhs == BOTTOM || rhs == BOTTOM) {
-      lastTypeOfValue = BOTTOM; 
+      lastTypeOfValue = BOTTOM;
     } else if (lhs == TOP || rhs == TOP) {
       lastTypeOfValue = TOP;
     } else {

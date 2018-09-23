@@ -19,9 +19,7 @@ namespace OberonLang {
       DecProcedure(string n, vector<Declaration*> *args, vector<Declaration*> *vars, Command* cmd);
       string name() { return _name; }
       vector<Declaration*>* formalArgs() { return _formalArgs; }
-      vector<Declaration*>* formalArgsPointer() { return _formalArgs; }
       vector<Declaration*>* localVars() { return _localVars; }
-      vector<Declaration*>* localVarsPointer() { return _localVars; }
       Command* body() { return _body; }
       void acceptVisit(IVisitor* visitor);
     	// void accept(OBRVisitor* v); 

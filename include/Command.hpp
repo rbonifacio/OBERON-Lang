@@ -10,11 +10,11 @@
 using namespace std;
 
 namespace OberonLang {
-  
+
   class Command  {
   public:
     virtual void run() = 0;
-    // virtual void accept(OBRVisitor* v) = 0; 
+    // virtual void accept(OBRVisitor* v) = 0;
     virtual ~Command() { }
     virtual void acceptVisit(IVisitor* visitor) = 0;
   };
@@ -25,10 +25,8 @@ namespace OberonLang {
     void run();
     void acceptVisit(IVisitor* visitor);
     // void accept(OBRVisitor* v);
-    string name() { return _var; } // !TODO: Escolher qual usar
-    string var() { return _var; }
-    Expression* getValue() { return _expression; } // !TODO: Escolher qual usar
-    Expression* expression() { return _expression; } 
+    string name() { return _var; }
+    Expression* expression() { return _expression; }
     ~Assignment() { delete _expression; }
   private:
     string _var;
@@ -43,7 +41,7 @@ namespace OberonLang {
     void run();
     string name() { return _name; };
     vector<Expression*> *args() { return _args; }
-    ~ProcedureCall() { 
+    ~ProcedureCall() {
     	for(auto it = this->_args->begin(); it != this->_args->end(); ++it)
     		delete *it;
     delete this->_args; }
@@ -57,16 +55,15 @@ namespace OberonLang {
     void acceptVisit(IVisitor* visitor);
     // void accept(OBRVisitor* v);
     void run();
-    list<Command*>* getCommands() { return _commands; } // !TODO: Talvez apenas um getCommands seja necessário
-    list<Command*>* commands() { return _commands; } 
+    list<Command*>* commands() { return _commands; } // !TODO: Talvez apenas um getCommands seja necessário
     explicit BlockCommand(list<Command*> *cmds) { this->_commands = cmds; }
-    ~BlockCommand() { 
-    	
+    ~BlockCommand() {
+
     	for(auto it = _commands->begin(); it != _commands->end(); ++it){
     		delete *it;
     	}
-    	delete _commands; 
-    
+    	delete _commands;
+
     }
   private:
     list<Command*> *_commands;
@@ -91,8 +88,7 @@ namespace OberonLang {
     // void accept(OBRVisitor* v);
     void run();
     Expression* condition() { return _cond; }
-    BlockCommand* command() { return _cmds; }
-    BlockCommand* getCommands() { return _cmds; }; // !TODO: Remover algum deles
+    BlockCommand* commands() { return _cmds; };
     ~WhileCommand() { delete _cond; delete _cmds; }
   private:
     Expression* _cond;
@@ -106,8 +102,7 @@ namespace OberonLang {
     IfThenCommand(Expression* condition, BlockCommand* cmds) { this->_cond = condition; this->_then = cmds; }
     void run();
     Expression* condition() { return _cond; }
-    BlockCommand* thenCmd() { return _then; } // !TODO: Escolher qual usar
-    BlockCommand* getCommands() { return _then; };
+    BlockCommand* thenCmd() { return _then; }
     ~IfThenCommand() { delete _cond; delete _then; }
   private:
     Expression* _cond;
@@ -124,9 +119,7 @@ namespace OberonLang {
     // void accept(OBRVisitor* v);
     void acceptVisit(IVisitor* visitor);
     void run();
-    BlockCommand* getTrueConditionCommands() { return _then; }; // !TODO: Escolher qual usar
-    BlockCommand* thenCmd() { return _then; } 
-    BlockCommand* getFalseConditionCommands() { return _else; }; // !TODO: Escolher qual usar
+    BlockCommand* thenCmd() { return _then; }
     BlockCommand* elseCmd() { return _else; }
     Expression* condition() { return _cond; }
     ~IfThenElseCommand() { delete _cond; delete _then; delete _else; }
@@ -135,7 +128,7 @@ namespace OberonLang {
     BlockCommand* _then;
     BlockCommand* _else;
   };
-  
+
 }
 
 #endif
