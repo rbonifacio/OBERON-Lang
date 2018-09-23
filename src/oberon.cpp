@@ -56,11 +56,13 @@ int main(int argc, char ** argv)
 
     if (useOptimizer) {
       OberonLang::CFGVisitor* optimizer = new OberonLang::CFGVisitor(BNFtoAST->getProgram());
+      delete optimizer;
     }
     
     if (useLLVM) {
-      OberonLang::LLVMVisitor* llvm = new OberonLang::LLVMVisitor(BNFtoAST->getProgram());
+      OberonLang::LLVMVisitor* llvm = new OberonLang::LLVMVisitor(BNFtoAST->getProgram(), argv[1]);
       llvm->codegen();
+      delete llvm;
     }
     
     delete BNFtoAST;

@@ -7,25 +7,25 @@
 
 #include <vector>
 
-using namespace std; 
+using namespace std;
 
-namespace OberonLang { 
+namespace OberonLang {
   class Program : public Command {
   public:
     explicit Program(Command* main);
     Program(vector<VarDec*> globalVars, vector<DecProcedure*> procedures, Command* main);
     void acceptVisit(IVisitor* visitor);
     ~Program();
-    // void accept(OBRVisitor* v); 
+    // void accept(OBRVisitor* v);
     void run();
-    vector<VarDec*>* getGlobalVars() { return &_globalVars; }  
+    vector<VarDec*>* getGlobalVars() { return &_globalVars; }
     vector<DecProcedure*>* getProcedures() { return &_procedures; }
-    Command* getCommands() { return _main; }
+    Command* commands() { return _main; }
   private:
-    Command* _main; 
-    vector<VarDec*> _globalVars; 
-    vector<DecProcedure*> _procedures; 
+    Command* _main;
+    vector<VarDec*> _globalVars;
+    vector<DecProcedure*> _procedures;
   };
 }
 
-#endif 
+#endif
